@@ -15,6 +15,43 @@ vim.api.nvim_set_keymap(
   { expr = true, noremap = true, silent = true }
 )
 
+vim.keymap.set(
+  "n",
+  "gp",
+  "<cmd>lua require('goto-preview').goto_preview_definition()<CR>",
+  { noremap = true, desc = "Goto Preview Definition" }
+)
+vim.keymap.set(
+  "n",
+  "gpd",
+  "<cmd>lua require('goto-preview').goto_preview_definition()<CR>",
+  { noremap = true, desc = "Goto Preview Definition" }
+)
+vim.keymap.set(
+  "n",
+  "gpc",
+  "<cmd>lua require('goto-preview').close_all_win({skip_curr_window = true })<CR>",
+  { noremap = true, desc = "Close All Goto Preview Windows" }
+)
+vim.keymap.set(
+  "n",
+  "gpt",
+  "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>",
+  { noremap = true, desc = "Goto Preview Type Definition" }
+)
+vim.keymap.set(
+  "n",
+  "gpi",
+  "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>",
+  { noremap = true, desc = "Goto Preview Implementation" }
+)
+vim.keymap.set(
+  "n",
+  "gpr",
+  "<cmd>lua require('goto-preview').goto_preview_references()<CR>",
+  { noremap = true, desc = "Goto Preview References" }
+)
+
 -- Remap j key to n key to move down in normal modes
 -- Normal modes
 vim.keymap.set("n", "e", "k", { noremap = true, silent = true })
@@ -96,6 +133,13 @@ vim.api.nvim_set_keymap(
   "<leader>oo",
   '<cmd>lua require("toggleterm").toggle(4)<CR>',
   { noremap = true, silent = true, desc = "Origin Terminal" }
+)
+
+vim.api.nvim_set_keymap(
+  "n",
+  "<leader>r",
+  "<cmd>Telescope oldfiles<CR>",
+  { noremap = true, silent = true, desc = "Recent Files" }
 )
 
 -- -- Remaps for the refactoring operations currently offered by the plugin
@@ -214,4 +258,20 @@ vim.keymap.set(
     require("mini.files").open(vim.api.nvim_buf_get_name(0), true)
   end,
   { noremap = true, silent = true, desc = "Mini File Explorer" }
+)
+
+vim.keymap.set(
+  "n",
+  "<leader>gb",
+  -- ":lua MiniFiles.open()<CR>",
+  ":Gitsigns blame_line<cr>",
+  { noremap = true, silent = true, desc = "blame info" }
+)
+
+vim.keymap.set(
+  "n",
+  "<leader>h",
+  -- ":lua MiniFiles.open()<CR>",
+  ":CodeActionMenu<cr>",
+  { noremap = true, silent = true, desc = "Help code fix" }
 )

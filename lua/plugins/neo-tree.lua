@@ -12,7 +12,7 @@ return {
         position = "right",
         mappings = {
           ["<space>"] = "none",
-          ["n"] = "move_cursor_down",
+          -- ["n"] = "move_cursor_down",
           ["e"] = "move_cursor_up",
         },
         fuzzy_finder_mappings = { -- define keymaps for filter popup window in fuzzy_finder_mode

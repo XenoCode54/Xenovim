@@ -1,4 +1,4 @@
--- bootstrap lazy.nvim, LazyVim and your plugins
+-- bootstrap lazy.nvim, LazyVim and your pluginsgru
 require("config.lazy")
 -- setup must be called before loading the colorscheme
 -- Default options:
@@ -18,16 +18,100 @@ vim.cmd("augroup END")
 
 -- vim.opt.guicursor = "n-v-c:block-Cursor/lCursor,i-ci-ve:block-Cursor/lCursor"
 -- -- Set the highlight group for the Cursor
--- vim.cmd("highlight Cursor guifg=none guibg=green")
-
--- vim.opt.guicursor = ""
+--
 
 -- require("codewindow").setup({
 --   minimap_width = 10,
 --   max_minimap_height = 20,
 -- })
+-- triggers CursorHold event faster
+vim.opt.updatetime = 200
+
+require("barbecue").setup({
+  create_autocmd = false, -- prevent barbecue from updating itself automatically
+})
+
+vim.api.nvim_create_autocmd({
+  "WinScrolled", -- or WinResized on NVIM-v0.9 and higher
+  "BufWinEnter",
+  "CursorHold",
+  "InsertLeave",
+
+  -- include this if you have set `show_modified` to `true`
+  "BufModifiedSet",
+}, {
+  group = vim.api.nvim_create_augroup("barbecue.updater", {}),
+  callback = function()
+    require("barbecue.ui").update()
+  end,
+})
+
+require("goto-preview").setup({
+  width = 120, -- Width of the floating window
+  height = 25, -- Height of the floating window
+  border = { "↖", "─", "┐", "│", "┘", "─", "└", "│" }, -- Border characters of the floating window
+  default_mappings = false, -- Bind default mappings
+  debug = false, -- Print debug information
+  opacity = 0, -- 0-100 opacity level of the floating window where 100 is fully transparent.
+  resizing_mappings = true, -- Binds arrow keys to resizing the floating window.
+  post_open_hook = nil, -- A function taking two arguments, a buffer and a window to be ran as a hook.
+  -- references = { -- Configure the telescope UI for slowing the references cycling window.
+  --   telescope = require("telescope.themes").get_dropdown({ hide_preview = false }),
+  -- },
+  -- These two configs can also be passed down to the goto-preview definition and implementation calls for one off "peak" functionality.
+  focus_on_open = true, -- Focus the floating window when opening it.
+  dismiss_on_move = false, -- Dismiss the floating window when moving the cursor.
+  force_close = true, -- passed into vim.api.nvim_win_close's second argument. See :h nvim_win_close
+  bufhidden = "wipe", -- the bufhidden option to set on the floating window. See :h bufhidden
+  stack_floating_preview_windows = true, -- Whether to nest floating windows
+  preview_window_title = { enable = true, position = "left" }, -- Whether to set the preview window title as the filename
+})
+
 --
 -- require("codewindow").apply_default_keybinds()
+require("telescope").setup({
+  defaults = {
+    layout_strategy = "vertical",
+    layout_config = { height = 0.95 },
+    mappings = {
+      i = {
+        -- ["<C-u>"] = false,
+        -- ["<C-d>"] = false,
+        ["<C-e>"] = "preview_scrolling_up",
+        ["<C-n>"] = "preview_scrolling_down",
+      },
+      n = {
+        ["n"] = "move_selection_next",
+        ["e"] = "move_selection_previous",
+        ["<C-e>"] = "preview_scrolling_up",
+        ["<C-n>"] = "preview_scrolling_down",
+      },
+    },
+  },
+  --   layout_config = {
+  --     vertical = { width = 1, height = 1 },
+  --     -- other layout configuration here
+  --   },
+  --   -- other defaults configuration here
+  --   theme = "dropdown",
+  -- },
+  -- pickers = {
+  --   theme = "dropdown",
+  --   find_files = {
+  --     theme = "dropdown",
+  --   },
+  --   git_files = {
+  --     theme = "dropdown",
+  --   },
+  --   lsp_definitions = {
+  --     theme = "dropdown",
+  --   },
+  --   buffers = {
+  --     theme = "dropdown",
+  --   },
+  -- },
+  -- other configuration values here
+})
 
 vim.api.nvim_set_keymap(
   "i",
@@ -136,8 +220,8 @@ require("tokyonight").setup({
     functions = {},
     variables = {},
     -- Background styles. Can be "dark", "transparent" or "normal"
-    sidebars = "dark", -- style for sidebars, see below
-    floats = "dark", -- style for floating windows
+    sidebars = "transparent", -- style for sidebars, see below
+    floats = "transparent", -- style for floating windows
   },
   sidebars = { "qf", "help" }, -- Set a darker background on sidebar-like windows. For example: `["qf", "vista_kind", "terminal", "packer"]`
   day_brightness = 0.3, -- Adjusts the brightness of the colors of the **Day** style. Number between 0 and 1, from dull to vibrant colors
@@ -354,13 +438,13 @@ vim.opt.scrolloff = 8
 --     "sneak",
 --     "telescope",
 --     "trouble",
---     "which-key",
+--     -- "which-key",
 --   },
 --
 --   disable = {
 --     colored_cursor = false, -- Disable the colored cursor
 --     borders = false, -- Disable borders between verticaly split windows
---     background = false, -- Prevent the theme from setting the background (NeoVim then uses your terminal background)
+--     background = true, -- Prevent the theme from setting the background (NeoVim then uses your terminal background)
 --     term_colors = false, -- Prevent the theme from setting terminal colors
 --     eob_lines = false, -- Hide the end-of-buffer lines
 --   },
@@ -383,8 +467,8 @@ vim.opt.scrolloff = 8
 require("mini.files").setup({
   mappings = {
     close = "q",
-    go_in = "t",
-    go_in_plus = "T",
+    go_in = "T",
+    go_in_plus = "t",
     go_out = "h",
     go_out_plus = "H",
     reset = "<BS>",
@@ -409,9 +493,9 @@ require("mini.files").setup({
     -- Width of focused window
     width_focus = 25,
     -- Width of non-focused window
-    width_nofocus = 15,
+    width_nofocus = 10,
     -- Width of preview window
-    width_preview = 100,
+    width_preview = 60,
   },
 })
 
@@ -429,3 +513,7 @@ for _, motion in ipairs({ "f", "t", "F", "T" }) do
     }, Char.motions[motion]))
   end)
 end
+
+require("notify").setup({
+  background_colour = "#000000",
+})
