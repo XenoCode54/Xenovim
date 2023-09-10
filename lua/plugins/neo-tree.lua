@@ -5,21 +5,23 @@ return {
     opts = {
       filesystem = {
         bind_to_cwd = false,
-        follow_current_file = true,
+        follow_current_file = {
+          enabled = true,
+          leave_dirs_open = true,
+        },
         use_libuv_file_watcher = true,
       },
       window = {
-        position = "right",
+        position = "bottom",
         mappings = {
-          ["<space>"] = "none",
+          -- ["<space>"] = "none",
           -- ["n"] = "move_cursor_down",
+          -- ["o"] = "move_cursor_up",
           ["e"] = "move_cursor_up",
         },
         fuzzy_finder_mappings = { -- define keymaps for filter popup window in fuzzy_finder_mode
           ["<down>"] = "move_cursor_down",
-          ["n"] = "move_cursor_down",
           ["<up>"] = "move_cursor_up",
-          ["e"] = "move_cursor_up",
         },
       },
       default_component_configs = {

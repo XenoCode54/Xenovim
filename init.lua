@@ -5,10 +5,42 @@ require("config.lazy")
 --
 --
 --
+-- At the top of your init.lua, ensure you've required the necessary vim functions
+local cmd = vim.cmd
+local fn = vim.fn
+
+-- Place this code in your init.lua
+cmd([[
+augroup my_neotree_configs
+    autocmd!
+    autocmd FileType neotree lua ToggleNeotreePreview()
+augroup END
+]])
+
+-- Define the Lua function to toggle the preview
+_G.ToggleNeotreePreview = function()
+  fn.defer_fn(function()
+    cmd("normal P")
+  end, 50) -- Delay of 50ms
+end
+
+-- Neovide settings start
+vim.g.neovide_transparency = 0.97
+vim.g.neovide_fullscreen = false
+vim.g.neovide_refresh_rate = 60
+vim.g.neovide_refresh_rate_idle = 5
+vim.g.neovide_cursor_vfx_mode = "railgun"
+-- Neovide settings end
 --
+vim.api.nvim_set_hl(0, "Normal", { fg = "none", bg = "none" })
+vim.api.nvim_set_hl(0, "NormalFloat", { fg = "none", bg = "none" })
+
 vim.wo.cursorline = false
--- change color of fat cursor in insert mode
-vim.opt.guicursor = "n-v-c:block-Cursor/lCursor-blinkon0,i-ci:block-Cursor/lCursor,r-cr:hor20-Cursor/lCursor"
+
+-- Keep cursor fat like in vim
+vim.opt.guicursor = "n-v-c:block-Cursor/1Cursor-blinkon0,i-ci:block-Cursor/1Cursor,r-cr:hor20-Cursor/1Cursor"
+
+-- Change and sync color of cursor to lua line
 vim.cmd("augroup custom_cursor")
 vim.cmd("autocmd!")
 vim.cmd("highlight Cursor guifg=none guibg=#7aa2f7")
@@ -16,35 +48,24 @@ vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#9ece6a")
 vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#7aa2f7")
 vim.cmd("augroup END")
 
--- vim.opt.guicursor = "n-v-c:block-Cursor/lCursor,i-ci-ve:block-Cursor/lCursor"
--- -- Set the highlight group for the Cursor
---
+vim.cmd("autocmd InsertEnter * norm zz")
 
+-- -- Set the highlight group for the Cursor
 -- require("codewindow").setup({
---   minimap_width = 10,
+--   minitap_width = 10,
 --   max_minimap_height = 20,
 -- })
--- triggers CursorHold event faster
-vim.opt.updatetime = 200
 
-require("barbecue").setup({
-  create_autocmd = false, -- prevent barbecue from updating itself automatically
-})
-
-vim.api.nvim_create_autocmd({
-  "WinScrolled", -- or WinResized on NVIM-v0.9 and higher
-  "BufWinEnter",
-  "CursorHold",
-  "InsertLeave",
-
-  -- include this if you have set `show_modified` to `true`
-  "BufModifiedSet",
-}, {
-  group = vim.api.nvim_create_augroup("barbecue.updater", {}),
-  callback = function()
-    require("barbecue.ui").update()
-  end,
-})
+-- require("nvim-treesitter.configs").setup({
+--   rainbow = {
+--     enable = true,
+--     -- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
+--     extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
+--     -- max_file_lines = nil, -- Do not enable for files with more than n lines, int
+--     -- colors = {}, -- table of hex strings
+--     -- termcolors = {} -- table of colour name strings
+--   },
+-- })
 
 require("goto-preview").setup({
   width = 120, -- Width of the floating window
@@ -169,8 +190,8 @@ require("gitsigns").setup({
   },
   signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
   numhl = true, -- Toggle with `:Gitsigns toggle_numhl`
-  linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
-  word_diff = true, -- Toggle with `:Gitsigns toggle_word_diff`
+  linehl = true, -- Toggle with `:Gitsigns toggle_linehl`
+  word_diff = false, -- Toggle with `:Gitsigns toggle_word_diff`
   watch_gitdir = {
     interval = 1000,
     follow_files = true,
@@ -343,8 +364,6 @@ require("sos").setup({
 require("nvim-treesitter.configs").setup({
   rainbow = {
     enable = true,
-    -- Which query to use for finding delimiters
-    query = "rainbow-parens",
   },
   autotag = {
     enable = true,
@@ -491,11 +510,11 @@ require("mini.files").setup({
     -- Whether to show preview of file/directory under cursor
     preview = true,
     -- Width of focused window
-    width_focus = 25,
+    width_focus = 35,
     -- Width of non-focused window
-    width_nofocus = 10,
+    width_nofocus = 30,
     -- Width of preview window
-    width_preview = 60,
+    width_preview = 70,
   },
 })
 
@@ -516,4 +535,112 @@ end
 
 require("notify").setup({
   background_colour = "#000000",
+})
+
+vim.opt.list = true
+vim.opt.listchars:append("space:⋅")
+-- vim.opt.listchars:append("eol:↴")
+
+require("indent_blankline").setup({
+  space_char_blankline = " ",
+  show_current_context = true,
+  show_current_context_start = true,
+})
+
+-- vim.cmd([[
+-- command! LazyMerge term lazygit
+-- autocmd TermClose * DiffviewOpen
+-- ]])
+
+-- Lua configuration
+local glance = require("glance")
+local actions = glance.actions
+
+glance.setup({
+  height = 20, -- Height of the window
+  zindex = 45,
+
+  -- By default glance will open preview "embedded" within your active window
+  -- when `detached` is enabled, glance will render above all existing windows
+  -- and won't be restiricted by the width of your active window
+  detached = true,
+
+  -- Or use a function to enable `detached` only when the active window is too small
+  -- (default behavior)
+  detached = function(winid)
+    return vim.api.nvim_win_get_width(winid) < 100
+  end,
+
+  preview_win_opts = { -- Configure preview window options
+    cursorline = true,
+    number = true,
+    wrap = true,
+  },
+  border = {
+    enable = true, -- Show window borders. Only horizontal borders allowed
+    top_char = "―",
+    bottom_char = "―",
+  },
+  list = {
+    position = "right", -- Position of the list window 'left'|'right'
+    width = 0.33, -- 33% width relative to the active window, min 0.1, max 0.5
+  },
+  theme = { -- This feature might not work properly in nvim-0.7.2
+    enable = true, -- Will generate colors for the plugin based on your current colorscheme
+    mode = "brighten", -- 'brighten'|'darken'|'auto', 'auto' will set mode based on the brightness of your colorscheme
+  },
+  mappings = {
+    list = {
+      ["n"] = actions.next, -- Bring the cursor to the next item in the list
+      ["e"] = actions.previous, -- Bring the cursor to the previous item in the list
+      ["<Down>"] = actions.next,
+      ["<Up>"] = actions.previous,
+      ["<Tab>"] = actions.next_location, -- Bring the cursor to the next location skipping groups in the list
+      ["<S-Tab>"] = actions.previous_location, -- Bring the cursor to the previous location skipping groups in the list
+      ["N"] = actions.preview_scroll_win(5),
+      ["E"] = actions.preview_scroll_win(-5),
+      ["v"] = actions.jump_vsplit,
+      ["s"] = actions.jump_split,
+      ["t"] = actions.jump_tab,
+      ["<CR>"] = actions.jump,
+      ["l"] = actions.open_fold,
+      ["h"] = actions.close_fold,
+      ["<C-h>"] = actions.enter_win("preview"), -- Focus preview window
+      ["q"] = actions.close,
+      ["Q"] = actions.close,
+      ["<Esc>"] = actions.close,
+      ["o"] = actions.quickfix,
+      -- ['<Esc>'] = false -- disable a mapping
+    },
+    preview = {
+      ["Q"] = actions.close,
+      ["<Tab>"] = actions.next_location,
+      ["<S-Tab>"] = actions.previous_location,
+      ["<C-h>"] = actions.enter_win("list"), -- Focus list window
+    },
+  },
+  hooks = {},
+  folds = {
+    fold_closed = "",
+    fold_open = "",
+    folded = true, -- Automatically fold list on startup
+  },
+  indent_lines = {
+    enable = true,
+    icon = "│",
+  },
+  winbar = {
+    enable = true, -- Available strating from nvim-0.8+
+  },
+})
+
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if client.server_capabilities.inlayHintProvider then
+      vim.lsp.inlay_hint(args.buf, true)
+    end
+    -- whatever other lsp config you want
+  end,
 })

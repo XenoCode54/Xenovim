@@ -1,6 +1,49 @@
 -- Keymaps are automatically loaded on the VeryLazy event
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
+local mark = require("harpoon.mark")
+local ui = require("harpoon.ui")
+
+vim.keymap.set("n", "<leader>0", mark.add_file, { noremap = true, desc = "Add File To Harpoon" })
+vim.keymap.set("n", "<leader>i", ui.toggle_quick_menu, { noremap = true, desc = "iHarpoon Menu" })
+
+-- vim.keymap.set("i", "<S-S>", function()
+--   vim.api.nvim_command(":<C-l>")
+-- end, { noremap = true })
+
+vim.keymap.set("n", "<leader>1", function()
+  ui.nav_file(1)
+end, { noremap = true, desc = "Nav File 1" })
+vim.keymap.set("n", "<leader>2", function()
+  ui.nav_file(2)
+end, { noremap = true, desc = "Nav File 2" })
+vim.keymap.set("n", "<leader>3", function()
+  ui.nav_file(3)
+end, { noremap = true, desc = "Nav File 3" })
+vim.keymap.set("n", "<leader>4", function()
+  ui.nav_file(4)
+end, { noremap = true, desc = "Nav File 4" })
+vim.keymap.set("n", "<leader>5", function()
+  ui.nav_file(5)
+end, { noremap = true, desc = "Nav File 5" })
+vim.keymap.set("n", "<leader>6", function()
+  ui.nav_file(6)
+end, { noremap = true, desc = "Nav File 6" })
+vim.keymap.set("n", "<leader>7", function()
+  ui.nav_file(7)
+end, { noremap = true, desc = "Nav File 7" })
+vim.keymap.set("n", "<leader>8", function()
+  ui.nav_file(8)
+end, { noremap = true, desc = "Nav File 8" })
+vim.keymap.set("n", "<leader>9", function()
+  ui.nav_file(9)
+end, { noremap = true, desc = "Nav File 9" })
+
+--
+
+vim.keymap.set("n", "<leader>z", vim.cmd.UndotreeToggle, { noremap = true, desc = "Undo Tree" })
+
+--
 vim.keymap.set(
   "n",
   "<leader>sx",
@@ -260,6 +303,25 @@ vim.keymap.set(
   { noremap = true, silent = true, desc = "Mini File Explorer" }
 )
 
+-- vim.keymap.set("n", "<leader>n", function()
+--   require("edgy").toggle()
+-- end, { noremap = true, silent = true, desc = "Edgy Explorer" })
+
+-- vim.keymap.set(
+--   "n",
+--   "<leader>m",
+--   ":Neotree reveal toggle<CR>",
+--   { noremap = true, silent = true, desc = "Neotree Reveal File" }
+-- )
+
+vim.keymap.set(
+  "n",
+  "<leader>na",
+  -- ":lua MiniFiles.open()<CR>",
+  ":NeoAIToggle<cr>",
+  { noremap = true, silent = true, desc = "AI Chat" }
+)
+
 vim.keymap.set(
   "n",
   "<leader>gb",
@@ -275,3 +337,54 @@ vim.keymap.set(
   ":CodeActionMenu<cr>",
   { noremap = true, silent = true, desc = "Help code fix" }
 )
+
+vim.keymap.set(
+  "n",
+  "<leader>gf",
+  -- ":lua MiniFiles.open()<CR>",
+  ":DiffviewFileHistory<cr>",
+  { noremap = true, silent = true, desc = "File History" }
+)
+
+vim.keymap.set(
+  "n",
+  "<leader>go",
+  -- ":lua MiniFiles.open()<CR>",
+  ":DiffviewOpen<cr>",
+  { noremap = true, silent = true, desc = "Diffview Open" }
+)
+
+vim.keymap.set(
+  "n",
+  "<leader>gt",
+  -- ":lua MiniFiles.open()<CR>",
+  ":DiffviewToggleFiles<cr>",
+  { noremap = true, silent = true, desc = "Toggle Diffview Files" }
+)
+
+vim.keymap.set(
+  "n",
+  "<leader>gx",
+  -- ":lua MiniFiles.open()<CR>",
+  ":DiffviewClose!<cr>",
+  { noremap = true, silent = true, desc = "Diffview Close" }
+) -- Lua
+
+-- vim.keymap.set("n", "gd", "<CMD>Glance definitions<CR>", { noremap = true, silent = true, desc = "Glance Definitions" })
+-- vim.keymap.set("n", "gR", "<CMD>Glance references<CR>", { noremap = true, silent = true, desc = "Glance References" })
+vim.keymap.set(
+  "n",
+  "gY",
+  "<CMD>Glance type_definitions<CR>",
+  { noremap = true, silent = true, desc = "Glance Type Definitions" }
+)
+vim.keymap.set(
+  "n",
+  "gM",
+  "<CMD>Glance implementations<CR>",
+  { noremap = true, silent = true, desc = "Glance Implementations" }
+)
+
+vim.keymap.set("n", "qa", "<CMD>Alpha<CR>", { noremap = true, silent = true, desc = "Quit to Alpha" })
+
+vim.keymap.set("n", "gp", "<CMD>Gitsigns preview_hunk<CR>", { noremap = true, silent = true, desc = "Preview hunk" })
