@@ -20,14 +20,14 @@ return {
       right = {
         {
           ft = "toggleterm",
-          size = { height = 0.4, width = 0.5 },
+          size = { height = 0.4, width = 0.4 },
           filter = function(buf, win)
             return vim.api.nvim_win_get_config(win).relative == ""
           end,
         },
         {
           ft = "noice",
-          size = { height = 0.4, width = 0.5 },
+          size = { height = 0.4, width = 0.4 },
           filter = function(buf, win)
             return vim.api.nvim_win_get_config(win).relative == ""
           end,
@@ -35,7 +35,7 @@ return {
         {
           ft = "lazyterm",
           title = "LazyTerm",
-          size = { height = 0.4, width = 0.5 },
+          size = { height = 0.4, width = 0.4 },
           filter = function(buf)
             return not vim.b[buf].lazyterm_cmd
           end,

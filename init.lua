@@ -30,6 +30,7 @@ vim.g.neovide_fullscreen = false
 vim.g.neovide_refresh_rate = 60
 vim.g.neovide_refresh_rate_idle = 5
 vim.g.neovide_cursor_vfx_mode = "railgun"
+vim.g.neovide_background_color = "#ff0000"
 -- Neovide settings end
 --
 vim.api.nvim_set_hl(0, "Normal", { fg = "none", bg = "none" })
@@ -48,7 +49,7 @@ vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#9ece6a")
 vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#7aa2f7")
 vim.cmd("augroup END")
 
-vim.cmd("autocmd InsertEnter * norm zz")
+-- vim.cmd("autocmd InsertEnter * norm zz")
 
 -- -- Set the highlight group for the Cursor
 -- require("codewindow").setup({
@@ -190,7 +191,7 @@ require("gitsigns").setup({
   },
   signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
   numhl = true, -- Toggle with `:Gitsigns toggle_numhl`
-  linehl = true, -- Toggle with `:Gitsigns toggle_linehl`
+  linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
   word_diff = false, -- Toggle with `:Gitsigns toggle_word_diff`
   watch_gitdir = {
     interval = 1000,
@@ -411,7 +412,7 @@ vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
 -- })
 require("nvim-lightbulb").setup({ autocmd = { enabled = true } })
 
-vim.opt.scrolloff = 8
+vim.opt.scrolloff = 11
 
 -- Material deep ocean
 --Lua:
@@ -537,14 +538,21 @@ require("notify").setup({
   background_colour = "#000000",
 })
 
+vim.cmd([[highlight IndentBlanklineIndent1 guifg=#24283b gui=nocombine]])
+
 vim.opt.list = true
 vim.opt.listchars:append("space:⋅")
+
 -- vim.opt.listchars:append("eol:↴")
 
 require("indent_blankline").setup({
   space_char_blankline = " ",
   show_current_context = true,
   show_current_context_start = true,
+  char_highlight_list = {
+    "IndentBlanklineIndent1",
+  },
+  show_trailing_blankline_indent = false,
 })
 
 -- vim.cmd([[
@@ -632,6 +640,21 @@ glance.setup({
   winbar = {
     enable = true, -- Available strating from nvim-0.8+
   },
+})
+
+require("treesitter-context").setup({
+  enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+  max_lines = 1, -- How many lines the window should span. Values <= 0 mean no limit.
+  min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+  line_numbers = true,
+  multiline_threshold = 20, -- Maximum number of lines to show for a single context
+  trim_scope = "outer", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+  mode = "cursor", -- Line used to calculate context. Choices: 'cursor', 'topline'
+  -- Separator between context and content. Should be a single character string, like '-'.
+  -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
+  separator = nil,
+  zindex = 20, -- The Z-index of the context window
+  on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
 })
 
 vim.api.nvim_create_autocmd("LspAttach", {
