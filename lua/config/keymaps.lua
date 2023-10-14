@@ -119,7 +119,7 @@ vim.keymap.set("v", "i", "l", { noremap = true, silent = true })
 
 -- Remap yn key to yank down
 -- Normal modes
--- ehoehoa
+
 vim.keymap.set("n", "yn", "yj", { noremap = true, silent = true })
 vim.keymap.set("n", "ye", "yk", { noremap = true, silent = true })
 vim.keymap.set("n", "yk", "ye", { noremap = true, silent = true })

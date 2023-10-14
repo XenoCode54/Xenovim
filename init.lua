@@ -8,7 +8,9 @@ require("config.lazy")
 -- At the top of your init.lua, ensure you've required the necessary vim functions
 local cmd = vim.cmd
 local fn = vim.fn
-
+require("highlight-undo").setup({
+  duration = 5000,
+})
 -- Place this code in your init.lua
 cmd([[
 augroup my_neotree_configs
@@ -16,6 +18,11 @@ augroup my_neotree_configs
     autocmd FileType neotree lua ToggleNeotreePreview()
 augroup END
 ]])
+
+-- cmd([[
+-- set cursorcolumn
+-- set cursorline
+-- ]])
 
 -- Define the Lua function to toggle the preview
 _G.ToggleNeotreePreview = function()
