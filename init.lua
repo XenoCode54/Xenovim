@@ -3,8 +3,6 @@ require("config.lazy")
 -- setup must be called before loading the colorscheme
 -- Default options:
 --
---
---
 -- At the top of your init.lua, ensure you've required the necessary vim functions
 local cmd = vim.cmd
 local fn = vim.fn
@@ -18,12 +16,6 @@ augroup my_neotree_configs
     autocmd FileType neotree lua ToggleNeotreePreview()
 augroup END
 ]])
-
--- cmd([[
--- set cursorcolumn
--- set cursorline
--- ]])
-
 -- Define the Lua function to toggle the preview
 _G.ToggleNeotreePreview = function()
   fn.defer_fn(function()
@@ -552,15 +544,26 @@ vim.opt.listchars:append("space:⋅")
 
 -- vim.opt.listchars:append("eol:↴")
 
-require("indent_blankline").setup({
-  space_char_blankline = " ",
-  show_current_context = true,
-  show_current_context_start = true,
-  char_highlight_list = {
-    "IndentBlanklineIndent1",
-  },
-  show_trailing_blankline_indent = false,
-})
+-- require("indent_blankline").setup({
+--   space_char_blankline = " ",
+--   show_current_context = true,
+--   show_current_context_start = true,
+--   char_highlight_list = {
+--     "IndentBlanklineIndent1",
+--   },
+--   show_trailing_blankline_indent = false,
+-- })
+--
+-- require("ibl").setup({
+--   scope = {
+--     enabled = true,
+--     show_start = true,
+--     show_end = false,
+--     injected_languages = false,
+--     highlight = { "Function", "Label", "Operator", "Keyword" },
+--     priority = 500,
+--   },
+-- })
 
 -- vim.cmd([[
 -- command! LazyMerge term lazygit

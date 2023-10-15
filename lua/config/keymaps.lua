@@ -388,3 +388,5 @@ vim.keymap.set(
 vim.keymap.set("n", "qa", "<CMD>Alpha<CR>", { noremap = true, silent = true, desc = "Quit to Alpha" })
 
 vim.keymap.set("n", "gp", "<CMD>Gitsigns preview_hunk<CR>", { noremap = true, silent = true, desc = "Preview hunk" })
+
+vim.keymap.set("n", "X", "<CMD>LazyExtras<CR>", { noremap = true, silent = true, desc = "Extensions" })
