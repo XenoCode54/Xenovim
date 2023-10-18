@@ -247,7 +247,7 @@ vim.api.nvim_set_keymap(
   "n",
   "<leader>pp",
   ":lua require('refactoring').debug.printf({below = false})<CR>",
-  { noremap = true, desc = "console.log", silent = true }
+  { noremap = true, desc = "log", silent = true }
 )
 
 -- Print var
@@ -258,14 +258,14 @@ vim.api.nvim_set_keymap(
   "n",
   "<leader>pv",
   ":lua require('refactoring').debug.print_var({ normal = true })<CR>",
-  { noremap = true, desc = "console.log variable", silent = true }
+  { noremap = true, desc = "log variable", silent = true }
 )
 -- Remap in visual mode will print whatever is in the visual selection
 vim.api.nvim_set_keymap(
   "v",
   "<leader>pv",
   ":lua require('refactoring').debug.print_var({})<CR>",
-  { noremap = true, desc = "Print variable", silent = true }
+  { noremap = true, desc = "log variable", silent = true }
 )
 
 -- Cleanup function: this remap should be made in normal mode
@@ -273,7 +273,7 @@ vim.api.nvim_set_keymap(
   "n",
   "<leader>pc",
   ":lua require('refactoring').debug.cleanup({})<CR>",
-  { noremap = true, desc = "CleanUp logs", silent = true }
+  { noremap = true, desc = "cleanUp logs", silent = true }
 )
 
 -- Move highlighted lines in visual mode
@@ -314,13 +314,13 @@ vim.keymap.set(
 --   { noremap = true, silent = true, desc = "Neotree Reveal File" }
 -- )
 
-vim.keymap.set(
-  "n",
-  "<leader>na",
-  -- ":lua MiniFiles.open()<CR>",
-  ":NeoAIToggle<cr>",
-  { noremap = true, silent = true, desc = "AI Chat" }
-)
+vim.keymap.set("n", "<leader>nx", ":CodyToggle<cr>", { noremap = true, silent = true, desc = "AI Toggle View" })
+vim.keymap.set("n", "<leader>nc", ":CodyChat<cr>", { noremap = true, silent = true, desc = "AI Chat View" })
+vim.keymap.set("n", "<leader>nt", ":CodyTaskView<cr>", { noremap = true, silent = true, desc = "AI Task View" })
+
+vim.keymap.set("n", "<leader>na", ":CodyAsk ", { noremap = true, silent = false, desc = "AI Ask" })
+
+vim.keymap.set("n", "<leader>nd", ":CodyTask ", { noremap = true, silent = false, desc = "AI Do Task" })
 
 vim.keymap.set(
   "n",
@@ -385,7 +385,7 @@ vim.keymap.set(
   { noremap = true, silent = true, desc = "Glance Implementations" }
 )
 
-vim.keymap.set("n", "qa", "<CMD>Alpha<CR>", { noremap = true, silent = true, desc = "Quit to Alpha" })
+vim.keymap.set("n", "qm", "<CMD>Dashboard<CR>", { noremap = true, silent = true, desc = "Quit to Main Menu" })
 
 vim.keymap.set("n", "gp", "<CMD>Gitsigns preview_hunk<CR>", { noremap = true, silent = true, desc = "Preview hunk" })
 

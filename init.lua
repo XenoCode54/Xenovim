@@ -23,6 +23,8 @@ _G.ToggleNeotreePreview = function()
   end, 50) -- Delay of 50ms
 end
 
+vim.g.sg_nvim_node_executable = "C:\\Program Files\\nodejs\\node.exe"
+
 -- Neovide settings start
 vim.g.neovide_transparency = 0.97
 vim.g.neovide_fullscreen = false
@@ -488,7 +490,7 @@ require("mini.files").setup({
     close = "q",
     go_in = "T",
     go_in_plus = "t",
-    go_out = "h",
+    go_out = "b",
     go_out_plus = "H",
     reset = "<BS>",
     show_help = "g?",
@@ -676,4 +678,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
     -- whatever other lsp config you want
   end,
+})
+
+vim.diagnostic.config({ virtual_text = true })
+-- Sourcegraph configuration. All keys are optional
+require("sg").setup({
+  -- Pass your own custom attach function
+  --    If you do not pass your own attach function, then the following maps are provide:
+  --        - gd -> goto definition
+  --        - gr -> goto references
+  on_attach = your_custom_lsp_attach_function,
 })
