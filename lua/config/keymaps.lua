@@ -317,10 +317,11 @@ vim.keymap.set(
 vim.keymap.set("n", "<leader>nx", ":CodyToggle<cr>", { noremap = true, silent = true, desc = "AI Toggle View" })
 vim.keymap.set("n", "<leader>nc", ":CodyChat<cr>", { noremap = true, silent = true, desc = "AI Chat View" })
 vim.keymap.set("n", "<leader>nt", ":CodyTaskView<cr>", { noremap = true, silent = true, desc = "AI Task View" })
-
 vim.keymap.set("n", "<leader>na", ":CodyAsk ", { noremap = true, silent = false, desc = "AI Ask" })
-
 vim.keymap.set("n", "<leader>nd", ":CodyTask ", { noremap = true, silent = false, desc = "AI Do Task" })
+
+vim.keymap.set("v", "<leader>na", ":CodyAsk ", { noremap = true, silent = false, desc = "AI Ask" })
+vim.keymap.set("v", "<leader>nd", ":CodyTask ", { noremap = true, silent = false, desc = "AI Do Task" })
 
 vim.keymap.set(
   "n",
@@ -390,3 +391,5 @@ vim.keymap.set("n", "qm", "<CMD>Dashboard<CR>", { noremap = true, silent = true,
 vim.keymap.set("n", "gp", "<CMD>Gitsigns preview_hunk<CR>", { noremap = true, silent = true, desc = "Preview hunk" })
 
 vim.keymap.set("n", "X", "<CMD>LazyExtras<CR>", { noremap = true, silent = true, desc = "Extensions" })
+
+vim.keymap.set("n", "Y", "y$", { desc = "Yank to end of line" })
