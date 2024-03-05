@@ -15,13 +15,13 @@ return {
   opts = function()
     local opts = {
       right = {
-        {
-          ft = "toggleterm",
-          size = { width = 0.4 },
-          filter = function(buf, win)
-            return vim.api.nvim_win_get_config(win).relative == ""
-          end,
-        },
+        -- {
+        --   ft = "toggleterm",
+        --   size = { width = 0.4 },
+        --   filter = function(buf, win)
+        --     return vim.api.nvim_win_get_config(win).relative == ""
+        --   end,
+        -- },
         {
           ft = "noice",
           size = { width = 0.4 },

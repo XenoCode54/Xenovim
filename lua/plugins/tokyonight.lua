@@ -7,7 +7,7 @@ return {
         sidebars = "transparent",
         floats = "transparent",
       },
-      colorscheme = "night",
+      colorscheme = "storm",
       transparent_background = true,
       background = "",
     },

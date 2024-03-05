@@ -17,12 +17,21 @@ return {
           -- ["<space>"] = "none",
           -- ["n"] = "move_cursor_down",
           -- ["o"] = "move_cursor_up",
+          ["v"] = "image_wezterm",
           ["e"] = "move_cursor_up",
         },
         fuzzy_finder_mappings = { -- define keymaps for filter popup window in fuzzy_finder_mode
           ["<down>"] = "move_cursor_down",
           ["<up>"] = "move_cursor_up",
         },
+      },
+      commands = {
+        image_wezterm = function(state)
+          local node = state.tree:get_node()
+          if node.type == "file" then
+            require("image_preview").PreviewImage(node.path)
+          end
+        end,
       },
       default_component_configs = {
         indent = {

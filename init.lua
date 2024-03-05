@@ -23,8 +23,25 @@ _G.ToggleNeotreePreview = function()
   end, 50) -- Delay of 50ms
 end
 
+vim.cmd("set colorcolumn=107")
+
+local function my_custom_on_attach(client, bufnr) end
+
+-- Sourcegraph configuration. All keys are optional
+require("sg").setup({
+  chatModel = "ChatGPT 4 Turbo Preview",
+  -- width = 200,
+  -- Pass your own custom attach function
+  --    If you do not pass your own attach function, then the following maps are provide:
+  --        - gd -> goto definition
+  --        - gr -> goto references
+  on_attach = my_custom_on_attach,
+})
+
+vim.api.nvim_set_hl(0, "CmpItemKindCody", { fg = "#7aa2f7" })
+
 -- vim.g.sg_nvim_node_executable = "C:\\Program Files\\nodejs\\node.exe"
-vim.g.codeium_log_level = "OFF"
+vim.g.codeium_log_level = "INFO"
 -- Neovide settings start
 vim.opt.guifont = "JetBrainsMonoNerdFontCompleteM"
 vim.g.neovide_transparency = 0.77
@@ -41,14 +58,20 @@ vim.api.nvim_set_hl(0, "NormalFloat", { fg = "none", bg = "none" })
 vim.wo.cursorline = false
 
 -- Keep cursor fat like in vim
-vim.opt.guicursor = "n-v-c:block-Cursor/1Cursor-blinkon0,i-ci:block-Cursor/1Cursor,r-cr:hor20-Cursor/1Cursor"
+-- vim.opt.guicursor = "n-v-c:block-Cursor/1Cursor-blinkon0,i-ci:block-Cursor/1Cursor,r-cr:hor20-Cursor/1Cursor"
 
 -- Change and sync color of cursor to lua line
+-- vim.cmd("augroup custom_cursor")
+-- vim.cmd("autocmd!")
+-- vim.cmd("highlight Cursor guifg=none guibg=#7aa2f7")
+-- vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#9ece6a")
+-- vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#7aa2f7")
+-- vim.cmd("augroup END")
 vim.cmd("augroup custom_cursor")
 vim.cmd("autocmd!")
-vim.cmd("highlight Cursor guifg=none guibg=#7aa2f7")
-vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#9ece6a")
-vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#7aa2f7")
+vim.cmd("highlight Cursor guifg=none guibg=#ffc777")
+vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#ffc777")
+vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#ffc777")
 vim.cmd("augroup END")
 
 -- vim.cmd("autocmd InsertEnter * norm zz")
@@ -144,16 +167,16 @@ vim.api.nvim_set_keymap(
   { expr = true, noremap = true, silent = true }
 )
 
-require("neodim").setup({
-  alpha = 0.3, -- make the dimmed text even dimmer
-  hide = {
-    virtual_text = false,
-    signs = false,
-    underline = false,
-  },
-  blend_color = "#1a1b26",
-  -- blend_color = "#282828",
-})
+-- require("neodim").setup({
+--   alpha = 0.3, -- make the dimmed text even dimmer
+--   hide = {
+--     virtual_text = false,
+--     signs = false,
+--     underline = false,
+--   },
+--   blend_color = "#1a1b26",
+--   -- blend_color = "#282828",
+-- })
 
 require("refactoring").setup({
   -- overriding printf statement for cpp
@@ -229,10 +252,11 @@ require("gitsigns").setup({
 --   transparent_mode = true,
 -- })
 -- vim.cmd("colorscheme gruvbox")
+local colors = require("tokyonight.colors").setup()
 require("tokyonight").setup({
   -- your configuration comes here
   -- or leave it empty to use the default settings
-  style = "night", -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
+  style = "storm", -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
   light_style = "night", -- The theme is used when the background is set to light
   transparent = true, -- Enable this to disable setting the background color
   terminal_colors = true, -- Configure the colors used when opening a `:terminal` in Neovim
@@ -253,8 +277,6 @@ require("tokyonight").setup({
   dim_inactive = true, -- dims inactive windows
   lualine_bold = false, -- When `true`, section headers in the lualine theme will be bold
 })
-
-local colors = require("tokyonight.colors").setup()
 
 require("scrollbar").setup({
   handle = {
@@ -302,7 +324,7 @@ require("sos").setup({
   -- Automatically write all modified buffers before executing a command on
   -- the cmdline. Aborting the cmdline (e.g. via `<Esc>`) also aborts the
   -- write. The point of this is so that you don't have to manually write a
-  -- buffer before running commands such as `:luafile`, `:soruce`, or a `:!`
+  -- buffer before running commands such as `:luafile`, `:source`, or a `:!`
   -- shell command which reads files (such as git or a code formatter).
   -- Autocmds will be executed as a result of the writing (i.e. `nested = true`).
   --
@@ -376,13 +398,16 @@ require("nvim-treesitter.configs").setup({
 require("nvim-ts-autotag").setup()
 
 require("toggleterm").setup({
-  size = 70,
+  size = 50,
   autochdir = true,
   shell = "pwsh",
-  direction = "vertical",
+  direction = "float",
   persist_size = true,
+  hide_numbers = false,
   persist_mode = true,
   auto_scroll = true,
+  shade_terminals = true,
+  shading_factor = -3,
   float_opts = {
     border = "curved",
     winblend = 3,
@@ -390,6 +415,12 @@ require("toggleterm").setup({
       border = "Normal",
       background = "Normal",
     },
+  },
+  winbar = {
+    enabled = true,
+    name_formatter = function(term) --  term: Terminal
+      return term.name
+    end,
   },
 })
 
@@ -465,7 +496,7 @@ vim.opt.scrolloff = 11
 --
 --   disable = {
 --     colored_cursor = false, -- Disable the colored cursor
---     borders = false, -- Disable borders between verticaly split windows
+--     borders = false, -- Disable borders between vertically split windows
 --     background = true, -- Prevent the theme from setting the background (NeoVim then uses your terminal background)
 --     term_colors = false, -- Prevent the theme from setting terminal colors
 --     eob_lines = false, -- Hide the end-of-buffer lines
@@ -478,7 +509,7 @@ vim.opt.scrolloff = 11
 --
 --   lualine_style = "stealth", -- Lualine style ( can be 'stealth' or 'default' )
 --
---   async_loading = true, -- Load parts of the theme asyncronously for faster startup (turned on by default)
+--   async_loading = true, -- Load parts of the theme asynchronously for faster startup (turned on by default)
 --
 --   custom_colors = nil, -- If you want to everride the default colors, set this to a function
 --
@@ -682,11 +713,99 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 vim.diagnostic.config({ virtual_text = true })
--- Sourcegraph configuration. All keys are optional
--- require("sg").setup({
---   -- Pass your own custom attach function
---   --    If you do not pass your own attach function, then the following maps are provide:
---   --        - gd -> goto definition
---   --        - gr -> goto references
---   on_attach = your_custom_lsp_attach_function,
+
+require("rainbow-delimiters.setup").setup({})
+
+require("lab").setup({
+  code_runner = {
+    enabled = true,
+  },
+  quick_data = {
+    enabled = true,
+  },
+})
+
+require("telescope").setup({
+  extensions = {
+    media_files = {
+      -- filetypes whitelist
+      -- defaults to {"png", "jpg", "mp4", "webm", "pdf"}
+      filetypes = { "png", "webp", "jpg", "jpeg", "mp4", "webm", "pdf" },
+      -- find command (defaults to `fd`)
+      find_cmd = "rg",
+    },
+  },
+})
+
+-- local cmp = require("cmp")
+
+-- cmp.setup({
+--   sources = cmp.config.sources({
+--     { name = "cody" },
+--     -- keep existing sources
+--   }),
 -- })
+-- cmp.setup({
+--   sources = cmp.config.sources({
+--     -- Keep existing sources
+--     { name = "cody" },
+--     { name = "Codeium" },
+--     { name = "Tabnine" },
+--     { name = "nvim_lsp" },
+--     { name = "luasnip" },
+--     { name = "buffer" },
+--     { name = "path" },
+--
+--     -- Add Cody as a new source
+--   }),
+-- })
+
+-- cmp.setup.filetype({
+--   -- list of filetypes
+--   "python",
+--   "javascript",
+--   "typescript",
+--   "html",
+--   "lua",
+--   "rust",
+--   "typescriptreact",
+--   "javascriptreact",
+--   "vue",
+--   "css",
+--   "scss",
+--   "json",
+--   "yaml",
+--   "markdown",
+-- }, {
+--   sources = cmp.config.sources({
+--     -- other sources for this filetype
+--     { name = "cody" },
+--     { name = "Codeium" },
+--     { name = "Tabnine" },
+--     { name = "nvim_lsp" },
+--     { name = "luasnip" },
+--     { name = "buffer" },
+--     { name = "path" },
+--   }),
+-- })
+--
+require("actions-preview").setup({
+  diff = {
+    algorithm = "patience",
+    ignore_whitespace = true,
+  },
+  -- telescope = require("telescope.themes").get_dropdown({ winblend = 10 }),
+  telescope = {
+    sorting_strategy = "ascending",
+    layout_strategy = "vertical",
+    layout_config = {
+      width = 0.6,
+      height = 0.7,
+      prompt_position = "top",
+      preview_cutoff = 20,
+      preview_height = function(_, _, max_lines)
+        return max_lines - 15
+      end,
+    },
+  },
+})

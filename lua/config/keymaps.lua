@@ -234,13 +234,13 @@ vim.api.nvim_set_keymap(
 -- )
 --
 -- prompt for a refactor to apply when the remap is triggered
-vim.api.nvim_set_keymap(
-  "v",
-  "<leader>r",
-  ":lua require('refactoring').select_refactor()<CR>",
-  { noremap = true, silent = true, expr = false, desc = "refactor" }
-)
-
+-- vim.api.nvim_set_keymap(
+--   "v",
+--   "<leader>r",
+--   ":lua require('refactoring').select_refactor()<CR>",
+--   { noremap = true, silent = true, expr = false, desc = "refactor" }
+-- )
+--
 -- You can also use below = true here to to change the position of the printf
 -- statement (or set two remaps for either one). This remap must be made in normal mode.
 vim.api.nvim_set_keymap(
@@ -277,12 +277,12 @@ vim.api.nvim_set_keymap(
 )
 
 -- Move highlighted lines in visual mode
-vim.keymap.set("v", "<Down>", ":m '>+1<CR>gv=gv", { noremap = true, silent = true })
-vim.keymap.set("v", "<Up>", ":m '<-2<CR>gv=gv", { noremap = true, silent = true })
+vim.keymap.set("v", "N", ":m '>+1<CR>gv=gv", { noremap = true, silent = true })
+vim.keymap.set("v", "E", ":m '<-2<CR>gv=gv", { noremap = true, silent = true })
 
 -- Let cursor stay in the middle of screen during page up and down
-vim.keymap.set("n", "<Down>", "<C-d>zz", { noremap = true, silent = true })
-vim.keymap.set("n", "<Up>", "<C-u>zz", { noremap = true, silent = true })
+vim.keymap.set("n", "N", "<C-d>zz", { noremap = true, silent = true })
+vim.keymap.set("n", "E", "<C-u>zz", { noremap = true, silent = true })
 
 -- Let search terms stay in the middle of screen
 vim.keymap.set("n", "j", "nzzzv", { noremap = true, silent = true })
@@ -314,14 +314,207 @@ vim.keymap.set(
 --   { noremap = true, silent = true, desc = "Neotree Reveal File" }
 -- )
 
-vim.keymap.set("n", "<leader>nx", ":CodyToggle<cr>", { noremap = true, silent = true, desc = "AI Toggle View" })
-vim.keymap.set("n", "<leader>nc", ":CodyChat<cr>", { noremap = true, silent = true, desc = "AI Chat View" })
-vim.keymap.set("n", "<leader>nt", ":CodyTaskView<cr>", { noremap = true, silent = true, desc = "AI Task View" })
-vim.keymap.set("n", "<leader>na", ":CodyAsk ", { noremap = true, silent = false, desc = "AI Ask" })
-vim.keymap.set("n", "<leader>nd", ":CodyTask ", { noremap = true, silent = false, desc = "AI Do Task" })
+vim.keymap.set("n", "<leader>nsx", ":CodyToggle<cr>", { noremap = true, silent = true, desc = "Cody Toggle View" })
+vim.keymap.set("n", "<leader>nsc", ":CodyChat<cr>", { noremap = true, silent = true, desc = "Cody Chat View" })
+vim.keymap.set("n", "<leader>nst", ":CodyTaskView<cr>", { noremap = true, silent = true, desc = "Cody Task View" })
+vim.keymap.set("n", "<leader>nsa", ":CodyAsk ", { noremap = true, silent = false, desc = "Cody Ask" })
+vim.keymap.set("n", "<leader>nsd", ":CodyTask ", { noremap = true, silent = false, desc = "Cody Do Task" })
+vim.keymap.set(
+  "n",
+  "<leader>nss",
+  require("sg.extensions.telescope").fuzzy_search_results,
+  { noremap = true, silent = false, desc = "Sourcegraph Search" }
+)
 
-vim.keymap.set("v", "<leader>na", ":CodyAsk ", { noremap = true, silent = false, desc = "AI Ask" })
-vim.keymap.set("v", "<leader>nd", ":CodyTask ", { noremap = true, silent = false, desc = "AI Do Task" })
+vim.keymap.set("v", "<leader>nsa", ":CodyAsk ", { noremap = true, silent = false, desc = "Cody Ask" })
+vim.keymap.set("v", "<leader>nsd", ":CodyTask ", { noremap = true, silent = false, desc = "Cody Do Task" })
+-- vim.keymap.set("n", "<leader>nsx", ":CodyToggle<cr>", { noremap = true, silent = true, desc = "AI Toggle View" })
+
+vim.keymap.set("n", "<leader>nco", ":ChatGPT<cr>", { noremap = true, silent = true, desc = "Open ChatGPT View" })
+vim.keymap.set(
+  "n",
+  "<leader>ncr",
+  ":ChatGPTActAs<cr>",
+  { noremap = true, silent = true, desc = "Activate ChatGPT Role-Play Mode" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>ncat",
+  ":ChatGPTRun add_tests<cr>",
+  { noremap = true, silent = true, desc = "Add Tests Using ChatGPT" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>ncaa",
+  ":ChatGPTRun code_readability_analysis<cr>",
+  { noremap = true, silent = true, desc = "Analyze Code Readability with ChatGPT" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>ncac",
+  ":ChatGPTRun complete_code<cr>",
+  { noremap = true, silent = true, desc = "Use ChatGPT to Complete Code" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>ncad",
+  ":ChatGPTRun docstring<cr>",
+  { noremap = true, silent = true, desc = "Generate Docstrings with ChatGPT" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>ncae",
+  ":ChatGPTRun explain_code<cr>",
+  { noremap = true, silent = true, desc = "Explain Code Snippets with ChatGPT" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>ncaf",
+  ":ChatGPTRun fix_bugs<cr>",
+  { noremap = true, silent = true, desc = "Fix Bugs Using ChatGPT" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>ncag",
+  ":ChatGPTRun grammar_correction<cr>",
+  { noremap = true, silent = true, desc = "Correct Grammar with ChatGPT" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>ncak",
+  ":ChatGPTRun keywords<cr>",
+  { noremap = true, silent = true, desc = "Extract Keywords Using ChatGPT" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>ncao",
+  ":ChatGPTRun optimize_code<cr>",
+  { noremap = true, silent = true, desc = "Optimize Code with ChatGPT's Help" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>ncar",
+  ":ChatGPTRun roxygen_edit<cr>",
+  { noremap = true, silent = true, desc = "Edit Roxygen Comments Using ChatGPT" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>ncas",
+  ":ChatGPTRun summarize<cr>",
+  { noremap = true, silent = true, desc = "Summarize Text with ChatGPT" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>ncal",
+  ":ChatGPTRun translate<cr>",
+  { noremap = true, silent = true, desc = "Translate Text with ChatGPT" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>ncc",
+  ":ChatGPTCompleteCode<cr> ",
+  { noremap = true, silent = true, desc = "Complete Code Blocks with ChatGPT" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>nci",
+  ":ChatGPTEditWithInstructions<cr> ",
+  { noremap = true, silent = true, desc = "Edit Code with Specific Instructions in ChatGPT" }
+)
+
+vim.keymap.set("v", "<leader>nco", ":ChatGPT<cr>", { noremap = true, silent = true, desc = "Open ChatGPT View" })
+vim.keymap.set(
+  "v",
+  "<leader>ncr",
+  ":ChatGPTActAs<cr>",
+  { noremap = true, silent = true, desc = "Activate ChatGPT Role-Play Mode" }
+)
+vim.keymap.set(
+  "v",
+  "<leader>ncat",
+  ":ChatGPTRun add_tests<cr>",
+  { noremap = true, silent = true, desc = "Add Tests Using ChatGPT" }
+)
+vim.keymap.set(
+  "v",
+  "<leader>ncaa",
+  ":ChatGPTRun code_readability_analysis<cr>",
+  { noremap = true, silent = true, desc = "Analyze Code Readability with ChatGPT" }
+)
+vim.keymap.set(
+  "v",
+  "<leader>ncac",
+  ":ChatGPTRun complete_code<cr>",
+  { noremap = true, silent = true, desc = "Use ChatGPT to Complete Code" }
+)
+vim.keymap.set(
+  "v",
+  "<leader>ncad",
+  ":ChatGPTRun docstring<cr>",
+  { noremap = true, silent = true, desc = "Generate Docstrings with ChatGPT" }
+)
+vim.keymap.set(
+  "v",
+  "<leader>ncae",
+  ":ChatGPTRun explain_code<cr>",
+  { noremap = true, silent = true, desc = "Explain Code Snippets with ChatGPT" }
+)
+vim.keymap.set(
+  "v",
+  "<leader>ncaf",
+  ":ChatGPTRun fix_bugs<cr>",
+  { noremap = true, silent = true, desc = "Fix Bugs Using ChatGPT" }
+)
+vim.keymap.set(
+  "v",
+  "<leader>ncag",
+  ":ChatGPTRun grammar_correction<cr>",
+  { noremap = true, silent = true, desc = "Correct Grammar with ChatGPT" }
+)
+vim.keymap.set(
+  "v",
+  "<leader>ncak",
+  ":ChatGPTRun keywords<cr>",
+  { noremap = true, silent = true, desc = "Extract Keywords Using ChatGPT" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>ncao",
+  ":ChatGPTRun optimize_code<cr>",
+  { noremap = true, silent = true, desc = "Optimize Code with ChatGPT's Help" }
+)
+vim.keymap.set(
+  "v",
+  "<leader>ncar",
+  ":ChatGPTRun roxygen_edit<cr>",
+  { noremap = true, silent = true, desc = "Edit Roxygen Comments Using ChatGPT" }
+)
+vim.keymap.set(
+  "v",
+  "<leader>ncas",
+  ":ChatGPTRun summarize<cr>",
+  { noremap = true, silent = true, desc = "Summarize Text with ChatGPT" }
+)
+vim.keymap.set(
+  "v",
+  "<leader>ncal",
+  ":ChatGPTRun translate<cr>",
+  { noremap = true, silent = true, desc = "Translate Text with ChatGPT" }
+)
+vim.keymap.set(
+  "v",
+  "<leader>ncc",
+  ":ChatGPTCompleteCode<cr> ",
+  { noremap = true, silent = true, desc = "Complete Code Blocks with ChatGPT" }
+)
+vim.keymap.set(
+  "v",
+  "<leader>nci",
+  ":ChatGPTEditWithInstructions<cr> ",
+  { noremap = true, silent = true, desc = "Edit Code with Specific Instructions in ChatGPT" }
+)
+
+-- AI ends here
 
 vim.keymap.set(
   "n",
@@ -331,13 +524,15 @@ vim.keymap.set(
   { noremap = true, silent = true, desc = "blame info" }
 )
 
-vim.keymap.set(
-  "n",
-  "<leader>h",
-  -- ":lua MiniFiles.open()<CR>",
-  ":CodeActionMenu<cr>",
-  { noremap = true, silent = true, desc = "Help code fix" }
-)
+-- vim.keymap.set(
+--   "n",
+--   "<leader>h",
+--   -- ":lua MiniFiles.open()<CR>",
+--   ":CodeActionMenu<cr>",
+--   { noremap = true, silent = true, desc = "Help code fix" }
+-- )
+
+vim.keymap.set({ "v", "n" }, "<leader>h", require("actions-preview").code_actions)
 
 vim.keymap.set(
   "n",
