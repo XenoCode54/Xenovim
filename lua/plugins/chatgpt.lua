@@ -5,7 +5,7 @@ return {
   config = function()
     require("chatgpt").setup({
       -- api_key_cmd = "echo $OPENAI_API_KEY",
-      api_key_cmd = "echo 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",
+      -- api_key_cmd = "echo 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",
       -- api_key_cmd = "echo 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",
       -- api_key_cmd = "echo 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",
       -- api_key_cmd = [[lua -e "print(os.getenv('OPENAI_API_KEY'))"]],

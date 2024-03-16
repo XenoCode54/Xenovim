@@ -2,6 +2,10 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = {
+      format = {
+        timeout_ms = 10000,
+        timeout = 10000,
+      },
       diagnostics = {
         underline = true,
         virtual_text = {

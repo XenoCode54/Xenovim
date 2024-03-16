@@ -12,14 +12,14 @@ return {
       background = "",
     },
   },
-  {
-    "LazyVim/LazyVim",
-    opts = {
-      colorscheme = "tokyonight",
-      transparent_background = true,
-      background = "",
-    },
-  },
+  -- {
+  --   "LazyVim/LazyVim",
+  --   opts = {
+  --     colorscheme = "tokyonight",
+  --     transparent_background = true,
+  --     background = "",
+  --   },
+  -- },
 }
 -- return {
 --   "catppuccin/nvim",

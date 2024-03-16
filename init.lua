@@ -28,51 +28,80 @@ vim.cmd("set colorcolumn=107")
 local function my_custom_on_attach(client, bufnr) end
 
 -- Sourcegraph configuration. All keys are optional
-require("sg").setup({
-  chatModel = "ChatGPT 4 Turbo Preview",
-  -- width = 200,
-  -- Pass your own custom attach function
-  --    If you do not pass your own attach function, then the following maps are provide:
-  --        - gd -> goto definition
-  --        - gr -> goto references
-  on_attach = my_custom_on_attach,
-})
+-- require("sg").setup({
+--   chatModel = "ChatGPT 4 Turbo Preview",
+--   -- width = 200,
+--   -- Pass your own custom attach function
+--   --    If you do not pass your own attach function, then the following maps are provide:
+--   --        - gd -> goto definition
+--   --        - gr -> goto references
+--   on_attach = my_custom_on_attach,
+-- })
 
 vim.api.nvim_set_hl(0, "CmpItemKindCody", { fg = "#7aa2f7" })
 
 -- vim.g.sg_nvim_node_executable = "C:\\Program Files\\nodejs\\node.exe"
 vim.g.codeium_log_level = "INFO"
 -- Neovide settings start
-vim.opt.guifont = "JetBrainsMonoNerdFontCompleteM"
-vim.g.neovide_transparency = 0.77
+-- vim.opt.guifont = "JetBrainsMonoNerdFontCompleteM"
+vim.opt.guifont = "JetBrains Mono:h12"
+-- vim.opt.guifont = "DejaVu Sans Mono"
+vim.g.neovide_transparency = 0.9
 vim.g.neovide_fullscreen = false
 vim.g.neovide_refresh_rate = 60
 vim.g.neovide_refresh_rate_idle = 5
-vim.g.neovide_cursor_vfx_mode = "railgun"
-vim.g.neovide_background_color = "#ff0000"
--- Neovide settings end
+vim.g.neovide_cursor_vfx_mode = "ripple"
+vim.g.neovide_background_color = "#7aa2f7"
+
 --
 vim.api.nvim_set_hl(0, "Normal", { fg = "none", bg = "none" })
 vim.api.nvim_set_hl(0, "NormalFloat", { fg = "none", bg = "none" })
 
 vim.wo.cursorline = false
-
+-- Default options:
+require("gruvbox").setup({
+  terminal_colors = true, -- add neovim terminal colors
+  undercurl = true,
+  underline = true,
+  bold = true,
+  italic = {
+    strings = true,
+    emphasis = true,
+    comments = true,
+    operators = false,
+    folds = true,
+  },
+  strikethrough = true,
+  invert_selection = false,
+  invert_signs = false,
+  invert_tabline = false,
+  invert_intend_guides = false,
+  inverse = true, -- invert background for search, diffs, statuslines and errors
+  contrast = "hard", -- can be "hard", "soft" or empty string
+  palette_overrides = {},
+  overrides = {},
+  dim_inactive = false,
+  transparent_mode = false,
+})
+vim.cmd("colorscheme gruvbox")
 -- Keep cursor fat like in vim
 -- vim.opt.guicursor = "n-v-c:block-Cursor/1Cursor-blinkon0,i-ci:block-Cursor/1Cursor,r-cr:hor20-Cursor/1Cursor"
+-- Make the cursor normal
+vim.opt.guicursor = "n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor"
 
 -- Change and sync color of cursor to lua line
--- vim.cmd("augroup custom_cursor")
--- vim.cmd("autocmd!")
--- vim.cmd("highlight Cursor guifg=none guibg=#7aa2f7")
--- vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#9ece6a")
--- vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#7aa2f7")
--- vim.cmd("augroup END")
 vim.cmd("augroup custom_cursor")
 vim.cmd("autocmd!")
-vim.cmd("highlight Cursor guifg=none guibg=#ffc777")
-vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#ffc777")
-vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#ffc777")
+vim.cmd("highlight Cursor guifg=none guibg=#9c8e7c")
+vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#76958b")
+vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#9c8e7c")
 vim.cmd("augroup END")
+-- vim.cmd("augroup custom_cursor")
+-- vim.cmd("autocmd!")
+-- vim.cmd("highlight Cursor guifg=none guibg=#ffc777")
+-- vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#ffc777")
+-- vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#ffc777")
+-- vim.cmd("augroup END")
 
 -- vim.cmd("autocmd InsertEnter * norm zz")
 
@@ -114,11 +143,10 @@ require("goto-preview").setup({
   preview_window_title = { enable = true, position = "left" }, -- Whether to set the preview window title as the filename
 })
 
---
 -- require("codewindow").apply_default_keybinds()
 require("telescope").setup({
   defaults = {
-    layout_strategy = "vertical",
+    -- layout_strategy = "vertical",
     layout_config = { height = 0.95 },
     mappings = {
       i = {
@@ -186,9 +214,6 @@ require("refactoring").setup({
       'std::cout << "%s" << std::endl;',
     },
   },
-})
-
-require("refactoring").setup({
   -- prompt for return type
   prompt_func_return_type = {
     go = true,
@@ -283,7 +308,8 @@ require("scrollbar").setup({
     -- color = colors.bg_highlight,
     --#1a1b26
     -- color = "#282828",
-    color = "#1a1b26",
+    -- color = "#1a1b26",
+    color = "#9c8e7c",
   },
   marks = {
     Search = { color = colors.orange },
@@ -797,15 +823,17 @@ require("actions-preview").setup({
   -- telescope = require("telescope.themes").get_dropdown({ winblend = 10 }),
   telescope = {
     sorting_strategy = "ascending",
-    layout_strategy = "vertical",
-    layout_config = {
-      width = 0.6,
-      height = 0.7,
-      prompt_position = "top",
-      preview_cutoff = 20,
-      preview_height = function(_, _, max_lines)
-        return max_lines - 15
-      end,
-    },
+    -- layout_strategy = "vertical",
+    -- layout_config = {
+    --   width = 0.6,
+    --   height = 0.7,
+    --   prompt_position = "top",
+    --   preview_cutoff = 20,
+    --   preview_height = function(_, _, max_lines)
+    --     return max_lines - 15
+    --   end,
+    -- },
   },
 })
+
+-- require("obsidian").setup()

@@ -1,43 +1,43 @@
 -- Keymaps are automatically loaded on the VeryLazy event
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
-local mark = require("harpoon.mark")
-local ui = require("harpoon.ui")
-
-vim.keymap.set("n", "<leader>0", mark.add_file, { noremap = true, desc = "Add File To Harpoon" })
-vim.keymap.set("n", "<leader>i", ui.toggle_quick_menu, { noremap = true, desc = "iHarpoon Menu" })
-
--- vim.keymap.set("i", "<S-S>", function()
---   vim.api.nvim_command(":<C-l>")
--- end, { noremap = true })
-
-vim.keymap.set("n", "<leader>1", function()
-  ui.nav_file(1)
-end, { noremap = true, desc = "Nav File 1" })
-vim.keymap.set("n", "<leader>2", function()
-  ui.nav_file(2)
-end, { noremap = true, desc = "Nav File 2" })
-vim.keymap.set("n", "<leader>3", function()
-  ui.nav_file(3)
-end, { noremap = true, desc = "Nav File 3" })
-vim.keymap.set("n", "<leader>4", function()
-  ui.nav_file(4)
-end, { noremap = true, desc = "Nav File 4" })
-vim.keymap.set("n", "<leader>5", function()
-  ui.nav_file(5)
-end, { noremap = true, desc = "Nav File 5" })
-vim.keymap.set("n", "<leader>6", function()
-  ui.nav_file(6)
-end, { noremap = true, desc = "Nav File 6" })
-vim.keymap.set("n", "<leader>7", function()
-  ui.nav_file(7)
-end, { noremap = true, desc = "Nav File 7" })
-vim.keymap.set("n", "<leader>8", function()
-  ui.nav_file(8)
-end, { noremap = true, desc = "Nav File 8" })
-vim.keymap.set("n", "<leader>9", function()
-  ui.nav_file(9)
-end, { noremap = true, desc = "Nav File 9" })
+-- local mark = require("harpoon.mark")
+-- local ui = require("harpoon.ui")
+--
+-- vim.keymap.set("n", "<leader>0", mark.add_file, { noremap = true, desc = "Add File To Harpoon" })
+-- vim.keymap.set("n", "<leader>i", ui.toggle_quick_menu, { noremap = true, desc = "iHarpoon Menu" })
+--
+-- -- vim.keymap.set("i", "<S-S>", function()
+-- --   vim.api.nvim_command(":<C-l>")
+-- -- end, { noremap = true })
+--
+-- vim.keymap.set("n", "<leader>1", function()
+--   ui.nav_file(1)
+-- end, { noremap = true, desc = "Nav File 1" })
+-- vim.keymap.set("n", "<leader>2", function()
+--   ui.nav_file(2)
+-- end, { noremap = true, desc = "Nav File 2" })
+-- vim.keymap.set("n", "<leader>3", function()
+--   ui.nav_file(3)
+-- end, { noremap = true, desc = "Nav File 3" })
+-- vim.keymap.set("n", "<leader>4", function()
+--   ui.nav_file(4)
+-- end, { noremap = true, desc = "Nav File 4" })
+-- vim.keymap.set("n", "<leader>5", function()
+--   ui.nav_file(5)
+-- end, { noremap = true, desc = "Nav File 5" })
+-- vim.keymap.set("n", "<leader>6", function()
+--   ui.nav_file(6)
+-- end, { noremap = true, desc = "Nav File 6" })
+-- vim.keymap.set("n", "<leader>7", function()
+--   ui.nav_file(7)
+-- end, { noremap = true, desc = "Nav File 7" })
+-- vim.keymap.set("n", "<leader>8", function()
+--   ui.nav_file(8)
+-- end, { noremap = true, desc = "Nav File 8" })
+-- vim.keymap.set("n", "<leader>9", function()
+--   ui.nav_file(9)
+-- end, { noremap = true, desc = "Nav File 9" })
 
 --
 
@@ -314,11 +314,11 @@ vim.keymap.set(
 --   { noremap = true, silent = true, desc = "Neotree Reveal File" }
 -- )
 
-vim.keymap.set("n", "<leader>nsx", ":CodyToggle<cr>", { noremap = true, silent = true, desc = "Cody Toggle View" })
-vim.keymap.set("n", "<leader>nsc", ":CodyChat<cr>", { noremap = true, silent = true, desc = "Cody Chat View" })
-vim.keymap.set("n", "<leader>nst", ":CodyTaskView<cr>", { noremap = true, silent = true, desc = "Cody Task View" })
-vim.keymap.set("n", "<leader>nsa", ":CodyAsk ", { noremap = true, silent = false, desc = "Cody Ask" })
-vim.keymap.set("n", "<leader>nsd", ":CodyTask ", { noremap = true, silent = false, desc = "Cody Do Task" })
+vim.keymap.set("n", "<leader>nsx", ":CodyToggle<cr>", { noremap = true, silent = true, desc = "Toggle Cody View" })
+vim.keymap.set("n", "<leader>nso", ":CodyChat<cr>", { noremap = true, silent = true, desc = "Open Cody Chat" })
+vim.keymap.set("n", "<leader>nst", ":CodyTaskView<cr>", { noremap = true, silent = true, desc = "Show Cody Tasks" })
+vim.keymap.set("n", "<leader>nsa", ":CodyAsk ", { noremap = true, silent = false, desc = "Ask Cody a Question" })
+vim.keymap.set("n", "<leader>nsd", ":CodyTask ", { noremap = true, silent = false, desc = "Assign Cody a Task" })
 vim.keymap.set(
   "n",
   "<leader>nss",
@@ -333,7 +333,7 @@ vim.keymap.set("v", "<leader>nsd", ":CodyTask ", { noremap = true, silent = fals
 vim.keymap.set("n", "<leader>nco", ":ChatGPT<cr>", { noremap = true, silent = true, desc = "Open ChatGPT View" })
 vim.keymap.set(
   "n",
-  "<leader>ncr",
+  "<leader>ncp",
   ":ChatGPTActAs<cr>",
   { noremap = true, silent = true, desc = "Activate ChatGPT Role-Play Mode" }
 )
@@ -417,7 +417,13 @@ vim.keymap.set(
 )
 vim.keymap.set(
   "n",
-  "<leader>nci",
+  "<leader>nce",
+  ":ChatGPTEditWithInstructions<cr> ",
+  { noremap = true, silent = true, desc = "Edit Code with Specific Instructions in ChatGPT" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>ne",
   ":ChatGPTEditWithInstructions<cr> ",
   { noremap = true, silent = true, desc = "Edit Code with Specific Instructions in ChatGPT" }
 )
@@ -509,7 +515,13 @@ vim.keymap.set(
 )
 vim.keymap.set(
   "v",
-  "<leader>nci",
+  "<leader>nce",
+  ":ChatGPTEditWithInstructions<cr> ",
+  { noremap = true, silent = true, desc = "Edit Code with Specific Instructions in ChatGPT" }
+)
+vim.keymap.set(
+  "v",
+  "<leader>ne",
   ":ChatGPTEditWithInstructions<cr> ",
   { noremap = true, silent = true, desc = "Edit Code with Specific Instructions in ChatGPT" }
 )
@@ -532,7 +544,8 @@ vim.keymap.set(
 --   { noremap = true, silent = true, desc = "Help code fix" }
 -- )
 
-vim.keymap.set({ "v", "n" }, "<leader>h", require("actions-preview").code_actions)
+vim.keymap.set({ "v", "n" }, "<leader>h", require("actions-preview").code_actions, { desc = "Code Action" })
+vim.keymap.set({ "v", "n" }, "<leader>ca", require("actions-preview").code_actions, { desc = "Code Action" })
 
 vim.keymap.set(
   "n",

@@ -6,16 +6,16 @@ return {
       colorscheme = "gruvbox",
       transparent_background = true,
       background = "",
-      opacity = 0.8,
+      opacity = 0.2,
     },
   },
-  -- {
-  --   "LazyVim/LazyVim",
-  --   opts = {
-  --     colorscheme = "gruvbox",
-  --     transparent_background = true,
-  --     background = "",
-  --     opacity = 0.8,
-  --   },
-  -- },
+  {
+    "LazyVim/LazyVim",
+    opts = {
+      colorscheme = "gruvbox",
+      transparent_background = true,
+      background = "",
+      opacity = 0.2,
+    },
+  },
 }

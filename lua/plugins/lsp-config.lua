@@ -1,6 +1,12 @@
 -- LSP keymaps
 return {
   "neovim/nvim-lspconfig",
+  opts = {
+    format = {
+      timeout_ms = 10000,
+      timeout = 10000,
+    },
+  },
   init = function()
     local keys = require("lazyvim.plugins.lsp.keymaps").get()
     -- change a keymap
