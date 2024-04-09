@@ -4,6 +4,136 @@ require("config.lazy")
 -- Default options:
 --
 -- At the top of your init.lua, ensure you've required the necessary vim functions
+
+-- Pull in the wezterm API
+-- local wezterm = require("wezterm")
+-- local act = wezterm.action
+--
+-- -- This table will hold the configuration.
+-- local config = {}
+--
+-- -- In newer versions of wezterm, use the config_builder which will
+-- -- help provide clearer error messages
+-- if wezterm.config_builder then
+-- 	config = wezterm.config_builder()
+-- end
+--
+-- -- This is where you actually apply your config choices
+-- config.default_prog = { "pwsh.exe" }
+--
+-- -- For example, changing the color scheme:
+-- config.colors = {
+-- 	-- background = "#1A1B26",
+-- 	-- background = "#000000",
+-- 	-- background = "#24283b",
+-- 	background = "#222436",
+-- 	-- cursor_bg = "#ffc777",
+-- }
+-- config.window_background_opacity = 0.9
+-- -- config.win32_system_backdrop = "Acrylic"
+-- -- config.win32_system_backdrop = "Tabbed"
+-- -- config.win32_system_backdrop = "Mica"
+-- config.animation_fps = 60
+--
+-- -- config.font = wezterm.font("FiraCode Nerd Font Mono", { weight = "Regular" })
+-- -- config.font = wezterm.font("Hasklug Nerd Font Mono", { weight = "Light" })
+-- -- config.font = wezterm.font("Iosevka Nerd Font Mono", { weight = "Light" })
+-- -- You can specify some parameters to influence the font selection;
+-- -- for example, this selects a Bold, Italic font variant.
+-- -- config.font = wezterm.font("JetBrains Mono", { weight = "Light" })
+--
+-- config.window_frame = {
+-- 	border_left_width = "0.5cell",
+-- 	border_right_width = "0.5cell",
+-- 	border_bottom_height = "0.25cell",
+-- 	border_top_height = "0.25cell",
+-- 	border_left_color = "#1A1B26",
+-- 	border_right_color = "#1A1B26",
+-- 	border_bottom_color = "#1A1B26",
+-- 	border_top_color = "#1A1B26",
+-- }
+-- -- config.window_background_image = "C:/Users/Xenon/girl.jpg"
+--
+-- config.window_frame = {
+-- 	-- inactive_titlebar_bg = "#353535",
+-- 	inactive_titlebar_bg = "#000000",
+-- 	active_titlebar_bg = "#1A1B26",
+-- 	-- active_titlebar_bg = "#222436",
+-- 	-- active_titlebar_bg = "#000000",
+-- 	inactive_titlebar_fg = "#cccccc",
+-- 	active_titlebar_fg = "#ffffff",
+-- 	inactive_titlebar_border_bottom = "#1A1B26",
+-- 	active_titlebar_border_bottom = "#1A1B26",
+-- 	button_fg = "#cccccc",
+-- 	button_bg = "#1A1B26",
+-- 	button_hover_fg = "#ffffff",
+-- 	button_hover_bg = "#1A1B26",
+-- }
+--
+-- config.window_padding = {
+-- 	left = 2,
+-- 	right = 2,
+-- 	top = 10,
+-- 	bottom = 0,
+-- }
+-- -- config.window_background_image_hsb = {
+-- --   -- Darken the background image by reducing it to 1/3rd
+-- --   brightness = 0.9,
+--
+-- --   -- You can adjust the hue by scaling its value.
+-- --   -- a multiplier of 1.0 leaves the value unchanged.
+-- --   hue = 1.0,
+--
+-- --   -- You can adjust the saturation also.
+-- --   saturation = 1.0,
+-- -- }
+--
+-- config.keys = {
+-- 	{
+-- 		key = "n",
+-- 		mods = "SHIFT|CTRL",
+-- 		action = wezterm.action.ToggleFullScreen,
+-- 	},
+-- }
+--
+-- config.keys = {
+-- 	-- Create a new tab in the same domain as the current pane.
+-- 	-- This is usually what you want.
+-- 	{
+-- 		key = "t",
+-- 		mods = "SHIFT|ALT",
+-- 		action = act.SpawnTab("CurrentPaneDomain"),
+-- 	},
+-- 	-- Create a new tab in the default domain
+-- 	{ key = "t", mods = "SHIFT|ALT", action = act.SpawnTab("DefaultDomain") },
+-- 	-- Create a tab in a named domain
+-- 	{
+-- 		key = "t",
+-- 		mods = "SHIFT|ALT",
+-- 		action = act.SpawnTab({
+-- 			DomainName = "unix",
+-- 		}),
+-- 	},
+-- }
+--
+-- config.keys = {}
+-- for i = 1, 8 do
+-- 	-- CTRL+ALT + number to activate that tab
+-- 	table.insert(config.keys, {
+-- 		key = tostring(i),
+-- 		mods = "CTRL",
+-- 		action = act.ActivateTab(i - 1),
+-- 	})
+-- 	-- F1 through F8 to activate that tab
+-- 	table.insert(config.keys, {
+-- 		key = "F" .. tostring(i),
+-- 		action = act.ActivateTab(i - 1),
+-- 	})
+-- end
+--
+-- -- and finally, return the configuration to wezterm
+-- return config
+
 local cmd = vim.cmd
 local fn = vim.fn
 require("highlight-undo").setup({
@@ -37,7 +167,6 @@ local function my_custom_on_attach(client, bufnr) end
 --   --        - gr -> goto references
 --   on_attach = my_custom_on_attach,
 -- })
-
 vim.api.nvim_set_hl(0, "CmpItemKindCody", { fg = "#7aa2f7" })
 
 -- vim.g.sg_nvim_node_executable = "C:\\Program Files\\nodejs\\node.exe"
@@ -57,51 +186,51 @@ vim.g.neovide_background_color = "#7aa2f7"
 vim.api.nvim_set_hl(0, "Normal", { fg = "none", bg = "none" })
 vim.api.nvim_set_hl(0, "NormalFloat", { fg = "none", bg = "none" })
 
-vim.wo.cursorline = false
+vim.wo.cursorline = true
 -- Default options:
-require("gruvbox").setup({
-  terminal_colors = true, -- add neovim terminal colors
-  undercurl = true,
-  underline = true,
-  bold = true,
-  italic = {
-    strings = true,
-    emphasis = true,
-    comments = true,
-    operators = false,
-    folds = true,
-  },
-  strikethrough = true,
-  invert_selection = false,
-  invert_signs = false,
-  invert_tabline = false,
-  invert_intend_guides = false,
-  inverse = true, -- invert background for search, diffs, statuslines and errors
-  contrast = "hard", -- can be "hard", "soft" or empty string
-  palette_overrides = {},
-  overrides = {},
-  dim_inactive = false,
-  transparent_mode = false,
-})
-vim.cmd("colorscheme gruvbox")
+-- require("gruvbox").setup({
+--   terminal_colors = true, -- add neovim terminal colors
+--   undercurl = true,
+--   underline = true,
+--   bold = true,
+--   italic = {
+--     strings = true,
+--     emphasis = true,
+--     comments = true,
+--     operators = false,
+--     folds = true,
+--   },
+--   strikethrough = true,
+--   invert_selection = false,
+--   invert_signs = false,
+--   invert_tabline = false,
+--   invert_intend_guides = false,
+--   inverse = true, -- invert background for search, diffs, statuslines and errors
+--   contrast = "hard", -- can be "hard", "soft" or empty string
+--   palette_overrides = {},
+--   overrides = {},
+--   dim_inactive = false,
+--   transparent_mode = false,
+-- })
+-- vim.cmd("colorscheme gruvbox")
 -- Keep cursor fat like in vim
 -- vim.opt.guicursor = "n-v-c:block-Cursor/1Cursor-blinkon0,i-ci:block-Cursor/1Cursor,r-cr:hor20-Cursor/1Cursor"
--- Make the cursor normal
+-- Make the cursor normalnn
 vim.opt.guicursor = "n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor"
 
--- Change and sync color of cursor to lua line
-vim.cmd("augroup custom_cursor")
-vim.cmd("autocmd!")
-vim.cmd("highlight Cursor guifg=none guibg=#9c8e7c")
-vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#76958b")
-vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#9c8e7c")
-vim.cmd("augroup END")
 -- vim.cmd("augroup custom_cursor")
 -- vim.cmd("autocmd!")
 -- vim.cmd("highlight Cursor guifg=none guibg=#ffc777")
 -- vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#ffc777")
 -- vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#ffc777")
 -- vim.cmd("augroup END")
+-- Change and sync color of cursor to lua line
+vim.cmd("augroup custom_cursor")
+vim.cmd("autocmd!")
+vim.cmd("highlight Cursor guifg=none guibg=#7aa2f7")
+vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#9ece6a")
+vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#7aa2f7")
+vim.cmd("augroup END")
 
 -- vim.cmd("autocmd InsertEnter * norm zz")
 
@@ -230,78 +359,78 @@ require("refactoring").setup({
   },
 })
 
-require("gitsigns").setup({
-  signs = {
-    add = { text = "│" },
-    change = { text = "│" },
-    delete = { text = "_" },
-    topdelete = { text = "‾" },
-    changedelete = { text = "~" },
-    untracked = { text = "┆" },
-  },
-  signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
-  numhl = true, -- Toggle with `:Gitsigns toggle_numhl`
-  linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
-  word_diff = false, -- Toggle with `:Gitsigns toggle_word_diff`
-  watch_gitdir = {
-    interval = 1000,
-    follow_files = true,
-  },
-  attach_to_untracked = true,
-  current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
-  current_line_blame_opts = {
-    virt_text = true,
-    virt_text_pos = "eol", -- 'eol' | 'overlay' | 'right_align'
-    delay = 0,
-    ignore_whitespace = false,
-  },
-  current_line_blame_formatter = "<author>, <author_time:%Y-%m-%d> - <summary>",
-  sign_priority = 6,
-  update_debounce = 100,
-  status_formatter = nil, -- Use default
-  max_file_length = 40000, -- Disable if file is longer than this (in lines)
-  preview_config = {
-    -- Options passed to nvim_open_win
-    border = "single",
-    style = "minimal",
-    relative = "cursor",
-    row = 0,
-    col = 1,
-  },
-  yadm = {
-    enable = false,
-  },
-})
+-- require("gitsigns").setup({
+--   signs = {
+--     add = { text = "│" },
+--     change = { text = "│" },
+--     delete = { text = "_" },
+--     topdelete = { text = "‾" },
+--     changedelete = { text = "~" },
+--     untracked = { text = "┆" },
+--   },
+--   signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
+--   numhl = true, -- Toggle with `:Gitsigns toggle_numhl`
+--   linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
+--   word_diff = false, -- Toggle with `:Gitsigns toggle_word_diff`
+--   watch_gitdir = {
+--     interval = 1000,
+--     follow_files = true,
+--   },
+--   attach_to_untracked = true,
+--   current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
+--   current_line_blame_opts = {
+--     virt_text = true,
+--     virt_text_pos = "eol", -- 'eol' | 'overlay' | 'right_align'
+--     delay = 0,
+--     ignore_whitespace = false,
+--   },
+--   current_line_blame_formatter = "<author>, <author_time:%Y-%m-%d> - <summary>",
+--   sign_priority = 6,
+--   update_debounce = 100,
+--   status_formatter = nil, -- Use default
+--   max_file_length = 40000, -- Disable if file is longer than this (in lines)
+--   preview_config = {
+--     -- Options passed to nvim_open_win
+--     border = "single",
+--     style = "minimal",
+--     relative = "cursor",
+--     row = 0,
+--     col = 1,
+--   },
+--   yadm = {
+--     enable = false,
+--   },
+-- })
 
 -- require("gruvbox").setup({
 --   transparent_mode = true,
 -- })
 -- vim.cmd("colorscheme gruvbox")
 local colors = require("tokyonight.colors").setup()
-require("tokyonight").setup({
-  -- your configuration comes here
-  -- or leave it empty to use the default settings
-  style = "storm", -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
-  light_style = "night", -- The theme is used when the background is set to light
-  transparent = true, -- Enable this to disable setting the background color
-  terminal_colors = true, -- Configure the colors used when opening a `:terminal` in Neovim
-  styles = {
-    -- Style to be applied to different syntax groups
-    -- Value is any valid attr-list value for `:help nvim_set_hl`
-    comments = { italic = true },
-    keywords = { italic = true },
-    functions = {},
-    variables = {},
-    -- Background styles. Can be "dark", "transparent" or "normal"
-    sidebars = "transparent", -- style for sidebars, see below
-    floats = "transparent", -- style for floating windows
-  },
-  sidebars = { "qf", "help" }, -- Set a darker background on sidebar-like windows. For example: `["qf", "vista_kind", "terminal", "packer"]`
-  day_brightness = 0.3, -- Adjusts the brightness of the colors of the **Day** style. Number between 0 and 1, from dull to vibrant colors
-  hide_inactive_statusline = false, -- Enabling this option, will hide inactive statuslines and replace them with a thin border instead. Should work with the standard **StatusLine** and **LuaLine**.
-  dim_inactive = true, -- dims inactive windows
-  lualine_bold = false, -- When `true`, section headers in the lualine theme will be bold
-})
+-- require("tokyonight").setup({
+-- your configuration comes here
+-- or leave it empty to use the default settings
+-- style = "storm", -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
+-- light_style = "night", -- The theme is used when the background is set to light
+-- transparent = true, -- Enable this to disable setting the background color
+-- terminal_colors = true, -- Configure the colors used when opening a `:terminal` in Neovim
+-- styles = {
+--   -- Style to be applied to different syntax groups
+--   -- Value is any valid attr-list value for `:help nvim_set_hl`
+--   comments = { italic = true },
+--   keywords = { italic = true },
+--   functions = {},
+--   variables = {},
+--   -- Background styles. Can be "dark", "transparent" or "normal"
+--   sidebars = "transparent", -- style for sidebars, see below
+--   floats = "transparent", -- style for floating windows
+-- },
+-- sidebars = { "qf", "help" }, -- Set a darker background on sidebar-like windows. For example: `["qf", "vista_kind", "terminal", "packer"]`
+-- day_brightness = 0.3, -- Adjusts the brightness of the colors of the **Day** style. Number between 0 and 1, from dull to vibrant colors
+-- hide_inactive_statusline = false, -- Enabling this option, will hide inactive statuslines and replace them with a thin border instead. Should work with the standard **StatusLine** and **LuaLine**.
+-- dim_inactive = true, -- dims inactive windows
+-- lualine_bold = false, -- When `true`, section headers in the lualine theme will be bold
+-- })
 
 require("scrollbar").setup({
   handle = {
@@ -309,7 +438,9 @@ require("scrollbar").setup({
     --#1a1b26
     -- color = "#282828",
     -- color = "#1a1b26",
-    color = "#9c8e7c",
+    -- color = "#9c8e7c",
+    -- color = "#ffc777",
+    color = "#9ece6a",
   },
   marks = {
     Search = { color = colors.orange },
@@ -635,7 +766,7 @@ local glance = require("glance")
 local actions = glance.actions
 
 glance.setup({
-  height = 20, -- Height of the window
+  height = 40, -- Height of the window
   zindex = 45,
 
   -- By default glance will open preview "embedded" within your active window
@@ -683,7 +814,9 @@ glance.setup({
       ["<CR>"] = actions.jump,
       ["l"] = actions.open_fold,
       ["h"] = actions.close_fold,
+      ["<C-c>"] = actions.close,
       ["<C-h>"] = actions.enter_win("preview"), -- Focus preview window
+      ["<i>"] = actions.enter_win("preview"), -- Focus preview window
       ["q"] = actions.close,
       ["Q"] = actions.close,
       ["<Esc>"] = actions.close,
@@ -692,6 +825,8 @@ glance.setup({
     },
     preview = {
       ["Q"] = actions.close,
+      ["<C-c>"] = actions.close,
+      ["<C-CR>"] = actions.jump,
       ["<Tab>"] = actions.next_location,
       ["<S-Tab>"] = actions.previous_location,
       ["<C-h>"] = actions.enter_win("list"), -- Focus list window
@@ -837,3 +972,18 @@ require("actions-preview").setup({
 })
 
 -- require("obsidian").setup()
+-- require("lspconfig").tsserver.setup({
+--   on_attach = function(client, bufnr)
+--     local ts_utils = require("nvim-lsp-ts-utils")
+--     ts_utils.setup({})
+--     ts_utils.setup_client(client)
+--
+--     -- Optional: setup key mappings
+--     local opts = { silent = true, desc = "Import All Missing" }
+--     -- vim.api.nvim_buf_set_keymap(bufnr, "n", "oi", ":TSLspOrganize<CR>", opts)
+--     vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>ci", ":TSLspImportAll<CR>", opts)
+--     -- Inlay hints
+--     vim.lsp.inlay_hint(bufnr)
+--   end,
+--   -- Add any additional lspconfig settings here
+-- })

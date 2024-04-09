@@ -41,6 +41,12 @@
 
 --
 
+vim.keymap.set("n", "<leader>cO", vim.cmd.TSToolsOrganizeImports, { noremap = true, desc = "Organize Imports" })
+vim.keymap.set("n", "<leader>ci", vim.cmd.TSToolsAddMissingImports, { noremap = true, desc = "Import Missing" })
+vim.keymap.set("n", "<leader>ct", vim.cmd.TSToolsRemoveUnused, { noremap = true, desc = "Remove Unused Statements" })
+vim.keymap.set("n", "<leader>ch", vim.cmd.TSToolsFixAll, { noremap = true, desc = "Fix All Fixable Errors" })
+vim.keymap.set("n", "<leader>ck", vim.cmd.TSToolsRenameFile, { noremap = true, desc = "Rename Current File" })
+
 vim.keymap.set("n", "<leader>z", vim.cmd.UndotreeToggle, { noremap = true, desc = "Undo Tree" })
 
 --
@@ -544,8 +550,14 @@ vim.keymap.set(
 --   { noremap = true, silent = true, desc = "Help code fix" }
 -- )
 
-vim.keymap.set({ "v", "n" }, "<leader>h", require("actions-preview").code_actions, { desc = "Code Action" })
-vim.keymap.set({ "v", "n" }, "<leader>ca", require("actions-preview").code_actions, { desc = "Code Action" })
+-- vim.keymap.set({ "v", "n" }, "<leader>h", require("actions-preview").code_actions, { desc = "Code Action" })
+vim.keymap.set({ "v", "n" }, "<leader>h", ":CodeActionMenu<cr>", { desc = "Code Action", silent = true })
+vim.keymap.set(
+  { "v", "n" },
+  "<leader>ca",
+  require("actions-preview").code_actions,
+  { desc = "Code Action", noremap = true }
+)
 
 vim.keymap.set(
   "n",

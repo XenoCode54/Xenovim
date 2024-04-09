@@ -111,7 +111,7 @@ return {
       {
         "<leader>0",
         function()
-          harpoon:list():append()
+          harpoon:list():add()
         end,
         desc = "Harpoon add file",
       },
