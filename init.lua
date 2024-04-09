@@ -703,7 +703,7 @@ require("mini.files").setup({
     -- Width of focused window
     width_focus = 35,
     -- Width of non-focused window
-    width_nofocus = 30,
+    width_nofocus = 20,
     -- Width of preview window
     width_preview = 70,
   },
@@ -766,7 +766,7 @@ local glance = require("glance")
 local actions = glance.actions
 
 glance.setup({
-  height = 40, -- Height of the window
+  height = 20, -- Height of the window
   zindex = 45,
 
   -- By default glance will open preview "embedded" within your active window
@@ -826,9 +826,9 @@ glance.setup({
     preview = {
       ["Q"] = actions.close,
       ["<C-c>"] = actions.close,
-      ["<C-CR>"] = actions.jump,
       ["<Tab>"] = actions.next_location,
       ["<S-Tab>"] = actions.previous_location,
+      ["<A-o>"] = actions.jump,
       ["<C-h>"] = actions.enter_win("list"), -- Focus list window
     },
   },
