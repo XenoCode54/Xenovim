@@ -39,7 +39,41 @@
 --   ui.nav_file(9)
 -- end, { noremap = true, desc = "Nav File 9" })
 
+-- Copilot keymaps
 --
+vim.keymap.set("i", "<C-g>", 'copilot#Accept("\\<CR>")', {
+  expr = true,
+  silent = true,
+  replace_keycodes = false,
+})
+vim.g.copilot_no_tab_map = true
+vim.keymap.set("i", "<C-l>", "<Plug>(copilot-accept-word)")
+--
+-- Quick chat with Copilot
+--
+vim.keymap.set("n", "<leader>nno", function()
+  require("CopilotChat").open()
+end, { desc = "CopilotChat - Open" })
+vim.keymap.set("n", "<leader>nnq", function()
+  local input = vim.fn.input("Quick Chat: ")
+  if input ~= "" then
+    require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+  end
+end, { desc = "CopilotChat - Quick chat" })
+vim.keymap.set("n", "<leader>nnh", function()
+  local actions = require("CopilotChat.actions")
+  require("CopilotChat.integrations.telescope").pick(actions.help_actions())
+end, { desc = "CopilotChat - Help actions" })
+
+vim.keymap.set("n", "<leader>nnp", function()
+  local actions = require("CopilotChat.actions")
+  require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
+end, { desc = "CopilotChat - Prompt actions" })
+
+vim.keymap.set("v", "<leader>nnp", function()
+  local actions = require("CopilotChat.actions")
+  require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
+end, { desc = "CopilotChat - Prompt actions" })
 
 vim.keymap.set("n", "<leader>cO", vim.cmd.TSToolsOrganizeImports, { noremap = true, desc = "Organize Imports" })
 vim.keymap.set("n", "<leader>ci", vim.cmd.TSToolsAddMissingImports, { noremap = true, desc = "Import Missing" })

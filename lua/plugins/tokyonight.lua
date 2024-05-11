@@ -2,25 +2,25 @@ return {
   {
     "folke/tokyonight.nvim",
     lazy = true,
-    -- opts = {
-    --   transparent = true,
-    --   styles = {
-    --     sidebars = "transparent",
-    --     floats = "transparent",
-    --   },
-    --   colorscheme = "storm",
-    --   transparent_background = true,
-    --   background = "",
-    -- },
+    opts = {
+      transparent = true,
+      styles = {
+        sidebars = "transparent",
+        floats = "transparent",
+      },
+      colorscheme = "storm",
+      transparent_background = true,
+      background = "",
+    },
   },
-  {
-    "LazyVim/LazyVim",
-    -- opts = {
-    --   colorscheme = "tokyonight",
-    --   transparent_background = true,
-    --   background = "",
-    -- },
-  },
+  -- {
+  --   "LazyVim/LazyVim",
+  --   opts = {
+  --     colorscheme = "tokyonight",
+  --     transparent_background = true,
+  --     background = "",
+  --   },
+  -- },
 }
 -- return {
 --   "catppuccin/nvim",
@@ -64,29 +64,6 @@ return {
 --     "LazyVim/LazyVim",
 --     opts = {
 --       colorscheme = "catppuccin",
---       transparent_background = true,
---       background = "",
---     },
---   },
--- }
--- vim.g.material_style = "deep ocean"
--- vim.g.material_disable_background = 1
--- return {
---   "marko-cerovac/material.nvim",
---   opts = {
---     transparent = true,
---     styles = {
---       sidebars = "transparent",
---       floats = "transparent",
---     },
---     colorscheme = "material",
---     transparent_background = true,
---     background = "",
---   },
---   {
---     "LazyVim/LazyVim",
---     opts = {
---       colorscheme = "material",
 --       transparent_background = true,
 --       background = "",
 --     },

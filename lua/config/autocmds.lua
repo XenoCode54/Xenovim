@@ -7,3 +7,10 @@ vim.api.nvim_create_autocmd("VimEnter", {
     vim.cmd("hi! NonText guibg=NONE ctermbg=NONE")
   end,
 })
+
+vim.api.nvim_exec(
+  [[
+  autocmd BufRead,BufNewFile *.tsx set filetype=typescriptreact
+  ]],
+  false
+)

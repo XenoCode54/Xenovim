@@ -3,6 +3,7 @@ return {
   opts = {
     defaults = {
       ["<leader>n"] = { name = "+AI" },
+      ["<leader>nn"] = { name = "+Copilot" },
       ["<leader>nc"] = { name = "+ChatGPT" },
       ["<leader>ncr"] = { name = "+ChatGPT Run" },
       ["<leader>ns"] = { name = "+SourceGraph" },

@@ -16,11 +16,9 @@ return {
     local opts = {
       right = {
         -- {
-        --   ft = "toggleterm",
+        --   title = "Copilot Chat",
+        --   ft = "copilot-chat",
         --   size = { width = 0.4 },
-        --   filter = function(buf, win)
-        --     return vim.api.nvim_win_get_config(win).relative == ""
-        --   end,
         -- },
         {
           ft = "noice",
@@ -52,6 +50,16 @@ return {
       },
       bottom = {
         {
+          title = "Terminal",
+          ft = "toggleterm",
+          size = { height = 0.45 },
+          filter = function(buf, win)
+            return vim.api.nvim_win_get_config(win).relative == ""
+          end,
+        },
+      },
+      left = {
+        {
           title = "Neo-Tree",
           ft = "neo-tree",
           filter = function(buf)
@@ -61,7 +69,7 @@ return {
           open = function()
             vim.api.nvim_input("<esc><space>e")
           end,
-          size = { height = 0.5 },
+          -- size = { height = 0.5 },
         },
         { title = "Neotest Summary", ft = "neotest-summary" },
         {

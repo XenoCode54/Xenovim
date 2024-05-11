@@ -12,7 +12,7 @@ return {
         use_libuv_file_watcher = true,
       },
       window = {
-        position = "bottom",
+        position = "left",
         mappings = {
           -- ["<space>"] = "none",
           -- ["n"] = "move_cursor_down",

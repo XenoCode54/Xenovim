@@ -2,14 +2,11 @@
 require("config.lazy")
 -- setup must be called before loading the colorscheme
 -- Default options:
---
+-- t
 -- At the top of your init.lua, ensure you've required the necessary vim functions
-
 -- Pull in the wezterm API
--- local wezterm = require("wezterm")
 -- local act = wezterm.action
 --
--- -- This table will hold the configuration.
 -- local config = {}
 --
 -- -- In newer versions of wezterm, use the config_builder which will
@@ -133,11 +130,55 @@ require("config.lazy")
 --
 -- -- and finally, return the configuration to wezterm
 -- return config
+--
+--
+--
+
+-- Set the GUI font
+-- vim.opt.guifont = "JetBrainsMonoNerdFont-Medium"
+-- vim.opt.guifont = "JetBrainsMono Nerd Font"
+-- vim.opt.guifont = "JetBrainsMonoNerdFont-Medium:h12"
+
+-- Enable icons for file nodes
+-- vim.g.WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = 1
+
+require("CopilotChat").setup({
+  debug = false, -- Enable debugging
+  -- See Configuration section for rest
+  -- lazy.nvim opts
+
+  allow_insecure = true, -- Allow insecure server connections
+
+  -- system_prompt = prompts.COPILOT_INSTRUCTIONS, -- System prompt to use
+  model = "gpt-4", -- GPT model to use, 'gpt-3.5-turbo' or 'gpt-4'
+
+  question_header = "## [Xenon] ", -- Header to use for user questions
+  answer_header = "## Xena ", -- Header to use for AI answers
+  error_header = "## Error ", -- Header to use for errors
+  separator = "---", -- Separator to use in chat
+
+  show_folds = true, -- Shows folds for sections in chat
+  show_help = false, -- Shows help message as virtual lines when waiting for user input
+  auto_follow_cursor = false, -- Auto-follow cursor in chat
+  auto_insert_mode = false, -- Automatically enter insert mode when opening window and if auto follow cursor is enabled on new prompt
+  clear_chat_on_new_prompt = false, -- Clears chat on every new prompt
+  window = {
+    layout = "float",
+    relative = "cursor",
+    border = "solid", -- 'none', single', 'double', 'rounded', 'solid', 'shadow'
+    width = 0.8, -- fractional width of parent
+    height = 0.4, -- fractional height of parent
+    row = 1, -- row position of the window, default is centered
+    col = 1, -- column position of the window, default is centered
+    title = "Xena", -- title of chat window
+    --  zindex = 1, --><--> -- determines if window is on top or below other floating windows
+  },
+})
 
 local cmd = vim.cmd
 local fn = vim.fn
 require("highlight-undo").setup({
-  duration = 5000,
+  duration = 2000,
 })
 -- Place this code in your init.lua
 cmd([[
@@ -186,7 +227,7 @@ vim.g.neovide_background_color = "#7aa2f7"
 vim.api.nvim_set_hl(0, "Normal", { fg = "none", bg = "none" })
 vim.api.nvim_set_hl(0, "NormalFloat", { fg = "none", bg = "none" })
 
-vim.wo.cursorline = true
+vim.wo.cursorline = false
 -- Default options:
 -- require("gruvbox").setup({
 --   terminal_colors = true, -- add neovim terminal colors
@@ -210,7 +251,7 @@ vim.wo.cursorline = true
 --   palette_overrides = {},
 --   overrides = {},
 --   dim_inactive = false,
---   transparent_mode = false,
+--   transparent_mode = true,
 -- })
 -- vim.cmd("colorscheme gruvbox")
 -- Keep cursor fat like in vim
@@ -218,18 +259,26 @@ vim.wo.cursorline = true
 -- Make the cursor normalnn
 vim.opt.guicursor = "n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor"
 
+-- Change and sync color of cursor to lua line
 -- vim.cmd("augroup custom_cursor")
 -- vim.cmd("autocmd!")
--- vim.cmd("highlight Cursor guifg=none guibg=#ffc777")
--- vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#ffc777")
--- vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#ffc777")
+-- vim.cmd("highlight Cursor guifg=none guibg=#7aa2f7")
+-- vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#9ece6a")
+-- vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#7aa2f7")
 -- vim.cmd("augroup END")
--- Change and sync color of cursor to lua line
+
+-- vim.cmd("augroup custom_cursor")
+-- vim.cmd("autocmd!")
+-- vim.cmd("highlight Cursor guifg=none guibg=#a89984")
+-- vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#83a598")
+-- vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#a89984")
+-- vim.cmd("augroup END")
+
 vim.cmd("augroup custom_cursor")
 vim.cmd("autocmd!")
-vim.cmd("highlight Cursor guifg=none guibg=#7aa2f7")
-vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#9ece6a")
-vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#7aa2f7")
+vim.cmd("highlight Cursor guifg=none guibg=#ffcc00")
+vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#bfe48b")
+vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#ffcc00")
 vim.cmd("augroup END")
 
 -- vim.cmd("autocmd InsertEnter * norm zz")
@@ -432,6 +481,23 @@ local colors = require("tokyonight.colors").setup()
 -- lualine_bold = false, -- When `true`, section headers in the lualine theme will be bold
 -- })
 
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "tokyonight",
+  -- group = ...,
+  callback = function()
+    vim.api.nvim_set_hl(0, "CopilotSuggestion", {
+      -- fg = "#555555",
+      fg = "#555b8a",
+      ctermfg = 8,
+      force = true,
+    })
+  end,
+})
+
+-- vim.cmd("highlight ColorColumn guibg=#3e7478")
+-- vim.cmd("highlight ColorColumn guibg=#000000")
+vim.cmd("highlight ColorColumn guibg=none")
+
 require("scrollbar").setup({
   handle = {
     -- color = colors.bg_highlight,
@@ -440,7 +506,11 @@ require("scrollbar").setup({
     -- color = "#1a1b26",
     -- color = "#9c8e7c",
     -- color = "#ffc777",
-    color = "#9ece6a",
+    -- color = "#9ece6a",
+    -- color = "#ffcc00",
+    -- color = "#84ffff",
+    -- color = "#3e7478",
+    color = "#000000",
   },
   marks = {
     Search = { color = colors.orange },
@@ -553,12 +623,17 @@ require("nvim-treesitter.configs").setup({
 })
 
 require("nvim-ts-autotag").setup()
-
+-- print("vim o shell", vim.o.shell)
 require("toggleterm").setup({
   size = 50,
   autochdir = true,
   shell = "pwsh",
-  direction = "float",
+  -- shell = "C:\\Program Files\\Git\\bin\\bash.exe", -- replace with your path to Git Bash
+  -- shell = "C:\\ProgramFiles\\Git\\bin\\bash.exe",
+  -- shell = "bash",
+  -- shell = vim.o.shell,
+  -- shell = "C:\\Program Files\\Git\\bin\\bash.exe -c 'cd /usr/bin && exec bash'",
+  -- direction = "float",
   persist_size = true,
   hide_numbers = false,
   persist_mode = true,
@@ -570,7 +645,7 @@ require("toggleterm").setup({
     winblend = 3,
     highlights = {
       border = "Normal",
-      background = "Normal",
+      background = "Transparent",
     },
   },
   winbar = {
@@ -606,73 +681,73 @@ vim.opt.scrolloff = 11
 
 -- Material deep ocean
 --Lua:
--- vim.g.material_style = "deep ocean"
--- vim.g.material_disable_background = 1
---
--- require("material").setup({
---
---   contrast = {
---     terminal = true, -- Enable contrast for the built-in terminal
---     sidebars = true, -- Enable contrast for sidebar-like windows ( for example Nvim-Tree )
---     floating_windows = true, -- Enable contrast for floating windows
---     cursor_line = false, -- Enable darker background for the cursor line
---     non_current_windows = true, -- Enable contrasted background for non-current windows
---     filetypes = {}, -- Specify which filetypes get the contrasted (darker) background
---   },
---
---   styles = { -- Give comments style such as bold, italic, underline etc.
---     comments = { [[ italic = true ]] },
---     strings = { [[ bold = true ]] },
---     keywords = { [[ underline = true ]] },
---     functions = { [[ bold = true, undercurl = true ]] },
---     variables = {},
---     operators = {},
---     types = {},
---   },
---
---   plugins = { -- Uncomment the plugins that you use to highlight them
---     -- Available plugins:
---     "dap",
---     "dashboard",
---     "gitsigns",
---     "hop",
---     "indent-blankline",
---     "lspsaga",
---     "mini",
---     "neogit",
---     "neorg",
---     "nvim-cmp",
---     "nvim-navic",
---     "nvim-tree",
---     "nvim-web-devicons",
---     "sneak",
---     "telescope",
---     "trouble",
---     -- "which-key",
---   },
---
---   disable = {
---     colored_cursor = false, -- Disable the colored cursor
---     borders = false, -- Disable borders between vertically split windows
---     background = true, -- Prevent the theme from setting the background (NeoVim then uses your terminal background)
---     term_colors = false, -- Prevent the theme from setting terminal colors
---     eob_lines = false, -- Hide the end-of-buffer lines
---   },
---
---   high_visibility = {
---     lighter = false, -- Enable higher contrast text for lighter style
---     darker = false, -- Enable higher contrast text for darker style
---   },
---
---   lualine_style = "stealth", -- Lualine style ( can be 'stealth' or 'default' )
---
---   async_loading = true, -- Load parts of the theme asynchronously for faster startup (turned on by default)
---
---   custom_colors = nil, -- If you want to everride the default colors, set this to a function
---
---   custom_highlights = {}, -- Overwrite highlights with your own
--- })
--- vim.g.material_disable_background = 1
+vim.g.material_style = "deep ocean"
+vim.g.material_disable_background = 0
+
+require("material").setup({
+
+  contrast = {
+    terminal = true, -- Enable contrast for the built-in terminal
+    sidebars = true, -- Enable contrast for sidebar-like windows ( for example Nvim-Tree )
+    floating_windows = false, -- Enable contrast for floating windows
+    cursor_line = false, -- Enable darker background for the cursor line
+    non_current_windows = true, -- Enable contrasted background for non-current windows
+    filetypes = {}, -- Specify which filetypes get the contrasted (darker) background
+  },
+
+  styles = { -- Give comments style such as bold, italic, underline etc.
+    comments = { [[ italic = true ]] },
+    strings = { [[ bold = true ]] },
+    keywords = { [[ underline = true ]] },
+    functions = { [[ bold = true, undercurl = true ]] },
+    variables = {},
+    operators = {},
+    types = {},
+  },
+
+  plugins = { -- Uncomment the plugins that you use to highlight them
+    -- Available plugins:
+    "dap",
+    "dashboard",
+    "gitsigns",
+    "hop",
+    "indent-blankline",
+    "lspsaga",
+    "mini",
+    "neogit",
+    "neorg",
+    "nvim-cmp",
+    "nvim-navic",
+    "nvim-tree",
+    "nvim-web-devicons",
+    "sneak",
+    "telescope",
+    "trouble",
+    -- "which-key",
+  },
+
+  disable = {
+    colored_cursor = false, -- Disable the colored cursor
+    borders = false, -- Disable borders between vertically split windows
+    background = false, -- Prevent the theme from setting the background (NeoVim then uses your terminal background)
+    term_colors = false, -- Prevent the theme from setting terminal colors
+    eob_lines = false, -- Hide the end-of-buffer lines
+  },
+
+  high_visibility = {
+    lighter = false, -- Enable higher contrast text for lighter style
+    darker = false, -- Enable higher contrast text for darker style
+  },
+
+  lualine_style = "stealth", -- Lualine style ( can be 'stealth' or 'default' )
+
+  async_loading = true, -- Load parts of the theme asynchronously for faster startup (turned on by default)
+
+  custom_colors = nil, -- If you want to everride the default colors, set this to a function
+
+  custom_highlights = {}, -- Overwrite highlights with your own
+})
+vim.g.material_disable_background = 0
 
 require("mini.files").setup({
   mappings = {
@@ -683,7 +758,7 @@ require("mini.files").setup({
     go_out_plus = "H",
     reset = "<BS>",
     show_help = "g?",
-    synchronize = "=",
+    synchronize = "<cr>",
     trim_left = "<",
     trim_right = ">",
   },
@@ -849,7 +924,7 @@ glance.setup({
 
 require("treesitter-context").setup({
   enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
-  max_lines = 1, -- How many lines the window should span. Values <= 0 mean no limit.
+  max_lines = 2, -- How many lines the window should span. Values <= 0 mean no limit.
   min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
   line_numbers = true,
   multiline_threshold = 20, -- Maximum number of lines to show for a single context
@@ -857,7 +932,7 @@ require("treesitter-context").setup({
   mode = "cursor", -- Line used to calculate context. Choices: 'cursor', 'topline'
   -- Separator between context and content. Should be a single character string, like '-'.
   -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
-  separator = nil,
+  separator = "=",
   zindex = 20, -- The Z-index of the context window
   on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
 })
@@ -987,3 +1062,38 @@ require("actions-preview").setup({
 --   end,
 --   -- Add any additional lspconfig settings here
 -- })
+
+-- local dap = require("dap")
+-- -- print("home dir: ", os.getenv("HOME"))
+--
+-- dap.adapters.chrome = {
+--   type = "executable",
+--   command = "node",
+--   args = { os.getenv("HOME") .. "/vscode-chrome-debug/out/src/chromeDebug.js" }, -- TODO adjust
+-- }
+--
+-- dap.configurations.javascriptreact = { -- change this to javascript if needed
+--   {
+--     type = "chrome",
+--     request = "attach",
+--     program = "${file}",
+--     cwd = vim.fn.getcwd(),
+--     sourceMaps = true,
+--     protocol = "inspector",
+--     port = 9222,
+--     webRoot = "${workspaceFolder}",
+--   },
+-- }
+--
+-- dap.configurations.typescriptreact = { -- change to typescript if needed
+--   {
+--     type = "chrome",
+--     request = "attach",
+--     program = "${file}",
+--     cwd = vim.fn.getcwd(),
+--     sourceMaps = true,
+--     protocol = "inspector",
+--     port = 9222,
+--     webRoot = "${workspaceFolder}",
+--   },
+-- }
