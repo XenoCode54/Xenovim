@@ -1,0 +1,3 @@
+return {
+  "tmillr/sos.nvim",
+}
