@@ -4,8 +4,6 @@ return {
   event = "VeryLazy",
   config = function()
     require("chatgpt").setup({
-      -- api_key_cmd = "echo $OPENAI_API_KEY",
-      -- api_key_cmd = [[lua -e "print(os.getenv('OPENAI_API_KEY'))"]],
       edit_with_instructions = {
         diff = true,
         keymaps = {
