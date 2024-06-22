@@ -270,14 +270,21 @@ vim.opt.termguicolors = true
 
 -- Enable icons for file nodes
 -- vim.g.WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = 1
-
--- require("CopilotChat").setup({
---   window = {
---     layout = "float",
---     width = 1, -- fractional width of parent
---     height = 0.4, -- fractional height of parent
---   },
--- })
+local user = "XENON"
+local ai = "BELLA"
+require("CopilotChat").setup({
+  question_header = "   " .. user .. " ",
+  answer_header = "   " .. ai .. " ",
+  context = "buffers", -- Default context to use, 'buffers', 'buffer' or none (can be specified manually in prompt via @).
+  show_help = false, -- Shows help message as virtual lines when waiting for user input
+  window = {
+    layout = "float",
+    width = 0.8, -- fractional width of parent
+    height = 0.6, -- fractional height of parent
+    relative = "editor", -- 'editor', 'win', 'cursor', 'mouse'
+    title = "", -- title of chat window
+  },
+})
 
 local cmd = vim.cmd
 local fn = vim.fn
@@ -300,7 +307,7 @@ end
 
 -- vim.cmd("set colorcolumn=107")
 
-local function my_custom_on_attach(client, bufnr) end
+-- local function my_custom_on_attach(client, bufnr) end
 
 -- Sourcegraph configuration. All keys are optional
 -- require("sg").setup({
@@ -563,26 +570,18 @@ local colors = require("tokyonight.colors").setup()
 require("tokyonight").setup({
   -- your configuration comes here
   -- or leave it empty to use the default settings
-  style = "storm", -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
+  style = "night", -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
   light_style = "night", -- The theme is used when the background is set to light
   transparent = true, -- Enable this to disable setting the background color
   terminal_colors = true, -- Configure the colors used when opening a `:terminal` in Neovim
   styles = {
-    -- Style to be applied to different syntax groups
-    -- Value is any valid attr-list value for `:help nvim_set_hl`
-    comments = { italic = true },
-    keywords = { italic = true },
-    functions = {},
-    variables = {},
     -- Background styles. Can be "dark", "transparent" or "normal"
     sidebars = "transparent", -- style for sidebars, see below
     floats = "transparent", -- style for floating windows
   },
   sidebars = { "qf", "help" }, -- Set a darker background on sidebar-like windows. For example: `["qf", "vista_kind", "terminal", "packer"]`
-  day_brightness = 0.3, -- Adjusts the brightness of the colors of the **Day** style. Number between 0 and 1, from dull to vibrant colors
-  hide_inactive_statusline = false, -- Enabling this option, will hide inactive statuslines and replace them with a thin border instead. Should work with the standard **StatusLine** and **LuaLine**.
   dim_inactive = true, -- dims inactive windows
-  lualine_bold = false, -- When `true`, section headers in the lualine theme will be bold
+  lualine_bold = true, -- When `true`, section headers in the lualine theme will be bold
 })
 vim.cmd("colorscheme tokyonight")
 

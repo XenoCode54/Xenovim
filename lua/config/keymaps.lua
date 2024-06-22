@@ -205,7 +205,7 @@ vim.keymap.set("n", "ds", "di", { noremap = true, silent = true })
 -- Remap hh to <esc>
 -- Insert modes
 vim.keymap.set("i", "hh", "<esc>", { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>i", "<cmd>w<CR>", { noremap = true, silent = true, desc = "Save Changes" })
+vim.keymap.set("n", "<leader>k", "<cmd>w<CR>", { noremap = true, silent = true, desc = "Save Changes" })
 -- vim.keymap.set("n", "<leader>t", "<cmd>ToggleTerm<CR>", { noremap = true, silent = true, desc = "Terminal" })
 --
 -- Open the main terminal
@@ -242,12 +242,12 @@ vim.api.nvim_set_keymap(
   { noremap = true, silent = true, desc = "Main Terminal" }
 )
 
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>r",
-  "<cmd>Telescope oldfiles<CR>",
-  { noremap = true, silent = true, desc = "Recent Files" }
-)
+-- vim.api.nvim_set_keymap(
+--   "n",
+--   "<leader>r",
+--   "<cmd>Telescope oldfiles<CR>",
+--   { noremap = true, silent = true, desc = "Recent Files" }
+-- )
 
 -- -- Remaps for the refactoring operations currently offered by the plugin
 -- vim.keymap.set(

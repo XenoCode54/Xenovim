@@ -15,11 +15,11 @@ return {
   opts = function()
     local opts = {
       right = {
-        {
-          title = "Copilot Chat",
-          ft = "copilot-chat",
-          size = { width = 0.4 },
-        },
+        -- {
+        --   title = "Copilot Chat",
+        --   ft = "copilot-chat",
+        --   size = { width = 0.4 },
+        -- },
         {
           ft = "noice",
           size = { width = 0.4 },
