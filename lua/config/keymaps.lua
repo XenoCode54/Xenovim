@@ -242,12 +242,13 @@ vim.api.nvim_set_keymap(
 	{ noremap = true, silent = true, desc = "Main Terminal" }
 )
 
--- vim.api.nvim_set_keymap(
---   "n",
---   "<leader>r",
---   "<cmd>Telescope oldfiles<CR>",
---   { noremap = true, silent = true, desc = "Recent Files" }
--- )
+-- { "<leader>r", "", desc = "Recent" },
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>r",
+	"<cmd>FzfLua oldfiles<cr>",
+	{ noremap = true, silent = true, desc = "Recent Files" }
+)
 
 -- -- Remaps for the refactoring operations currently offered by the plugin
 -- vim.keymap.set(
@@ -276,12 +277,12 @@ vim.api.nvim_set_keymap(
 -- )
 
 -- Extract block doesn't need visual mode
--- vim.api.nvim_set_keymap(
---   "n",
---   "<leader>rb",
---   [[ <Cmd>lua require('refactoring').refactor('Extract Block')<CR>]],
---   { noremap = true, silent = true, expr = false, desc = "Extract Block" }
--- )
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>pb",
+	[[ <Cmd>lua require('refactoring').refactor('Extract Block')<CR>]],
+	{ noremap = true, silent = true, expr = false, desc = "Extract Block" }
+)
 -- vim.api.nvim_set_keymap(
 --   "n",
 --   "<leader>rbf",

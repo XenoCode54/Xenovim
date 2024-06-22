@@ -8,7 +8,7 @@ return {
 				sidebars = "transparent",
 				floats = "transparent",
 			},
-			colorscheme = "moon",
+			colorscheme = "night",
 			transparent_background = true,
 			background = "",
 		},
