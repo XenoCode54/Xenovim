@@ -2,7 +2,7 @@ vim.g.material_style = "deep ocean"
 vim.g.material_disable_background = 0
 return {
 	"marko-cerovac/material.nvim",
-	enable = false,
+	-- enable = false,
 	opts = {
 		transparent = false,
 		styles = {

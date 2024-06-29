@@ -390,15 +390,23 @@ vim.opt.guicursor = "n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCurs
 -- Change and sync color of cursor to lua line
 vim.cmd("augroup custom_cursor")
 vim.cmd("autocmd!")
-vim.cmd("highlight Cursor guifg=none guibg=#7aa2f7")
-vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#9ece6a")
-vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#7aa2f7")
+vim.cmd("highlight Cursor guifg=none guibg=#83FFFF")
+vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#FECC03")
+vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#83FFFF")
 vim.cmd("augroup END")
 
+-- vim.cmd("augroup custom_cursor")
+-- vim.cmd("autocmd!")
+-- vim.cmd("highlight Cursor guifg=none guibg=#7aa2f7")
+-- vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#9ece6a")
+-- vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#7aa2f7")
+-- vim.cmd("augroup END")
+--
+--
 -- vim.cmd("autocmd!")
 -- vim.cmd("augroup custom_cursor")
 -- vim.cmd("highlight Cursor guifg=none guibg=#a89984")
--- vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#83a598")
+-- vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#59a598")
 -- vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#a89984")
 -- vim.cmd("augroup END")
 
@@ -583,24 +591,23 @@ require("gitsigns").setup({
 --   transparent_mode = true,
 -- })
 -- vim.cmd("colorscheme gruvbox")
-local colors = require("tokyonight.colors").setup()
-require("tokyonight").setup({
-	-- your configuration comes here
-	-- or leave it empty to use the default settings
-	style = "night", -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
-	light_style = "night", -- The theme is used when the background is set to light
-	transparent = true, -- Enable this to disable setting the background color
-	terminal_colors = true, -- Configure the colors used when opening a `:terminal` in Neovim
-	styles = {
-		-- Background styles. Can be "dark", "transparent" or "normal"
-		sidebars = "transparent", -- style for sidebars, see below
-		floats = "transparent", -- style for floating windows
-	},
-	sidebars = { "qf", "help" }, -- Set a darker background on sidebar-like windows. For example: `["qf", "vista_kind", "terminal", "packer"]`
-	dim_inactive = true, -- dims inactive windows
-	lualine_bold = true, -- When `true`, section headers in the lualine theme will be bold
-})
-vim.cmd("colorscheme tokyonight")
+-- require("tokyonight").setup({
+-- 	-- your configuration comes here
+-- 	-- or leave it empty to use the default settings
+-- 	style = "moon", -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
+-- 	light_style = "night", -- The theme is used when the background is set to light
+-- 	transparent = true, -- Enable this to disable setting the background color
+-- 	terminal_colors = true, -- Configure the colors used when opening a `:terminal` in Neovim
+-- 	styles = {
+-- 		-- Background styles. Can be "dark", "transparent" or "normal"
+-- 		sidebars = "transparent", -- style for sidebars, see below
+-- 		floats = "transparent", -- style for floating windows
+-- 	},
+-- 	sidebars = { "qf", "help" }, -- Set a darker background on sidebar-like windows. For example: `["qf", "vista_kind", "terminal", "packer"]`
+-- 	dim_inactive = true, -- dims inactive windows
+-- 	lualine_bold = true, -- When `true`, section headers in the lualine theme will be bold
+-- })
+-- vim.cmd("colorscheme tokyonight")
 
 vim.api.nvim_create_autocmd("ColorScheme", {
 	pattern = "tokyonight",
@@ -608,7 +615,8 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 	callback = function()
 		vim.api.nvim_set_hl(0, "CopilotSuggestion", {
 			-- fg = "#555555",
-			fg = "#555b8a",
+			-- fg = "#555b8a",
+			fg = "#000000",
 			ctermfg = 8,
 			force = true,
 		})
@@ -618,6 +626,9 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 -- vim.cmd("highlight ColorColumn guibg=#3e7478")
 -- vim.cmd("highlight ColorColumn guibg=#000000")
 vim.cmd("highlight ColorColumn guibg=none")
+
+local colors = require("material.colors")
+-- local colors = require("tokyonight.colors").setup()
 
 require("scrollbar").setup({
 	handle = {
@@ -631,14 +642,15 @@ require("scrollbar").setup({
 		-- color = "#ffcc00",
 		-- color = "#84ffff",
 		-- color = "#3e7478",
-		color = "#000000",
+		color = "#0A0B10",
+		-- color = "#0F111A",
 	},
 	marks = {
 		Search = { color = colors.orange },
-		Error = { color = colors.error },
-		Warn = { color = colors.warning },
-		Info = { color = colors.info },
-		Hint = { color = colors.hint },
+		Error = { color = colors.lsp.error },
+		Warn = { color = colors.lsp.warning },
+		Info = { color = colors.lsp.info },
+		Hint = { color = colors.lsp.hint },
 		Misc = { color = colors.purple },
 	},
 })

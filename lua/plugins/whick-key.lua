@@ -2,14 +2,14 @@ return {
 	"folke/which-key.nvim",
 	opts = {
 		defaults = {
-			["<leader>o"] = { name = "+Other AI" },
+			["<leader>p"] = { name = "+Print logs" },
+			["<leader>o"] = { name = "+oTerminals" },
 			-- ["<leader>o"] = { name = "+Obsidian" },
 			-- ["<leader>nn"] = { name = "+Copilot" },
-			["<leader>oc"] = { name = "+ChatGPT" },
-			["<leader>ocr"] = { name = "+ChatGPT Run" },
-			["<leader>os"] = { name = "+SourceGraph" },
+			["<leader>ac"] = { name = "+ChatGPT" },
+			["<leader>acr"] = { name = "+ChatGPT Run" },
+			["<leader>as"] = { name = "+SourceGraph" },
 			-- ["<leader>o"] = { name = "+terminals" },
-			["<leader>p"] = { name = "+print logs" },
 			["<leader>i"] = { name = "+iHarpoon" },
 		},
 		window = {
