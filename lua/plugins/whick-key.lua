@@ -2,15 +2,15 @@ return {
 	"folke/which-key.nvim",
 	opts = {
 		defaults = {
-			["<leader>p"] = { name = "+Print logs" },
-			["<leader>o"] = { name = "+oTerminals" },
+			-- ["<leader>p"] = { name = "+Print logs" },
+			["<leader>o"] = { name = "+terminals" },
 			-- ["<leader>o"] = { name = "+Obsidian" },
 			-- ["<leader>nn"] = { name = "+Copilot" },
 			["<leader>ac"] = { name = "+ChatGPT" },
 			["<leader>acr"] = { name = "+ChatGPT Run" },
 			["<leader>as"] = { name = "+SourceGraph" },
 			-- ["<leader>o"] = { name = "+terminals" },
-			["<leader>i"] = { name = "+iHarpoon" },
+			-- ["<leader>i"] = { name = "+iHarpoon" },
 		},
 		window = {
 			border = "double", -- none, single, double, shadow

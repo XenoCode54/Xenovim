@@ -502,12 +502,13 @@ require("telescope").setup({
 	-- other configuration values here
 })
 
-vim.api.nvim_set_keymap(
-	"i",
-	"<Tab>",
-	'pumvisible() ? "<C-n>" : "<Tab>"',
-	{ expr = true, noremap = true, silent = true }
-)
+-- vim.api.nvim_set_keymap(
+-- 	"i",
+-- 	"<Tab>",
+-- 	'pumvisible() ? "<C-n>" : "<Tab>"',
+-- 	{ expr = true, noremap = true, silent = true }
+-- )
+-- silent!
 
 -- require("neodim").setup({
 --   alpha = 0.3, -- make the dimmed text even dimmer
@@ -1289,9 +1290,4 @@ require("catppuccin").setup({
 --   local filetype = vim.bo.filetype
 --   -- Disable LSP for terminal and other non-code filetypes
 --   return not (filetype == "" or filetype == "TelescopePrompt" or filetype == "terminal")
--- end
-
--- Only initialize the LSP client if it's enabled for the buffer
--- if lsp_buffer_enabled() then
---   require("lspconfig").your_language_server.setup()
 -- end
