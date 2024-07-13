@@ -1,4 +1,5 @@
 require("config.lazy")
+local colors = require("material.colors")
 -- setup must be called before loading the colorscheme
 -- Default options:
 -- t
@@ -12,7 +13,15 @@ require("config.lazy")
 -- if wezterm.config_builder then
 -- 	config = wezterm.config_builder()
 -- end
---
+vim.opt.guifont = "JetBrains Mono NL:h20"
+-- vim.opt.guifont = "DejaVu Sans Mono"
+vim.g.neovide_transparency = 0.7
+vim.g.transparency = 0.7
+vim.g.neovide_fullscreen = false
+vim.g.neovide_refresh_rate = 60
+vim.g.neovide_refresh_rate_idle = 5
+vim.g.neovide_cursor_vfx_mode = "ripple"
+vim.g.neovide_background_color = "#090b10"
 -- -- This is where you actually apply your config choices
 -- config.default_prog = { "pwsh.exe" }
 --
@@ -29,6 +38,160 @@ require("config.lazy")
 -- -- config.win32_system_backdrop = "Tabbed"
 -- -- config.win32_system_backdrop = "Mica"
 -- config.animation_fps = 60
+--
+-- local lspconfig = require("lspconfig")
+--
+-- lspconfig.sonarlint = {
+-- 	default_config = {
+-- 		-- cmd = { "~/.local/share/nvim/mason/packages/sonarlint-language-server/sonarlint-language-server" },
+-- 		cmd = { "/home/xenon/.local/share/nvim/mason/bin/sonarlint-language-server" }, -- replace with path to your sonarlint language server executable
+-- 		filetypes = {
+-- 			"javascript",
+-- 			"javascriptreact",
+-- 			"javascript.jsx",
+-- 			"typescript",
+-- 			"typescriptreact",
+-- 			"typescript.tsx",
+-- 		},
+-- 		root_dir = function(fname)
+-- 			return lspconfig.util.find_git_ancestor(fname) or vim.fn.getcwd()
+-- 		end,
+-- 		settings = {},
+-- 	},
+-- }
+--
+-- lspconfig.sonarlint.setup({
+-- 	on_attach = function(client, bufnr)
+-- 		print("SonarLint server attached")
+-- 		-- rest of your on_attach function
+-- 	end,
+-- 	-- rest of your lspconfig.sonarlint configuration
+-- })
+-- local lspconfig = require("lspconfig")
+-- local configs = require("lspconfig/configs")
+--
+-- -- Check if sonarlint ls is not already defined
+-- if not lspconfig.sonarlint then
+-- 	configs.sonarlint = {
+-- 		default_config = {
+-- 			cmd = { "home/xenon/.local/share/nvim/mason/packages/sonarlint-language-server/sonarlint-language-server" },
+-- 			-- cmd = { "/home/xenon/.local/share/nvim/mason/bin/sonarlint-language-server" },
+-- 			filetypes = {
+-- 				"javascript",
+-- 				"javascriptreact",
+-- 				"javascript.jsx",
+-- 				"typescript",
+-- 				"typescriptreact",
+-- 				"typescript.tsx",
+-- 			},
+-- 			root_dir = function(fname)
+-- 				return lspconfig.util.find_git_ancestor(fname) or vim.fn.getcwd()
+-- 			end,
+-- 			settings = {},
+-- 		},
+-- 	}
+-- end
+
+-- lspconfig.sonarlint.setup({
+-- 	on_attach = function(client, bufnr)
+-- 		print("SonarLint server attached")
+-- 		-- rest of your on_attach function
+-- 	end,
+-- 	-- rest of your lspconfig.sonarlint configuration
+-- })
+
+require("material").setup({
+
+	-- contrast = {
+	-- 	terminal = true, -- Enable contrast for the built-in terminal
+	-- 	sidebars = true, -- Enable contrast for sidebar-like windows ( for example Nvim-Tree )
+	-- 	floating_windows = true, -- Enable contrast for floating windows
+	-- 	cursor_line = true, -- Enable darker background for the cursor line
+	-- 	lsp_virtual_text = true, -- Enable contrasted background for lsp virtual text
+	-- 	non_current_windows = true, -- Enable contrasted background for non-current windows
+	-- 	filetypes = {}, -- Specify which filetypes get the contrasted (darker) background
+	-- },
+
+	styles = { -- Give comments style such as bold, italic, underline etc.
+		comments = { --[[ italic = true ]]
+		},
+		strings = { --[[ bold = true ]]
+		},
+		keywords = { --[[ underline = true ]]
+		},
+		functions = { --[[ bold = true, undercurl = true ]]
+		},
+		variables = {},
+		operators = {},
+		types = {},
+	},
+
+	plugins = { -- Uncomment the plugins that you use to highlight them
+		-- Available plugins:
+		-- "coc",
+		-- "colorful-winsep",
+		-- "dap",
+		-- "dashboard",
+		-- "eyeliner",
+		-- "fidget",
+		-- "flash",
+		-- "gitsigns",
+		-- "harpoon",
+		-- "hop",
+		-- "illuminate",
+		-- "indent-blankline",
+		-- "lspsaga",
+		-- "mini",
+		-- "neogit",
+		-- "neotest",
+		-- "neo-tree",
+		-- "neorg",
+		-- "noice",
+		-- "nvim-cmp",
+		-- "nvim-navic",
+		-- "nvim-tree",
+		-- "neo-tree",
+		-- "nvim-web-devicons",
+		-- "rainbow-delimiters",
+		-- "sneak",
+		-- "telescope",
+		-- "trouble",
+		-- "which-key",
+		-- "nvim-notify",
+	},
+
+	disable = {
+		colored_cursor = false, -- Disable the colored cursor
+		borders = false, -- Disable borders between vertically split windows
+		background = true, -- Prevent the theme from setting the background (NeoVim then uses your terminal background)
+		term_colors = false, -- Prevent the theme from setting terminal colors
+		eob_lines = false, -- Hide the end-of-buffer lines
+	},
+
+	high_visibility = {
+		lighter = false, -- Enable higher contrast text for lighter style
+		darker = false, -- Enable higher contrast text for darker style
+	},
+
+	lualine_style = "stealth", -- Lualine style ( can be 'stealth' or 'default' )
+
+	async_loading = true, -- Load parts of the theme asynchronously for faster startup (turned on by default)
+
+	-- Custom colors must be a function that takes in the default colors table as
+	-- a parameter, and then modifies them.
+	-- To see the available colors, see lua/material/colors/init.lua
+	custom_colors = function(colors)
+		-- colors.syntax.fn = "#C792EA"
+		colors.lsp.hint = "#89DDFF"
+		-- colors.syntax.field = colors.main.yellow
+		colors.main.purple = "#FFCB6B"
+		colors.syntax.type = colors.main.orange
+		colors.main.cyan = "#C792EA"
+	end,
+
+	custom_highlights = {}, -- Overwrite highlights with your own
+})
+vim.cmd("colorscheme material")
 
 require("nvim-ts-autotag").setup({
 	opts = {
@@ -47,40 +210,40 @@ require("nvim-ts-autotag").setup({
 	},
 })
 
-require("image").setup({
-	backend = "kitty",
-	integrations = {
-		markdown = {
-			enabled = true,
-			clear_in_insert_mode = false,
-			download_remote_images = true,
-			only_render_image_at_cursor = false,
-			filetypes = { "markdown", "vimwiki" }, -- markdown extensions (ie. quarto) can go here
-		},
-		neorg = {
-			enabled = true,
-			clear_in_insert_mode = false,
-			download_remote_images = true,
-			only_render_image_at_cursor = false,
-			filetypes = { "norg" },
-		},
-		html = {
-			enabled = false,
-		},
-		css = {
-			enabled = true,
-		},
-	},
-	max_width = nil,
-	max_height = nil,
-	max_width_window_percentage = nil,
-	max_height_window_percentage = 50,
-	window_overlap_clear_enabled = false, -- toggles images when windows are overlapped
-	window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
-	editor_only_render_when_focused = false, -- auto show/hide images when the editor gains/looses focus
-	tmux_show_only_in_active_window = false, -- auto show/hide images in the correct Tmux window (needs visual-activity off)
-	hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.svg" }, -- render image files as images when opened
-})
+-- require("image").setup({
+-- 	backend = "kitty",
+-- 	integrations = {
+-- 		markdown = {
+-- 			enabled = true,
+-- 			clear_in_insert_mode = false,
+-- 			download_remote_images = true,
+-- 			only_render_image_at_cursor = false,
+-- 			filetypes = { "markdown", "vimwiki" }, -- markdown extensions (ie. quarto) can go here
+-- 		},
+-- 		neorg = {
+-- 			enabled = true,
+-- 			clear_in_insert_mode = false,
+-- 			download_remote_images = true,
+-- 			only_render_image_at_cursor = false,
+-- 			filetypes = { "norg" },
+-- 		},
+-- 		html = {
+-- 			enabled = false,
+-- 		},
+-- 		css = {
+-- 			enabled = true,
+-- 		},
+-- 	},
+-- 	max_width = nil,
+-- 	max_height = nil,
+-- 	max_width_window_percentage = nil,
+-- 	max_height_window_percentage = 50,
+-- 	window_overlap_clear_enabled = false, -- toggles images when windows are overlapped
+-- 	window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
+-- 	editor_only_render_when_focused = false, -- auto show/hide images when the editor gains/looses focus
+-- 	tmux_show_only_in_active_window = false, -- auto show/hide images in the correct Tmux window (needs visual-activity off)
+-- 	hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.svg" }, -- render image files as images when opened
+-- })
 
 -- require("obsidian").setup({
 --   workspaces = {
@@ -342,14 +505,6 @@ vim.api.nvim_set_hl(0, "CmpItemKindCody", { fg = "#7aa2f7" })
 vim.g.codeium_log_level = "INFO"
 -- Neovide settings start
 -- vim.opt.guifont = "JetBrainsMonoNerdFontCompleteM"
-vim.opt.guifont = "JetBrains Mono:h12"
--- vim.opt.guifont = "DejaVu Sans Mono"
-vim.g.neovide_transparency = 0.9
-vim.g.neovide_fullscreen = false
-vim.g.neovide_refresh_rate = 60
-vim.g.neovide_refresh_rate_idle = 5
-vim.g.neovide_cursor_vfx_mode = "ripple"
-vim.g.neovide_background_color = "#7aa2f7"
 
 --
 -- vim.api.nvim_set_hl(0, "Normal", { fg = "none", bg = "none" })
@@ -628,124 +783,213 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 -- vim.cmd("highlight ColorColumn guibg=#000000")
 vim.cmd("highlight ColorColumn guibg=none")
 
-local colors = require("material.colors")
 -- local colors = require("tokyonight.colors").setup()
 
+-- require("scrollbar").setup({
+-- 	handle = {
+-- 		-- color = colors.bg_highlight,
+-- 		--#1a1b26
+-- 		-- color = "#282828",
+-- 		-- color = "#1a1b26",
+-- 		-- color = "#9c8e7c",
+-- 		-- color = "#ffc777",
+-- 		-- color = "#9ece6a",
+-- 		-- color = "#ffcc00",
+-- 		-- color = "#84ffff",
+-- 		-- color = "#3e7478",
+-- 		color = "#0A0B10",
+-- 		-- color = "#0F111A",
+-- 	},
+-- 	marks = {
+-- 		Search = { color = colors.orange },
+-- 		Error = { color = colors.lsp.error },
+-- 		Warn = { color = colors.lsp.warning },
+-- 		Info = { color = colors.lsp.info },
+-- 		-- Hint = { color = colors.lsp.hint },
+-- 		Hint = { color = "#89DDFF" },
+-- 		Misc = { color = colors.purple },
+-- 	},
+-- })
+-- require("hlslens").setup({
+-- 	override_lens = function(render, posList, nearest, idx, relIdx)
+-- 		local sfw = vim.v.searchforward == 1
+-- 		local indicator, text, chunks
+-- 		local absRelIdx = math.abs(relIdx)
+-- 		if absRelIdx > 1 then
+-- 			indicator = ("%d%s"):format(absRelIdx, sfw ~= (relIdx > 1) and "▲" or "▼")
+-- 		elseif absRelIdx == 1 then
+-- 			indicator = sfw ~= (relIdx == 1) and "▲" or "▼"
+-- 		else
+-- 			indicator = ""
+-- 		end
+--
+-- 		local lnum, col = unpack(posList[idx])
+-- 		if nearest then
+-- 			local cnt = #posList
+-- 			if indicator ~= "" then
+-- 				text = ("[%s %d/%d]"):format(indicator, idx, cnt)
+-- 			else
+-- 				text = ("[%d/%d]"):format(idx, cnt)
+-- 			end
+-- 			chunks = { { " " }, { text, "HlSearchLensNear" } }
+-- 		else
+-- 			text = ("[%s %d]"):format(indicator, idx)
+-- 			chunks = { { " " }, { text, "HlSearchLens" } }
+-- 		end
+-- 		render.setVirt(0, lnum - 1, col - 1, chunks, nearest)
+-- 	end,
+-- })
+
 require("scrollbar").setup({
+	show = true,
+	show_in_active_only = false,
+	set_highlights = true,
+	folds = 1000, -- handle folds, set to number to disable folds if no. of lines in buffer exceeds this
+	max_lines = false, -- disables if no. of lines in buffer exceeds this
+	hide_if_all_visible = false, -- Hides everything if all lines are visible
+	throttle_ms = 100,
 	handle = {
-		-- color = colors.bg_highlight,
-		--#1a1b26
-		-- color = "#282828",
-		-- color = "#1a1b26",
-		-- color = "#9c8e7c",
-		-- color = "#ffc777",
-		-- color = "#9ece6a",
-		-- color = "#ffcc00",
-		-- color = "#84ffff",
-		-- color = "#3e7478",
+		text = " ",
+		blend = 20, -- Integer between 0 and 100. 0 for fully opaque and 100 to full transparent. Defaults to 30.
 		color = "#0A0B10",
-		-- color = "#0F111A",
+		color_nr = nil, -- cterm
+		highlight = "CursorColumn",
+		hide_if_all_visible = true, -- Hides handle if all lines are visible
 	},
+	-- 	handle = {
+	-- 		-- color = colors.bg_highlight,
+	-- 		--#1a1b26
+	-- 		-- color = "#282828",
+	-- 		-- color = "#1a1b26",
+	-- 		-- color = "#9c8e7c",
+	-- 		-- color = "#ffc777",
+	-- 		-- color = "#9ece6a",
+	-- 		-- color = "#ffcc00",
+	-- 		-- color = "#84ffff",
+	-- 		-- color = "#3e7478",
+	-- 		-- color = "#0F111A",
+	-- 	},
 	marks = {
-		Search = { color = colors.orange },
+		Search = {
+			text = { "-", "=" },
+			priority = 7,
+			gui = nil,
+			cterm = nil,
+			color_nr = nil, -- cterm
+			color = colors.main.cyan,
+			-- colors.orange,
+			highlight = "Search",
+		},
 		Error = { color = colors.lsp.error },
 		Warn = { color = colors.lsp.warning },
 		Info = { color = colors.lsp.info },
-		Hint = { color = colors.lsp.hint },
-		Misc = { color = colors.purple },
+		-- Hint = { color = colors.lsp.hint },
+		Hint = { color = "#89DDFF" },
+		Misc = { color = colors.main.purple },
+	},
+	excluded_buftypes = {
+		"terminal",
+	},
+	handlers = {
+		cursor = true,
+		diagnostic = true,
+		gitsigns = false, -- Requires gitsigns
+		handle = true,
+		search = true, -- Requires hlslens
+		ale = true, -- Requires ALE
 	},
 })
 
-require("sos").setup({
-	-- Whether to enable the plugin
-	enabled = true,
-
-	-- Time in ms after which `on_timer()` will be called. By default, `on_timer()`
-	-- is called 20 seconds after the last buffer change. Whenever an observed
-	-- buffer changes, the global timer is statartarted (or reset, if it was already
-	-- started), and a countdown of `timeout` milliseconds begins. Further buffer
-	-- changes will then debounce the timer. After firing, the timer is not
-	-- started again until the next buffer change.
-	timeout = 20000,
-
-	-- Set, and manage, Vim's 'autowrite' option (see :h 'autowrite'). Allowing
-	-- sos to "manage" the option makes it so that all autosaving functionality
-	-- can be enabled or disabled altogether in a synchronized fashion as
-	-- otherwise it is possible for autosaving to still occur even after sos has
-	-- been explicitly disabled (via :SosDisable for example). There are 3
-	-- possible values:
-	--
-	--     "all": set and manage 'autowriteall'
-	--
-	--     true: set and manage 'autowrite'
-	--
-	--     false: don't set, touch, or manage any of Vim's 'autowwrite' options
-	autowrite = true,
-
-	-- Automatically write all modified buffers before executing a command on
-	-- the cmdline. Aborting the cmdline (e.g. via `<Esc>`) also aborts the
-	-- write. The point of this is so that you don't have to manually write a
-	-- buffer before running commands such as `:luafile`, `:source`, or a `:!`
-	-- shell command which reads files (such as git or a code formatter).
-	-- Autocmds will be executed as a result of the writing (i.e. `nested = true`).
-	--
-	--     false: don't write changed buffers prior to executing a command
-	--
-	--     "all": write on any `:` command that gets executed (but not `<Cmd>`
-	--            mappings)
-	--
-	--     "some": write only if certain commands (source/luafile etc.) appear
-	--             in the cmdline (not perfect, but may lead to fewer unneeded
-	--             file writes; implementation still needs some work, see
-	--             lua/sos/impl.lua)
-	--
-	--     table<string, true>: table that specifies which commands should trigger
-	--                          a write
-	--                          keys: the full/long names of commands that should
-	--                                trigger write
-	--                          values: true
-	save_on_cmd = "some",
-
-	-- Save/write a changed buffer before leaving it (i.e. on the `BufLeave`
-	-- autocmd event). This will lead to fewer buffers having to be written
-	-- at once when the global/shared timer fires. Another reason for this is
-	-- the fact that neither `'autowrite'` nor `'autowriteall'` cover this case,
-	-- so it combines well with those options too.
-	save_on_bufleave = true,
-
-	-- Save all buffers when Neovim loses focus. This is provided because
-	-- 'autowriteall' does not cover this case. It is particularly useful when
-	-- swapfiles have been disabled and you (knowingly or unknowingly) start
-	-- editing the same file in another Neovim instance while having unsaved
-	-- changes. It helps keep the file/version on the filesystem synchronized
-	-- with your latest changes when switching applications so that another
-	-- application won't accidentally open old versions of files that you are
-	-- still currently editing. Con: it could be that you actually intended to
-	-- open an older version of a file in another application/Neovim instance,
-	-- although in that case you're probably better off disabling autosaving
-	-- altogether (or keep it enabled but utilize a VCS to get the version you
-	-- need - that is, if you commit frequently enough).
-	save_on_focuslost = true,
-
-	-- Predicate fn which receives a buf number and should return true if it
-	-- should be observed for changes (i.e. whether the buffer should debounce
-	-- the shared/global timer). You probably don't want to change this unless
-	-- you absolutely need to and know what you're doing. Setting this option
-	-- will replace the default fn/behavior which is to observe buffers which
-	-- have: a normal 'buftype', 'ma', 'noro'. See lua/sos/impl.lua for the
-	-- default behavior/fn.
-	---@type fun(bufnr: integer): boolean
-	-- should_observe_buf = require("sos.impl").should_observe_buf,
-
-	-- The function that is called when the shared/global timer fires. You
-	-- probably don't want to change this unless you absolutely need to and know
-	-- what you're doing. Setting this option will replace the default
-	-- fn/behavior, which is simply to write all modified (i.e. 'mod' option is
-	-- set) buffers. See lua/sos/impl.lua for the default behavior/fn. Any value
-	-- returned by this function is ignored. `vim.api.*` can be used inside this
-	-- fn (this fn will be called with `vim.schedule()`).
-	-- on_timer = require("sos.impl").on_timer,
-})
+-- require("sos").setup({
+-- 	-- Whether to enable the plugin
+-- 	enabled = true,
+--
+-- 	-- Time in ms after which `on_timer()` will be called. By default, `on_timer()`
+-- 	-- is called 20 seconds after the last buffer change. Whenever an observed
+-- 	-- buffer changes, the global timer is statartarted (or reset, if it was already
+-- 	-- started), and a countdown of `timeout` milliseconds begins. Further buffer
+-- 	-- changes will then debounce the timer. After firing, the timer is not
+-- 	-- started again until the next buffer change.
+-- 	timeout = 20000,
+--
+-- 	-- Set, and manage, Vim's 'autowrite' option (see :h 'autowrite'). Allowing
+-- 	-- sos to "manage" the option makes it so that all autosaving functionality
+-- 	-- can be enabled or disabled altogether in a synchronized fashion as
+-- 	-- otherwise it is possible for autosaving to still occur even after sos has
+-- 	-- been explicitly disabled (via :SosDisable for example). There are 3
+-- 	-- possible values:
+-- 	--
+-- 	--     "all": set and manage 'autowriteall'
+-- 	--
+-- 	--     true: set and manage 'autowrite'
+-- 	--
+-- 	--     false: don't set, touch, or manage any of Vim's 'autowwrite' options
+-- 	autowrite = true,
+--
+-- 	-- Automatically write all modified buffers before executing a command on
+-- 	-- the cmdline. Aborting the cmdline (e.g. via `<Esc>`) also aborts the
+-- 	-- write. The point of this is so that you don't have to manually write a
+-- 	-- buffer before running commands such as `:luafile`, `:source`, or a `:!`
+-- 	-- shell command which reads files (such as git or a code formatter).
+-- 	-- Autocmds will be executed as a result of the writing (i.e. `nested = true`).
+-- 	--
+-- 	--     false: don't write changed buffers prior to executing a command
+-- 	--
+-- 	--     "all": write on any `:` command that gets executed (but not `<Cmd>`
+-- 	--            mappings)
+-- 	--
+-- 	--     "some": write only if certain commands (source/luafile etc.) appear
+-- 	--             in the cmdline (not perfect, but may lead to fewer unneeded
+-- 	--             file writes; implementation still needs some work, see
+-- 	--             lua/sos/impl.lua)
+-- 	--
+-- 	--     table<string, true>: table that specifies which commands should trigger
+-- 	--                          a write
+-- 	--                          keys: the full/long names of commands that should
+-- 	--                                trigger write
+-- 	--                          values: true
+-- 	save_on_cmd = "some",
+--
+-- 	-- Save/write a changed buffer before leaving it (i.e. on the `BufLeave`
+-- 	-- autocmd event). This will lead to fewer buffers having to be written
+-- 	-- at once when the global/shared timer fires. Another reason for this is
+-- 	-- the fact that neither `'autowrite'` nor `'autowriteall'` cover this case,
+-- 	-- so it combines well with those options too.
+-- 	save_on_bufleave = true,
+--
+-- 	-- Save all buffers when Neovim loses focus. This is provided because
+-- 	-- 'autowriteall' does not cover this case. It is particularly useful when
+-- 	-- swapfiles have been disabled and you (knowingly or unknowingly) start
+-- 	-- editing the same file in another Neovim instance while having unsaved
+-- 	-- changes. It helps keep the file/version on the filesystem synchronized
+-- 	-- with your latest changes when switching applications so that another
+-- 	-- application won't accidentally open old versions of files that you are
+-- 	-- still currently editing. Con: it could be that you actually intended to
+-- 	-- open an older version of a file in another application/Neovim instance,
+-- 	-- although in that case you're probably better off disabling autosaving
+-- 	-- altogether (or keep it enabled but utilize a VCS to get the version you
+-- 	-- need - that is, if you commit frequently enough).
+-- 	save_on_focuslost = true,
+--
+-- 	-- Predicate fn which receives a buf number and should return true if it
+-- 	-- should be observed for changes (i.e. whether the buffer should debounce
+-- 	-- the shared/global timer). You probably don't want to change this unless
+-- 	-- you absolutely need to and know what you're doing. Setting this option
+-- 	-- will replace the default fn/behavior which is to observe buffers which
+-- 	-- have: a normal 'buftype', 'ma', 'noro'. See lua/sos/impl.lua for the
+-- 	-- default behavior/fn.
+-- 	---@type fun(bufnr: integer): boolean
+-- 	-- should_observe_buf = require("sos.impl").should_observe_buf,
+--
+-- 	-- The function that is called when the shared/global timer fires. You
+-- 	-- probably don't want to change this unless you absolutely need to and know
+-- 	-- what you're doing. Setting this option will replace the default
+-- 	-- fn/behavior, which is simply to write all modified (i.e. 'mod' option is
+-- 	-- set) buffers. See lua/sos/impl.lua for the default behavior/fn. Any value
+-- 	-- returned by this function is ignored. `vim.api.*` can be used inside this
+-- 	-- fn (this fn will be called with `vim.schedule()`).
+-- 	-- on_timer = require("sos.impl").on_timer,
+-- })
 
 require("nvim-treesitter.configs").setup({
 	rainbow = {

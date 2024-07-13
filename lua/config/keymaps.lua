@@ -204,7 +204,7 @@ vim.keymap.set("n", "ds", "di", { noremap = true, silent = true })
 
 -- Remap hh to <esc>
 -- Insert modes
-vim.keymap.set("i", "hh", "<esc>", { noremap = true, silent = true })
+-- vim.keymap.set("i", "hh", "<esc>", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>k", "<cmd>w<CR>", { noremap = true, silent = true, desc = "Save Changes" })
 -- vim.keymap.set("n", "<leader>t", "<cmd>ToggleTerm<CR>", { noremap = true, silent = true, desc = "Terminal" })
 --
@@ -673,3 +673,4 @@ vim.keymap.set("n", "X", "<CMD>LazyExtras<CR>", { noremap = true, silent = true,
 
 vim.keymap.set("n", "Y", "y$", { desc = "Yank to end of line" })
 -- vim.keymap.set("n", "<leader>p", ":YankyRingHistory<CR>", { noremap = true, silent = true, desc = "Yank history" })
+--

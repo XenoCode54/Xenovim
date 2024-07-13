@@ -11,3 +11,5 @@ vim.opt.inccommand = "split"
 vim.opt.ignorecase = true
 vim.opt.path:append({ "**" })
 vim.opt.wildignore:append({ "*/node_modules/*" })
+
+vim.g.lazyvim_picker = "fzf"

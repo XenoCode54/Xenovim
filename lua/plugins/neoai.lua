@@ -62,10 +62,10 @@ return {
 				api_key = {
 					env = "OPENAI_API_KEY",
 					-- env = 'echo "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"',
-					-- value = "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",
+					value = "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",
 					-- `get` is is a function that retrieves an API key, can be used to override the default method.
 					get = function()
-						-- return "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"
+						return "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"
 					end,
 
 					-- Here is some code for a function that retrieves an API key. You can use it with

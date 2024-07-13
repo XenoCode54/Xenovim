@@ -3,6 +3,25 @@ return {
 	opts = {
 		-- make sure mason installs the server
 		servers = {
+			-- sonarlint = {
+			-- 	cmd = { "/home/xenon/.local/share/nvim/mason/bin/sonarlint-language-server" }, -- replace with path to your sonarlint language server executable
+			-- 	filetypes = {
+			-- 		"javascript",
+			-- 		"javascriptreact",
+			-- 		"javascript.jsx",
+			-- 		"typescript",
+			-- 		"typescriptreact",
+			-- 		"typescript.tsx",
+			-- 	},
+			-- 	root_dir = function(fname)
+			-- 		return vim.fn.getcwd()
+			-- 	end,
+			-- 	settings = {
+			-- 		sonarlint = {
+			-- 			-- your settings here...
+			-- 		},
+			-- 	},
+			-- },
 			tsserver = {
 				enabled = false,
 			},

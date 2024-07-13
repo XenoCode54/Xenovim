@@ -4,21 +4,21 @@ return {
 	"marko-cerovac/material.nvim",
 	-- enable = false,
 	opts = {
-		transparent = false,
+		transparent = true,
 		styles = {
 			sidebars = "transparent",
 			floats = "solid",
 		},
 		colorscheme = "material",
-		transparent_background = false,
-		-- background = "",
+		transparent_background = true,
+		background = "",
 	},
 	{
 		"LazyVim/LazyVim",
 		opts = {
 			colorscheme = "material",
-			transparent_background = false,
-			-- background = "",
+			transparent_background = true,
+			background = "",
 		},
 	},
 }
