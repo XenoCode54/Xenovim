@@ -1,4 +1,5 @@
 require("config.lazy")
+local wk = require("which-key")
 local colors = require("material.colors")
 -- setup must be called before loading the colorscheme
 -- Default options:
@@ -13,7 +14,18 @@ local colors = require("material.colors")
 -- if wezterm.config_builder then
 -- 	config = wezterm.config_builder()
 -- end
+
+wk.add({
+	{ "<leader>ac", group = "ChatGPT" },
+	{ "<leader>aca", group = "ChatGPT Actions" },
+	{ "<leader>acr", group = "ChatGPT Run" },
+	{ "<leader>as", group = "SourceGraph" },
+	{ "<leader>o", group = "Terminals" },
+	{ "<leader>k", desc = "Save File", icon = "S" },
+})
+
 vim.opt.guifont = "JetBrains Mono NL:h20"
+
 -- vim.opt.guifont = "DejaVu Sans Mono"
 vim.g.neovide_transparency = 0.7
 vim.g.transparency = 0.7
@@ -33,6 +45,7 @@ vim.g.neovide_background_color = "#090b10"
 -- 	background = "#222436",
 -- 	-- cursor_bg = "#ffc777",
 -- }
+
 -- config.window_background_opacity = 0.9
 -- -- config.win32_system_backdrop = "Acrylic"
 -- -- config.win32_system_backdrop = "Tabbed"
@@ -568,7 +581,7 @@ vim.cmd("augroup END")
 -- vim.cmd("augroup custom_cursor")
 -- vim.cmd("autocmd!")
 -- vim.cmd("highlight Cursor guifg=none guibg=#ffcc00")
--- vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#bfe48b")
+-- vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#83FFFF")
 -- vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#ffcc00")
 -- vim.cmd("augroup END")
 
@@ -1535,3 +1548,28 @@ require("catppuccin").setup({
 --   -- Disable LSP for terminal and other non-code filetypes
 --   return not (filetype == "" or filetype == "TelescopePrompt" or filetype == "terminal")
 -- end
+--
+-- require("sonarlint").setup({
+-- 	server = {
+-- 		cmd = {
+-- 			-- java_config[1].path .. "/bin/java",
+-- 			-- "~/.local/share/nvim/mason/packages/sonarlint-language-server/sonarlint-language-server",
+-- 			-- "/home/xenon/.local/share/nvim/mason/bin/sonarlint-language-server", -- replace with path to your sonarlint language server executableh
+-- 			"/home/xenon/.local/share/nvim/mason/packages/sonarlint-language-server/sonarlint-language-server",
+-- 		},
+-- 	},
+-- 	filetypes = {
+-- 		-- Tested and working
+-- 		"python",
+-- 		-- Requires nvim-jdtls, otherwise an error message will be printed
+-- 		"html",
+-- 		"xml",
+-- 		"js",
+-- 		"javascript",
+-- 		"javascriptreact",
+-- 		"javascript.jsx",
+-- 		"typescript",
+-- 		"typescriptreact",
+-- 		"typescript.tsx",
+-- 	},
+-- })

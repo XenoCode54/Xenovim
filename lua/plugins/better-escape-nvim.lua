@@ -1,5 +1,6 @@
 return {
 	"max397574/better-escape.nvim",
+	enable = false,
 	config = function()
 		-- lua, default settings
 		require("better_escape").setup({

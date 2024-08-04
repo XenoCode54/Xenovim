@@ -159,6 +159,19 @@ vim.keymap.set(
 	{ noremap = true, desc = "Goto Preview References" }
 )
 
+vim.keymap.set(
+	"n",
+	"<leader>i",
+	'<cmd>lua require("fastaction").code_action()<CR>',
+	{ buffer = bufnr, desc = "iAction" }
+)
+vim.keymap.set(
+	"v",
+	"<leader>i",
+	"<esc><cmd>lua require('fastaction').range_code_action()<CR>",
+	{ buffer = bufnr, desc = "iAction" }
+)
+
 -- Remap j key to n key to move down in normal modes
 -- Normal modes
 vim.keymap.set("n", "e", "k", { noremap = true, silent = true })
@@ -204,7 +217,7 @@ vim.keymap.set("n", "ds", "di", { noremap = true, silent = true })
 
 -- Remap hh to <esc>
 -- Insert modes
--- vim.keymap.set("i", "hh", "<esc>", { noremap = true, silent = true })
+vim.keymap.set("i", "hh", "<esc>", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>k", "<cmd>w<CR>", { noremap = true, silent = true, desc = "Save Changes" })
 -- vim.keymap.set("n", "<leader>t", "<cmd>ToggleTerm<CR>", { noremap = true, silent = true, desc = "Terminal" })
 --

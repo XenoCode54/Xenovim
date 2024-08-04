@@ -23,7 +23,7 @@ return {
 				},
 			},
 			chat = {
-				welcome_message = WELCOME_MESSAGE,
+				-- welcome_message = WELCOME_MESSAGE,
 				loading_text = "Loading, please wait ...",
 				keymaps = {
 					close = "<C-c>",
@@ -136,7 +136,8 @@ return {
 				},
 			},
 			openai_params = {
-				model = "gpt-3.5-turbo",
+				-- model = "gpt-3.5-turbo",
+				model = "gpt-4o-mini",
 				frequency_penalty = 0,
 				presence_penalty = 0,
 				max_tokens = 300,
@@ -145,7 +146,7 @@ return {
 				n = 1,
 			},
 			openai_edit_params = {
-				model = "gpt-3.5-turbo",
+				model = "gpt-4o-mini",
 				frequency_penalty = 0,
 				presence_penalty = 0,
 				temperature = 0,
@@ -153,7 +154,9 @@ return {
 				n = 1,
 			},
 			use_openai_functions_for_edits = false,
-			actions_paths = {},
+			actions_paths = {
+        
+      },
 		})
 	end,
 	dependencies = {
