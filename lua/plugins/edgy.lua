@@ -6,6 +6,11 @@ return {
 			"<leader>ue",
 			function()
 				require("edgy").toggle()
+				-- Get current filetype and set it to markdown if the current filetype is copilot-chat
+				local ft = vim.bo.filetype
+				if ft == "copilot-chat" then
+					vim.bo.filetype = "markdown"
+				end
 			end,
 			desc = "Edgy Toggle",
 		},
@@ -15,11 +20,6 @@ return {
 	opts = function()
 		local opts = {
 			right = {
-				-- {
-				--   title = "Copilot Chat",
-				--   ft = "copilot-chat",
-				--   size = { width = 0.4 },
-				-- },
 				{
 					ft = "noice",
 					size = { width = 0.4 },
@@ -47,6 +47,12 @@ return {
 				{ title = "Neotest Output", ft = "neotest-output-panel", size = { width = 0.4 } },
 			},
 			bottom = {
+				{
+					title = "Trouble",
+					ft = "trouble",
+					size = { height = 0.3 },
+					-- pinned = true,
+				},
 				-- {
 				--   title = "Terminal",
 				--   ft = "toggleterm",
@@ -57,23 +63,36 @@ return {
 				-- },
 			},
 			left = {
+				{
+					title = "Neo-Tree",
+					ft = "neo-tree",
+					filter = function(buf)
+						return vim.b[buf].neo_tree_source == "filesystem"
+					end,
+					pinned = true,
+					open = function()
+						vim.api.nvim_input("<esc><space>e")
+					end,
+					size = { width = 0.25 },
+					-- size = { height = 0.5 },
+				},
 				-- {
-				--   title = "Neo-Tree",
-				--   ft = "neo-tree",
-				--   filter = function(buf)
-				--     return vim.b[buf].neo_tree_source == "filesystem"
-				--   end,
-				--   pinned = true,
-				--   open = function()
-				--     vim.api.nvim_input("<esc><space>e")
-				--   end,
-				--   size = { width = 0.4 },
-				--   -- size = { height = 0.5 },
+				-- 	title = "AI-ASSISTANT",
+				-- 	ft = "copilot-chat",
+				-- 	size = { width = 0.3 },
+				-- 	open = function()
+				-- 		local ft = vim.bo.filetype
+				-- 		if ft == "copilot-chat" then
+				-- 			vim.bo.filetype = "markdown"
+				-- 		end
+				-- 	end,
+				-- 	pinned = true,
 				-- },
 				{
-					title = "Trouble",
-					ft = "trouble",
-					size = { width = 0.25 },
+					title = "AI-ASSISTANT",
+					ft = "avante",
+					size = { width = 0.3 },
+					pinned = true,
 				},
 				{ title = "Neotest Summary", ft = "neotest-summary" },
 				{
@@ -82,7 +101,7 @@ return {
 					filter = function(buf)
 						return vim.b[buf].neo_tree_source == "git_status"
 					end,
-					pinned = true,
+					-- pinned = true,
 					open = "Neotree position=right git_status",
 				},
 				{

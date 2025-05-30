@@ -15,23 +15,29 @@ return {
 	-- },
 	{
 		"folke/tokyonight.nvim",
-		opts = {
-			transparent = true,
-			styles = {
-				sidebars = "transparent",
-				floats = "transparent",
-			},
-		},
+		lazy = true,
+		opts = { style = "moon" },
 	},
+	-- {
+	-- 	"folke/tokyonight.nvim",
+	-- 	opts = {
+	-- 		-- transparent = true,
+	-- 		styles = {
+	-- 			-- sidebars = "transparent",
+	-- 			-- floats = "transparent",
+	-- 		},
+	-- 	},
+	-- },
 	-- {
 	-- 	"LazyVim/LazyVim",
 	-- 	opts = {
 	-- 		colorscheme = "tokyonight",
-	-- 		transparent_background = true,
-	-- 		background = "",
+	-- 		-- transparent_background = true,
+	-- 		-- background = "",
 	-- 	},
 	-- },
 }
+
 -- return {
 --   "catppuccin/nvim",
 --   lazy = true,

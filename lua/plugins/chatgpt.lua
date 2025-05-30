@@ -4,34 +4,28 @@ return {
 	event = "VeryLazy",
 	config = function()
 		require("chatgpt").setup({
-			-- api_key_cmd = "echo $OPENAI_API_KEY",
-			-- api_key_cmd = "echo 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",
-			-- api_key_cmd = "echo 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",
-			-- api_key_cmd = "echo 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",
-			api_key_cmd = "echo sk-proj-72vxYk56350xo5y6pWpxT3BlbkFJsYrhhMZSA0vA9t5xXgmR",
-			-- api_key_cmd = [[lua -e "print(os.getenv('OPENAI_API_KEY'))"]],
 			edit_with_instructions = {
 				diff = true,
 				keymaps = {
 					close = "<C-c>",
 					accept = "<C-y>",
-					toggle_diff = "<C-d>",
-					toggle_settings = "<C-o>",
+					toggle_diff = "<C-g>",
+					toggle_settings = "<C-a>",
 					toggle_help = "<C-h>",
 					cycle_windows = "<Tab>",
-					use_output_as_input = "<C-i>",
+					use_output_as_input = "<C-o>",
 				},
 			},
 			chat = {
 				-- welcome_message = WELCOME_MESSAGE,
 				loading_text = "Loading, please wait ...",
 				keymaps = {
-					close = "<C-c>",
+					close = "q",
 					yank_last = "<C-y>",
 					yank_last_code = "<C-k>",
-					scroll_up = "<C-u>",
-					scroll_down = "<C-d>",
-					new_session = "<C-n>",
+					scroll_up = "pageup",
+					scroll_down = "pagedown",
+					new_session = "<C-c>",
 					cycle_windows = "<Tab>",
 					cycle_modes = "<C-f>",
 					next_message = "<C-j>",
@@ -42,8 +36,8 @@ return {
 					draft_message = "<C-r>",
 					edit_message = "e",
 					delete_message = "d",
-					toggle_settings = "<C-o>",
-					toggle_sessions = "<C-p>",
+					toggle_settings = "<C-a>",
+					toggle_sessions = "<C-o>",
 					toggle_help = "<C-h>",
 					toggle_message_role = "<C-r>",
 					toggle_system_role_open = "<C-s>",
@@ -140,7 +134,7 @@ return {
 				model = "gpt-4o-mini",
 				frequency_penalty = 0,
 				presence_penalty = 0,
-				max_tokens = 300,
+				max_tokens = 5000,
 				temperature = 0,
 				top_p = 1,
 				n = 1,
@@ -154,9 +148,7 @@ return {
 				n = 1,
 			},
 			use_openai_functions_for_edits = false,
-			actions_paths = {
-        
-      },
+			actions_paths = {},
 		})
 	end,
 	dependencies = {

@@ -8,6 +8,66 @@
 -- local mark = require("harpoon.mark")
 -- local ui = require("harpoon.ui")
 --
+local harpoon = require("harpoon")
+
+-- REQUIRED
+harpoon:setup()
+-- REQUIRED
+--
+vim.keymap.set("n", "<leader>H", function()
+	harpoon:list():add()
+end, { noremap = true, desc = "Add File To Harpoon" })
+vim.keymap.set("n", "<leader>h", function()
+	harpoon.ui:toggle_quick_menu(harpoon:list())
+end, { noremap = true, desc = "Harpoon List" })
+
+vim.keymap.set("n", "<C-l>", function()
+	harpoon:list():select(1)
+end, { noremap = true, desc = "Nav File 1" })
+vim.keymap.set("n", "<C-u>", function()
+	harpoon:list():select(2)
+end, { noremap = true, desc = "Nav File 2" })
+vim.keymap.set("n", "<C-y>", function()
+	harpoon:list():select(3)
+end, { noremap = true, desc = "Nav File 3" })
+vim.keymap.set("n", "<C-;>", function()
+	harpoon:list():select(4)
+end, { noremap = true, desc = "Nav File 4" })
+
+-- vim.keymap.set("n", "<leader>cb", function()
+-- 	local old_text = vim.fn.input("Old text: ")
+-- 	local new_text = vim.fn.input("New text: ")
+-- 	if old_text == "" then
+-- 		return
+-- 	end
+--
+-- 	-- Perform the substitution
+-- 	vim.cmd(":%s/" .. old_text .. "/" .. new_text .. "/g")
+--
+-- 	-- Move the cursor to the first instance of the old text
+-- 	vim.cmd("normal! gg")
+-- 	vim.fn.search(old_text)
+-- end, { noremap = true, silent = true })
+
+vim.keymap.set("n", "<leader>sf", function()
+	local old_text = vim.fn.input("Old text: ")
+	if old_text == "" then
+		return
+	end
+
+	local new_text = vim.fn.input("New text: ")
+	if new_text == "" then
+		return
+	end
+
+	-- Create the substitution command with highlighting
+	local cmd = ":%s/" .. old_text .. "/" .. new_text .. "/gc"
+
+	-- Execute the command with incremental highlighting
+	vim.cmd("set inccommand=nosplit")
+	vim.cmd(cmd)
+end, { noremap = true, silent = true, desc = "Find and Replace Single File" })
+
 -- vim.keymap.set("n", "<leader>0", mark.add_file, { noremap = true, desc = "Add File To Harpoon" })
 -- vim.keymap.set("n", "<leader>i", ui.toggle_quick_menu, { noremap = true, desc = "iHarpoon Menu" })
 --
@@ -159,18 +219,22 @@ vim.keymap.set(
 	{ noremap = true, desc = "Goto Preview References" }
 )
 
-vim.keymap.set(
-	"n",
-	"<leader>i",
-	'<cmd>lua require("fastaction").code_action()<CR>',
-	{ buffer = bufnr, desc = "iAction" }
-)
-vim.keymap.set(
-	"v",
-	"<leader>i",
-	"<esc><cmd>lua require('fastaction').range_code_action()<CR>",
-	{ buffer = bufnr, desc = "iAction" }
-)
+-- Create a function to prompt for old and new text, perform the substitution, and place the cursor
+
+-- Map the function to a key, for example <leader>r
+
+-- vim.keymap.set(
+-- 	"n",
+-- 	"<leader>i",
+-- 	'<cmd>lua require("fastaction").code_action()<CR>',
+-- 	{ buffer = bufnr, desc = "iAction" }
+-- )
+-- vim.keymap.set(
+-- 	"v",
+-- 	"<leader>i",
+-- 	"<esc><cmd>lua require('fastaction').range_code_action()<CR>",
+-- 	{ buffer = bufnr, desc = "iAction" }
+-- )
 
 -- Remap j key to n key to move down in normal modes
 -- Normal modes
@@ -181,10 +245,10 @@ vim.keymap.set("n", "n", "j", { noremap = true, silent = true })
 vim.keymap.set("n", "s", "i", { noremap = true, silent = true })
 vim.keymap.set("n", "i", "l", { noremap = true, silent = true })
 
-vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "move right" })
-vim.keymap.set("n", "<C-n>", "<C-w>j", { desc = "move left" })
+vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "move left" })
+vim.keymap.set("n", "<C-n>", "<C-w>j", { desc = "move down" })
 vim.keymap.set("n", "<C-e>", "<C-w>k", { desc = "move top" })
-vim.keymap.set("n", "<C-i>", "<C-w>l", { desc = "move down" })
+vim.keymap.set("n", "<C-i>", "<C-w>l", { desc = "move right" })
 
 -- Visual modes
 vim.keymap.set("v", "e", "k", { noremap = true, silent = true })
@@ -215,6 +279,31 @@ vim.keymap.set("n", "dk", "de", { noremap = true, silent = true })
 vim.keymap.set("n", "dj", "dn", { noremap = true, silent = true })
 vim.keymap.set("n", "ds", "di", { noremap = true, silent = true })
 
+-- Tab navigation
+vim.keymap.set("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Previous buffer" })
+vim.keymap.set("n", "<S-i>", "<cmd>bnext<cr>", { desc = "Next buffer" })
+
+-- Focus autoresize
+vim.keymap.set("n", "<leader>wf", "<cmd>FocusAutoresize<cr>", { desc = "Focus Autoresize" })
+
+-- Change '<C-g>' here to any keycode you like.
+vim.keymap.set("i", "<C-g>", function()
+	return vim.fn["codeium#Accept"]()
+end, { expr = true, silent = true })
+vim.keymap.set("i", "<c-;>", function()
+	return vim.fn["codeium#CycleCompletions"](1)
+end, { expr = true, silent = true })
+vim.keymap.set("i", "<c-,>", function()
+	return vim.fn["codeium#CycleCompletions"](-1)
+end, { expr = true, silent = true })
+vim.keymap.set("i", "<c-x>", function()
+	return vim.fn["codeium#Clear"]()
+end, { expr = true, silent = true })
+vim.keymap.set("n", "<leader>al", function()
+	return vim.fn["codeium#Chat"]()
+end, { expr = true, silent = true, desc = "Toggle (Codeium)" })
+
+vim.keymap.set("n", "<leader>gd", "<cmd>LazyDocker<CR>", { desc = "LazyDocker", noremap = true, silent = true })
 -- Remap hh to <esc>
 -- Insert modes
 vim.keymap.set("i", "hh", "<esc>", { noremap = true, silent = true })
@@ -230,30 +319,33 @@ vim.api.nvim_set_keymap(
 )
 --
 --integer is the index of the terminal
--- -- Open the first terminal
-vim.api.nvim_set_keymap(
+-- Open the first terminal
+vim.keymap.set(
 	"n",
 	"<leader>os",
 	'<cmd>lua require("toggleterm").toggle(2)<CR>',
 	{ noremap = true, silent = true, desc = "Secondary Terminal" }
 )
---
---ast
--- -- Open the second terminal
-vim.api.nvim_set_keymap(
+
+-- Open the second terminal
+vim.keymap.set(
 	"n",
 	"<leader>ot",
 	'<cmd>lua require("toggleterm").toggle(3)<CR>',
-	{ noremap = true, silent = true, desc = "Tetiary Terminal" }
+	{ noremap = true, silent = true, desc = "Tertiary Terminal" }
 )
 
--- -- Open the third terminal
-vim.api.nvim_set_keymap(
+-- Open the third terminal
+vim.keymap.set(
 	"n",
 	"<leader>oa",
 	'<cmd>lua require("toggleterm").toggle(4)<CR>',
 	{ noremap = true, silent = true, desc = "Adequate Terminal" }
 )
+
+-- vim.keymap.set("n", "<leader>cq", function()
+-- 	Snacks.picker.search_history()
+-- end, { noremap = true, silent = true, desc = "cccccc" })
 
 -- { "<leader>r", "", desc = "Recent" },
 -- vim.api.nvim_set_keymap(
@@ -355,31 +447,55 @@ vim.api.nvim_set_keymap(
 -- )
 
 -- Move highlighted lines in visual mode
-vim.keymap.set("v", "N", ":m '>+1<CR>gv=gv", { noremap = true, silent = true })
-vim.keymap.set("v", "E", ":m '<-2<CR>gv=gv", { noremap = true, silent = true })
+vim.keymap.set("v", "N", ":m '>+1<CR>gv=gv", { noremap = true, silent = true, desc = "Move highlighted line down" })
+vim.keymap.set("v", "E", ":m '<-2<CR>gv=gv", { noremap = true, silent = true, desc = "Move highlighted line up" })
 
 -- Let cursor stay in the middle of screen during page up and down
-vim.keymap.set("n", "N", "<C-d>zz", { noremap = true, silent = true })
-vim.keymap.set("n", "E", "<C-u>zz", { noremap = true, silent = true })
+vim.keymap.set("n", "N", "<C-d>zz", { noremap = true, silent = true, desc = "Page down and center" })
+vim.keymap.set("n", "E", "<C-u>zz", { noremap = true, silent = true, desc = "Page up and center" })
 
 -- Let search terms stay in the middle of screen
-vim.keymap.set("n", "j", "nzzzv", { noremap = true, silent = true })
-vim.keymap.set("n", "J", "Nzzzv", { noremap = true, silent = true })
+vim.keymap.set("n", "j", "nzzzv", { noremap = true, silent = true, desc = "Move down and center" })
+vim.keymap.set("n", "J", "Nzzzv", { noremap = true, silent = true, desc = "Move up and center" })
 -- Remap j key to n key to move down in normal modes
 --
 -- Comment out code
 -- local keys = {
 --   { "<C-/>", "<cmd>CommentToggle<cr>" }, -- comment toggle with Ctrl+/
 -- }
-vim.keymap.set(
-	"n",
-	"<leader>m",
-	-- ":lua MiniFiles.open()<CR>",
-	function()
-		require("mini.files").open(vim.api.nvim_buf_get_name(0), true)
-	end,
-	{ noremap = true, silent = true, desc = "Mini File Explorer" }
-)
+-- vim.keymap.set(
+-- 	"n",
+-- 	"<leader>m",
+-- 	-- ":lua MiniFiles.open()<CR>",
+-- 	function()
+-- 		require("mini.files").open(vim.api.nvim_buf_get_name(0), true)
+-- 	end,
+-- 	{ noremap = true, silent = true, desc = "Mini File Explorer" }
+-- )
+-- vim.keymap.set("n", "<leader>M", function()
+-- 	require("mini.files").open(vim.uv.cwd(), true)
+-- end, {
+-- 	desc = "Mini File Explorer (cwd)",
+-- 	noremap = true,
+-- 	silent = true,
+-- })
+
+-- vim.keymap.set(
+-- 	"n",
+-- 	"<leader>e",
+-- 	-- ":lua MiniFiles.open()<CR>",
+-- 	function()
+-- 		require("mini.files").open(vim.api.nvim_buf_get_name(0), true)
+-- 	end,
+-- 	{ noremap = true, silent = true, desc = "Mini File Explorer" }
+-- )
+-- vim.keymap.set("n", "<leader>E", function()
+-- 	require("mini.files").open(vim.uv.cwd(), true)
+-- end, {
+-- 	desc = "Mini File Explorer (cwd)",
+-- 	noremap = true,
+-- 	silent = true,
+-- })
 
 -- vim.keymap.set("n", "<leader>n", function()
 --   require("edgy").toggle()
@@ -391,6 +507,30 @@ vim.keymap.set(
 --   ":Neotree reveal toggle<CR>",
 --   { noremap = true, silent = true, desc = "Neotree Reveal File" }
 -- )
+
+vim.keymap.set(
+	"n",
+	"<leader>aot",
+	":Augment chat-toggle<cr>",
+	{ noremap = true, silent = true, desc = "Toggle Augment Chat" }
+)
+vim.keymap.set("n", "<leader>aoa", ":Augment chat<cr>", { noremap = true, silent = true, desc = "Open Augment Chat" })
+vim.keymap.set(
+	"n",
+	"<leader>aon",
+	":Augment chat-new<cr>",
+	{ noremap = true, silent = true, desc = "New Augment Chat" }
+)
+
+-- Visual mode mapping
+vim.keymap.set(
+	"v",
+	"<leader>aoa",
+	":Augment chat<cr>",
+	{ noremap = true, silent = true, desc = "Open Augment Chat with Selection" }
+)
+
+vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer.fish<CR>")
 
 vim.keymap.set("n", "<leader>asx", ":CodyToggle<cr>", { noremap = true, silent = true, desc = "Toggle Cody View" })
 vim.keymap.set("n", "<leader>aso", ":CodyChat<cr>", { noremap = true, silent = true, desc = "Open Cody Chat" })
@@ -409,6 +549,7 @@ vim.keymap.set("v", "<leader>asd", ":CodyTask ", { noremap = true, silent = fals
 -- vim.keymap.set("n", "<leader>nsx", ":CodyToggle<cr>", { noremap = true, silent = true, desc = "AI Toggle View" })
 
 vim.keymap.set("n", "<leader>aco", ":ChatGPT<cr>", { noremap = true, silent = true, desc = "Open ChatGPT View" })
+-- vim.keymap.set("n", "<leader>ao", ":ChatGPT<cr>", { noremap = true, silent = true, desc = "Toggle (ChatGPT)" })
 vim.keymap.set(
 	"n",
 	"<leader>acp",
@@ -451,6 +592,12 @@ vim.keymap.set(
 	":ChatGPTRun fix_bugs<cr>",
 	{ noremap = true, silent = true, desc = "Fix Bugs Using ChatGPT" }
 )
+-- vim.keymap.set(
+-- 	"n",
+-- 	"<leader>af",
+-- 	":ChatGPTRun fix_bugs<cr>",
+-- 	{ noremap = true, silent = true, desc = "Fix Bugs (ChatGPT)" }
+-- )
 vim.keymap.set(
 	"n",
 	"<leader>acag",
@@ -467,19 +614,19 @@ vim.keymap.set(
 	"n",
 	"<leader>acao",
 	":ChatGPTRun optimize_code<cr>",
-	{ noremap = true, silent = true, desc = "Optimize Code with ChatGPT's Help" }
+	{ noremap = true, silent = true, desc = "Enhance code efficiency with ChatGPT" }
 )
 vim.keymap.set(
 	"n",
 	"<leader>acar",
 	":ChatGPTRun roxygen_edit<cr>",
-	{ noremap = true, silent = true, desc = "Edit Roxygen Comments Using ChatGPT" }
+	{ noremap = true, silent = true, desc = "Refine Roxygen documentation with ChatGPT" }
 )
 vim.keymap.set(
 	"n",
 	"<leader>acas",
 	":ChatGPTRun summarize<cr>",
-	{ noremap = true, silent = true, desc = "Summarize Text with ChatGPT" }
+	{ noremap = true, silent = true, desc = "Generate concise text summary using ChatGPT" }
 )
 vim.keymap.set(
 	"n",
@@ -499,12 +646,12 @@ vim.keymap.set(
 	":ChatGPTEditWithInstructions<cr> ",
 	{ noremap = true, silent = true, desc = "Edit Code with Specific Instructions in ChatGPT" }
 )
-vim.keymap.set(
-	"n",
-	"<leader>ae",
-	":ChatGPTEditWithInstructions<cr> ",
-	{ noremap = true, silent = true, desc = "Edit Code (ChatGPT)" }
-)
+-- vim.keymap.set(
+-- 	"n",
+-- 	"<leader>ae",
+-- 	":ChatGPTEditWithInstructions<cr> ",
+-- 	{ noremap = true, silent = true, desc = "Edit Code (ChatGPT)" }
+-- )
 
 vim.keymap.set("v", "<leader>aco", ":ChatGPT<cr>", { noremap = true, silent = true, desc = "Open ChatGPT View" })
 vim.keymap.set(
@@ -624,12 +771,10 @@ vim.keymap.set(
 
 -- vim.keymap.set({ "v", "n" }, "<leader>h", require("actions-preview").code_actions, { desc = "Code Action" })
 -- vim.keymap.set({ "v", "n" }, "<leader>h", ":CodeActionMenu<cr>", { desc = "Code Action", silent = true })
-vim.keymap.set(
-	{ "v", "n" },
-	"<leader>ca",
-	require("actions-preview").code_actions,
-	{ desc = "Code Action", noremap = true }
-)
+-- vim.keymap.set({ "v", "n" }, "<leader>i", require("actions-preview").code_actions, { desc = "iAction", noremap = true })
+vim.keymap.set({ "v", "n" }, "<leader>i", function()
+	require("tiny-code-action").code_action()
+end, { noremap = true, silent = true, desc = "iAction" })
 
 vim.keymap.set(
 	"n",
@@ -686,4 +831,7 @@ vim.keymap.set("n", "X", "<CMD>LazyExtras<CR>", { noremap = true, silent = true,
 
 vim.keymap.set("n", "Y", "y$", { desc = "Yank to end of line" })
 -- vim.keymap.set("n", "<leader>p", ":YankyRingHistory<CR>", { noremap = true, silent = true, desc = "Yank history" })
+--
+--
+--
 --

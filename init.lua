@@ -7,13 +7,45 @@ local colors = require("material.colors")
 -- At the top of your init.lua, ensure you've required the necessary vim functions
 -- Pull in the wezterm API
 -- local act = wezterm.action
---
---
+
 -- -- In newer versions of wezterm, use the config_builder which will
 -- -- help provide clearer error messages
 -- if wezterm.config_builder then
 -- 	config = wezterm.config_builder()
 -- end
+-- require("focus").setup({
+-- 	enable = true, -- Enable module
+-- 	commands = true, -- Create Focus commands
+-- 	autoresize = {
+-- 		enable = true, -- Enable or disable auto-resizing of splits
+-- 		width = 150, -- Force width for the focused window
+-- 		height = 0, -- Force height for the focused window
+-- 		minwidth = 50, -- Force minimum width for the unfocused window
+-- 		minheight = 0, -- Force minimum height for the unfocused window
+-- 		height_quickfix = 10, -- Set the height of quickfix panel
+-- 	},
+-- 	split = {
+-- 		bufnew = false, -- Create blank buffer for new split windows
+-- 		tmux = false, -- Create tmux splits instead of neovim splits
+-- 	},
+-- 	ui = {
+-- 		number = true, -- Display line numbers in the focussed window only
+-- 		relativenumber = true, -- Display relative line numbers in the focussed window only
+-- 		hybridnumber = true, -- Display hybrid line numbers in the focussed window only
+-- 		absolutenumber_unfocussed = true, -- Preserve absolute numbers in the unfocussed windows
+-- 		cursorline = false, -- Display a cursorline in the focussed window only
+-- 		cursorcolumn = false, -- Display cursorcolumn in the focussed window only
+-- 		colorcolumn = {
+-- 			enable = false, -- Display colorcolumn in the foccused window only
+-- 			list = "+1", -- Set the comma-saperated list for the colorcolumn
+-- 		},
+-- 		signcolumn = true, -- Display signcolumn in the focussed window only
+-- 		winhighlight = false, -- Auto highlighting for focussed/unfocussed windows
+-- 	},
+-- })
+-- Unbind Tab key in normal and insert modes
+vim.api.nvim_set_keymap("n", "<Tab>", "<Nop>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("i", "<Tab>", "<Nop>", { noremap = true, silent = true })
 
 wk.add({
 	{ "<leader>ac", group = "ChatGPT" },
@@ -21,13 +53,14 @@ wk.add({
 	{ "<leader>acr", group = "ChatGPT Run" },
 	{ "<leader>as", group = "SourceGraph" },
 	{ "<leader>o", group = "Terminals" },
-	{ "<leader>k", desc = "Save File", icon = "S" },
+	{ "<leader>k", desc = "Save File", icon = "💾" },
+	{ "<leader>ay", group = "Avante" },
+	{ "<leader>ao", group = "Augment Code" },
 })
 
+-- Neovide configuration
 vim.opt.guifont = "JetBrains Mono NL:h20"
-
--- vim.opt.guifont = "DejaVu Sans Mono"
-vim.g.neovide_transparency = 0.7
+vim.g.neovide_transparency = 0.9
 vim.g.transparency = 0.7
 vim.g.neovide_fullscreen = false
 vim.g.neovide_refresh_rate = 60
@@ -113,17 +146,49 @@ vim.g.neovide_background_color = "#090b10"
 -- 	-- rest of your lspconfig.sonarlint configuration
 -- })
 
-require("material").setup({
+-- Configure Avante plugin
+require("plugins.avante").opts = {
+	provider = "claude",
+	claude = {
+		endpoint = "https://api.anthropic.com",
+		model = "claude-3-5-sonnet-20240620",
+		temperature = 0,
+		max_tokens = 4096,
+	},
+	hints = { enabled = true },
+	windows = {
+		wrap = true,
+		width = 20,
+		sidebar_header = {
+			align = "center",
+			rounded = true,
+		},
+	},
+	highlights = {
+		diff = {
+			current = "DiffText",
+			incoming = "DiffAdd",
+		},
+	},
+	diff = {
+		debug = false,
+		autojump = true,
+		list_opener = "copen",
+	},
+}
 
-	-- contrast = {
-	-- 	terminal = true, -- Enable contrast for the built-in terminal
-	-- 	sidebars = true, -- Enable contrast for sidebar-like windows ( for example Nvim-Tree )
-	-- 	floating_windows = true, -- Enable contrast for floating windows
-	-- 	cursor_line = true, -- Enable darker background for the cursor line
-	-- 	lsp_virtual_text = true, -- Enable contrasted background for lsp virtual text
-	-- 	non_current_windows = true, -- Enable contrasted background for non-current windows
-	-- 	filetypes = {}, -- Specify which filetypes get the contrasted (darker) background
-	-- },
+require("avante_lib").load()
+
+require("material").setup({
+	contrast = {
+		terminal = true, -- Enable contrast for the built-in terminal
+		sidebars = true, -- Enable contrast for sidebar-like windows ( for example Nvim-Tree )
+		floating_windows = true, -- Enable contrast for floating windows
+		cursor_line = true, -- Enable darker background for the cursor line
+		lsp_virtual_text = true, -- Enable contrasted background for lsp virtual text
+		non_current_windows = true, -- Enable contrasted background for non-current windows
+		filetypes = {}, -- Specify which filetypes get the contrasted (darker) background
+	},
 
 	styles = { -- Give comments style such as bold, italic, underline etc.
 		comments = { --[[ italic = true ]]
@@ -204,6 +269,7 @@ require("material").setup({
 
 	custom_highlights = {}, -- Overwrite highlights with your own
 })
+
 vim.cmd("colorscheme material")
 
 require("nvim-ts-autotag").setup({
@@ -465,19 +531,107 @@ vim.opt.termguicolors = true
 -- vim.g.WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = 1
 local user = "XENON"
 local ai = "BELLA"
-require("CopilotChat").setup({
-	question_header = "   " .. user .. " ",
-	answer_header = "   " .. ai .. " ",
-	context = "buffers", -- Default context to use, 'buffers', 'buffer' or none (can be specified manually in prompt via @).
-	show_help = false, -- Shows help message as virtual lines when waiting for user input
-	window = {
-		layout = "float",
-		width = 0.8, -- fractional width of parent
-		height = 0.6, -- fractional height of parent
-		relative = "editor", -- 'editor', 'win', 'cursor', 'mouse'
-		title = "", -- title of chat window
-	},
-})
+
+local prompts = {
+	-- Code related prompts
+	Explain = "Please explain how the following code works.",
+	Review = "Please review the following code and provide suggestions for improvement.",
+	Tests = "Please explain how the selected code works, then generate unit tests for it.",
+	Refactor = "Please refactor the following code to improve its clarity and readability.",
+	FixCode = "Please fix the following code to make it work as intended.",
+	FixError = "Please explain the error in the following text and provide a solution.",
+	BetterNamings = "Please provide better names for the following variables and functions.",
+	Documentation = "Please provide documentation for the following code.",
+	SwaggerApiDocs = "Please provide documentation for the following API using Swagger.",
+	SwaggerJsDocs = "Please write JSDoc for the following API using Swagger.",
+	-- Text related prompts
+	Summarize = "Please summarize the following text.",
+	Spelling = "Please correct any grammar and spelling errors in the following text.",
+	Wording = "Please improve the grammar and wording of the following text.",
+	Concise = "Please rewrite the following text to make it more concise.",
+	-- Additional prompts
+	Optimize = "Please optimize the following code for better performance.",
+	Debug = "Please debug the following code and identify any issues.",
+	Translate = "Please translate the following text to Spanish.",
+	Convert = "Please convert the following code from Python to JavaScript.",
+	StyleGuide = "Please ensure the following code adheres to the specified style guide.",
+	BestPractices = "Please update the following code to follow best practices.",
+	ExplainConcept = "Please explain the concept demonstrated by the following code.",
+}
+-- 
+-- require("CopilotChat").setup({
+-- 	question_header = "   " .. user .. " ",
+-- 	answer_header = "   " .. ai .. " ",
+-- 	model = "gpt-4o", -- GPT model to use, 'gpt-3.5-turbo', 'gpt-4', or 'gpt-4o'
+-- 	context = "buffers", -- Default context to use, 'buffers', 'buffer' or none (can be specified manually in prompt via @).
+-- 	show_help = false, -- Shows help message as virtual lines when waiting for user input
+-- 	window = {
+-- 		layout = "float", -- 'vertical', 'horizontal', 'float', 'replace'
+-- 		-- layout = "vertical", -- 'vertical', 'horizontal', 'float', 'replace'
+-- 		position = "left",
+-- 		width = 0.7, -- fractional width of parent
+-- 		height = 0.6, -- fractional height of parent
+-- 		relative = "editor", -- 'editor', 'win', 'cursor', 'mouse'
+-- 		title = "AI-ASSISTANT", -- 'AI-ASSISTANT',title of chat window
+-- 	},
+-- 	prompts = prompts,
+-- 	auto_follow_cursor = false, -- Don't follow the cursor after getting response
+-- 	mappings = {
+-- 		-- Use tab for completion
+-- 		complete = {
+-- 			detail = "Use @<Tab> or /<Tab> for options.",
+-- 			insert = "<Tab>",
+-- 		},
+-- 		-- Close the chat
+-- 		close = {
+-- 			normal = "q",
+-- 			insert = "<C-c>",
+-- 		},
+-- 		-- Reset the chat buffer
+-- 		reset = {
+-- 			normal = "<C-x>",
+-- 			insert = "<C-x>",
+-- 		},
+-- 		-- Submit the prompt to Copilot
+-- 		submit_prompt = {
+-- 			normal = "<CR>",
+-- 			insert = "<C-CR>",
+-- 		},
+-- 		-- Accept the diff
+-- 		accept_diff = {
+-- 			normal = "<C-y>",
+-- 			insert = "<C-y>",
+-- 		},
+-- 		-- Yank the diff in the response to register
+-- 		yank_diff = {
+-- 			normal = "gmy",
+-- 		},
+-- 		-- Show the diff
+-- 		show_diff = {
+-- 			normal = "gmd",
+-- 		},
+-- 		-- Show the prompt
+-- 		show_system_prompt = {
+-- 			normal = "gmp",
+-- 		},
+-- 		-- Show the user selection
+-- 		show_user_selection = {
+-- 			normal = "gms",
+-- 		},
+-- 	},
+-- 	{
+-- 		"folke/edgy.nvim",
+-- 		optional = true,
+-- 		opts = function(_, opts)
+-- 			opts.left = opts.left or {}
+-- 			table.insert(opts.left, {
+-- 				ft = "copilot-chat",
+-- 				title = "Copilot Chat",
+-- 				size = { width = 30 },
+-- 			})
+-- 		end,
+-- 	},
+-- })
 
 local cmd = vim.cmd
 local fn = vim.fn
@@ -515,7 +669,7 @@ end
 vim.api.nvim_set_hl(0, "CmpItemKindCody", { fg = "#7aa2f7" })
 
 -- vim.g.sg_nvim_node_executable = "C:\\Program Files\\nodejs\\node.exe"
-vim.g.codeium_log_level = "INFO"
+-- vim.g.codeium_log_level = "INFO"
 -- Neovide settings start
 -- vim.opt.guifont = "JetBrainsMonoNerdFontCompleteM"
 
@@ -526,48 +680,57 @@ vim.g.codeium_log_level = "INFO"
 vim.wo.cursorline = false
 -- Default options:
 -- require("gruvbox").setup({
---   terminal_colors = true, -- add neovim terminal colors
---   undercurl = true,
---   underline = true,
---   bold = true,
---   italic = {
---     strings = true,
---     emphasis = true,
---     comments = true,
---     operators = false,
---     folds = true,
---   },
---   strikethrough = true,
---   invert_selection = false,
---   invert_signs = false,
---   invert_tabline = false,
---   invert_intend_guides = false,
---   inverse = true, -- invert background for search, diffs, statuslines and errors
---   contrast = "hard", -- can be "hard", "soft" or empty string
---   palette_overrides = {},
---   overrides = {},
---   dim_inactive = false,
---   transparent_mode = true,
+-- 	terminal_colors = true, -- add neovim terminal colors
+-- 	undercurl = true,
+-- 	underline = true,
+-- 	bold = true,
+-- 	italic = {
+-- 		strings = true,
+-- 		emphasis = true,
+-- 		comments = true,
+-- 		operators = false,
+-- 		folds = true,
+-- 	},
+-- 	strikethrough = true,
+-- 	invert_selection = false,
+-- 	invert_signs = false,
+-- 	invert_tabline = true,
+-- 	invert_intend_guides = false,
+-- 	inverse = true, -- invert background for search, diffs, statuslines and errors
+-- 	contrast = "hard", -- can be "hard", "soft" or empty string
+-- 	palette_overrides = {},
+-- 	overrides = {},
+-- 	dim_inactive = false,
+-- 	transparent_mode = false,
 -- })
 -- vim.cmd("colorscheme gruvbox")
+
+-- vim.cmd("colorscheme gruvbox")
 -- Keep cursor fat like in vim
--- vim.opt.guicursor = "n-v-c:block-Cursor/1Cursor-blinkon0,i-ci:block-Cursor/1Cursor,r-cr:hor20-Cursor/1Cursor"
+vim.opt.guicursor = "n-v-c:block-Cursor/1Cursor-blinkon0,i-ci:block-Cursor/1Cursor,r-cr:hor20-Cursor/1Cursor"
 -- Make the cursor normalnn
-vim.opt.guicursor = "n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor"
+-- vim.opt.guicursor = "n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor"
 
 -- Change and sync color of cursor to lua line
-vim.cmd("augroup custom_cursor")
-vim.cmd("autocmd!")
-vim.cmd("highlight Cursor guifg=none guibg=#83FFFF")
-vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#FECC03")
-vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#83FFFF")
-vim.cmd("augroup END")
+-- vim.cmd("augroup custom_cursor")
+-- vim.cmd("autocmd!")
+-- vim.cmd("highlight Cursor guifg=none guibg=#83FFFF")
+-- vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#FECC03")
+-- vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#83FFFF")
+-- vim.cmd("augroup END")
 
 -- vim.cmd("augroup custom_cursor")
 -- vim.cmd("autocmd!")
 -- vim.cmd("highlight Cursor guifg=none guibg=#7aa2f7")
 -- vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#9ece6a")
 -- vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#7aa2f7")
+-- vim.cmd("augroup END")
+
+-- vim.cmd("augroup custom_cursor")
+-- vim.cmd("autocmd!")
+-- vim.cmd("highlight Cursor guifg=none guibg=#9ece6a")
+-- vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#7aa2f7")
+-- vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#9ece6a")
 -- vim.cmd("augroup END")
 --
 --
@@ -578,12 +741,12 @@ vim.cmd("augroup END")
 -- vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#a89984")
 -- vim.cmd("augroup END")
 
--- vim.cmd("augroup custom_cursor")
--- vim.cmd("autocmd!")
--- vim.cmd("highlight Cursor guifg=none guibg=#ffcc00")
--- vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#83FFFF")
--- vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#ffcc00")
--- vim.cmd("augroup END")
+vim.cmd("augroup custom_cursor")
+vim.cmd("autocmd!")
+vim.cmd("highlight Cursor guifg=none guibg=#ffcc00")
+vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#83FFFF")
+vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#ffcc00")
+vim.cmd("augroup END")
 
 -- vim.cmd("autocmd InsertEnter * norm zz")
 
@@ -755,6 +918,44 @@ require("gitsigns").setup({
 		enable = false,
 	},
 })
+-- local transparent = false -- set to true if you would like to enable transparency
+--
+-- local bg = "#011628"
+-- local bg_dark = "#011423"
+-- local bg_highlight = "#143652"
+-- local bg_search = "#0A64AC"
+-- local bg_visual = "#275378"
+-- local fg = "#CBE0F0"
+-- local fg_dark = "#B4D0E9"
+-- local fg_gutter = "#627E97"
+-- local border = "#547998"
+-- require("tokyonight").setup({
+-- 	style = "night",
+-- 	transparent = transparent,
+-- 	styles = {
+-- 		sidebars = transparent and "transparent" or "dark",
+-- 		floats = transparent and "transparent" or "dark",
+-- 	},
+-- 	on_colors = function(colors)
+-- 		colors.bg = bg
+-- 		colors.bg_dark = transparent and colors.none or bg_dark
+-- 		colors.bg_float = transparent and colors.none or bg_dark
+-- 		colors.bg_highlight = bg_highlight
+-- 		colors.bg_popup = bg_dark
+-- 		colors.bg_search = bg_search
+-- 		colors.bg_sidebar = transparent and colors.none or bg_dark
+-- 		colors.bg_statusline = transparent and colors.none or bg_dark
+-- 		colors.bg_visual = bg_visual
+-- 		colors.border = border
+-- 		colors.fg = fg
+-- 		colors.fg_dark = fg_dark
+-- 		colors.fg_float = fg
+-- 		colors.fg_gutter = fg_gutter
+-- 		colors.fg_sidebar = fg_dark
+-- 	end,
+-- })
+--
+-- vim.cmd("colorscheme tokyonight")
 
 -- require("gruvbox").setup({
 --   transparent_mode = true,
@@ -763,7 +964,7 @@ require("gitsigns").setup({
 -- require("tokyonight").setup({
 -- 	-- your configuration comes here
 -- 	-- or leave it empty to use the default settings
--- 	style = "moon", -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
+-- 	style = "storm", -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
 -- 	light_style = "night", -- The theme is used when the background is set to light
 -- 	transparent = true, -- Enable this to disable setting the background color
 -- 	terminal_colors = true, -- Configure the colors used when opening a `:terminal` in Neovim
@@ -775,6 +976,12 @@ require("gitsigns").setup({
 -- 	sidebars = { "qf", "help" }, -- Set a darker background on sidebar-like windows. For example: `["qf", "vista_kind", "terminal", "packer"]`
 -- 	dim_inactive = true, -- dims inactive windows
 -- 	lualine_bold = true, -- When `true`, section headers in the lualine theme will be bold
+-- 	on_colors = function(colors)
+-- 		-- Customize colors here
+-- 	end,
+-- 	on_highlights = function(highlights, colors)
+-- 		-- Customize highlights here
+-- 	end,
 -- })
 -- vim.cmd("colorscheme tokyonight")
 
@@ -1015,35 +1222,111 @@ require("nvim-treesitter.configs").setup({
 
 -- require("nvim-ts-autotag").setup()
 -- print("vim o shell", vim.o.shell)
+-- require("toggleterm").setup({
+-- 	size = 50,
+-- 	autochdir = true,
+-- 	-- shell = "pwsh",
+-- 	-- shell = "C:\\Program Files\\Git\\bin\\bash.exe", -- replace with your path to Git Bash
+-- 	-- shell = "C:\\ProgramFiles\\Git\\bin\\bash.exe",
+-- 	-- shell = "bash",
+-- 	shell = vim.o.shell,
+-- 	-- shell = "C:\\Program Files\\Git\\bin\\bash.exe -c 'cd /usr/bin && exec bash'",
+-- 	direction = "float",
+-- 	persist_size = true,
+-- 	hide_numbers = false,
+-- 	persist_mode = true,
+-- 	auto_scroll = true,
+-- 	shade_terminals = true,
+-- 	shading_factor = -3,
+-- 	float_opts = {
+-- 		border = "curved",
+-- 		winblend = 3,
+-- 		highlights = {
+-- 			border = "Normal",
+-- 			-- background = "Transparent",
+-- 		},
+-- 	},
+-- 	winbar = {
+-- 		enabled = true,
+-- 		name_formatter = function(term) --  term: Terminal
+-- 			return term.name
+-- 		end,
+-- 	},
+-- })
+
 require("toggleterm").setup({
+	-- size can be a number or function which is passed the current terminal
+	-- size = 50 | function(term)
+	--   if term.direction == "horizontal" then
+	--     return 15
+	--   elseif term.direction == "vertical" then
+	--     return vim.o.columns * 0.4
+	--   end
+	-- end,
 	size = 50,
-	autochdir = true,
-	-- shell = "pwsh",
-	-- shell = "C:\\Program Files\\Git\\bin\\bash.exe", -- replace with your path to Git Bash
-	-- shell = "C:\\ProgramFiles\\Git\\bin\\bash.exe",
-	-- shell = "bash",
-	shell = vim.o.shell,
-	-- shell = "C:\\Program Files\\Git\\bin\\bash.exe -c 'cd /usr/bin && exec bash'",
-	-- direction = "float",
+	-- open_mapping = [[<c-\>]], -- or { [[<c-\>]], [[<c-¥>]] } if you also use a Japanese keyboard.
+	hide_numbers = true, -- hide the number column in toggleterm buffers
+	shade_filetypes = {},
+	autochdir = true, -- when neovim changes it current directory the terminal will change it's own when next it's opened
+	-- highlights = {
+	--   -- highlights which map to a highlight group name and a table of it's values
+	--   -- NOTE: this is only a subset of values, any group placed here will be set for the terminal window split
+	--   Normal = {
+	--     guibg = "<VALUE-HERE>",
+	--   },
+	--   NormalFloat = {
+	--     link = 'Normal'
+	--   },
+	--   FloatBorder = {
+	--     guifg = "<VALUE-HERE>",
+	--     guibg = "<VALUE-HERE>",
+	--   },
+	-- },
+	shade_terminals = true, -- NOTE: this option takes priority over highlights specified so if you specify Normal highlights you should set this to false
+	-- shading_factor = '<number>', -- the percentage by which to lighten dark terminal background, default: -30
+	-- shading_ratio = '<number>', -- the ratio of shading factor for light/dark terminal background, default: -3
+	start_in_insert = true,
+	insert_mappings = true, -- whether or not the open mapping applies in insert mode
+	terminal_mappings = true, -- whether or not the open mapping applies in the opened terminals
 	persist_size = true,
-	hide_numbers = false,
-	persist_mode = true,
-	auto_scroll = true,
-	shade_terminals = true,
-	shading_factor = -3,
+	persist_mode = true, -- if set to true (default) the previous terminal mode will be remembered
+	-- direction = 'vertical' | 'horizontal' | 'tab' | 'float',
+	direction = "float",
+	close_on_exit = true, -- close the terminal window when the process exits
+	clear_env = false, -- use only environmental variables from `env`, passed to jobstart()
+	-- Change the default shell. Can be a string or a function returning a string
+	shell = vim.o.shell,
+	auto_scroll = true, -- automatically scroll to the bottom on terminal output
+	-- This field is only relevant if direction is set to 'float'
 	float_opts = {
 		border = "curved",
-		winblend = 3,
-		highlights = {
-			border = "Normal",
-			background = "Transparent",
-		},
 	},
-	winbar = {
-		enabled = true,
-		name_formatter = function(term) --  term: Terminal
-			return term.name
-		end,
+	-- float_opts = {
+	--   -- The border key is *almost* the same as 'nvim_open_win'
+	--   -- see :h nvim_open_win for details on borders however
+	--   -- the 'curved' border is a custom border type
+	--   -- not natively supported but implemented in this plugin.
+	--   border = 'single' | 'double' | 'shadow' | 'curved' | ... other options supported by win open
+	--   -- like `size`, width, height, row, and col can be a number or function which is passed the current terminal
+	--   width = <value>,
+	--   height = <value>,
+	--   row = <value>,
+	--   col = <value>,
+	--   winblend = 3,
+	--   zindex = <value>,
+	--   title_pos = 'left' | 'center' | 'right', position of the title of the floating window
+	-- },
+	-- winbar = {
+	--   enabled = false,
+	--   name_formatter = function(term) --  term: Terminal
+	--     return term.name
+	--   end
+	-- }},
+	responsiveness = {
+		-- breakpoint in terms of `vim.o.columns` at which terminals will start to stack on top of each other
+		-- instead of next to each other
+		-- default = 0 which means the feature is turned off
+		horizontal_breakpoint = 135,
 	},
 })
 
@@ -1077,103 +1360,105 @@ vim.opt.scrolloff = 11
 
 -- require("material").setup({
 --
---   contrast = {
---     terminal = true, -- Enable contrast for the built-in terminal
---     sidebars = true, -- Enable contrast for sidebar-like windows ( for example Nvim-Tree )
---     floating_windows = false, -- Enable contrast for floating windows
---     cursor_line = false, -- Enable darker background for the cursor line
---     non_current_windows = true, -- Enable contrasted background for non-current windows
---     filetypes = {}, -- Specify which filetypes get the contrasted (darker) background
---   },
+-- 	contrast = {
+-- 		terminal = true, -- Enable contrast for the built-in terminal
+-- 		sidebars = true, -- Enable contrast for sidebar-like windows ( for example Nvim-Tree )
+-- 		floating_windows = false, -- Enable contrast for floating windows
+-- 		cursor_line = false, -- Enable darker background for the cursor line
+-- 		non_current_windows = true, -- Enable contrasted background for non-current windows
+-- 		filetypes = {}, -- Specify which filetypes get the contrasted (darker) background
+-- 	},
 --
---   styles = { -- Give comments style such as bold, italic, underline etc.
---     comments = { [[ italic = true ]] },
---     strings = { [[ bold = true ]] },
---     keywords = { [[ underline = true ]] },
---     functions = { [[ bold = true, undercurl = true ]] },
---     variables = {},
---     operators = {},
---     types = {},
---   },
+-- 	styles = { -- Give comments style such as bold, italic, underline etc.
+-- 		comments = { [[ italic = true ]] },
+-- 		strings = { [[ bold = true ]] },
+-- 		keywords = { [[ underline = true ]] },
+-- 		functions = { [[ bold = true, undercurl = true ]] },
+-- 		variables = {},
+-- 		operators = {},
+-- 		types = {},
+-- 	},
 --
---   plugins = { -- Uncomment the plugins that you use to highlight them
---     -- Available plugins:
---     "dap",
---     "dashboard",
---     "gitsigns",
---     "hop",
---     "indent-blankline",
---     "lspsaga",
---     "mini",
---     "neogit",
---     "neorg",
---     "nvim-cmp",
---     "nvim-navic",
---     "nvim-tree",
---     "nvim-web-devicons",
---     "sneak",
---     "telescope",
---     "trouble",
---     -- "which-key",
---   },
+-- 	plugins = { -- Uncomment the plugins that you use to highlight them
+-- 		-- Available plugins:
+-- 		"dap",
+-- 		"dashboard",
+-- 		"gitsigns",
+-- 		"hop",
+-- 		"indent-blankline",
+-- 		"lspsaga",
+-- 		"mini",
+-- 		"neogit",
+-- 		"neorg",
+-- 		"nvim-cmp",
+-- 		"nvim-navic",
+-- 		"nvim-tree",
+-- 		"nvim-web-devicons",
+-- 		"sneak",
+-- 		"telescope",
+-- 		"trouble",
+-- 		-- "which-key",
+-- 	},
 --
---   disable = {
---     colored_cursor = false, -- Disable the colored cursor
---     borders = false, -- Disable borders between vertically split windows
---     background = false, -- Prevent the theme from setting the background (NeoVim then uses your terminal background)
---     term_colors = false, -- Prevent the theme from setting terminal colors
---     eob_lines = false, -- Hide the end-of-buffer lines
---   },
+-- 	disable = {
+-- 		colored_cursor = false, -- Disable the colored cursor
+-- 		borders = false, -- Disable borders between vertically split windows
+-- 		background = false, -- Prevent the theme from setting the background (NeoVim then uses your terminal background)
+-- 		term_colors = false, -- Prevent the theme from setting terminal colors
+-- 		eob_lines = false, -- Hide the end-of-buffer lines
+-- 	},
 --
---   high_visibility = {
---     lighter = false, -- Enable higher contrast text for lighter style
---     darker = false, -- Enable higher contrast text for darker style
---   },
+-- 	high_visibility = {
+-- 		lighter = false, -- Enable higher contrast text for lighter style
+-- 		darker = false, -- Enable higher contrast text for darker style
+-- 	},
 --
---   lualine_style = "stealth", -- Lualine style ( can be 'stealth' or 'default' )
+-- 	lualine_style = "stealth", -- Lualine style ( can be 'stealth' or 'default' )
 --
---   async_loading = true, -- Load parts of the theme asynchronously for faster startup (turned on by default)
+-- 	async_loading = true, -- Load parts of the theme asynchronously for faster startup (turned on by default)
 --
---   custom_colors = nil, -- If you want to everride the default colors, set this to a function
+-- 	custom_colors = nil, -- If you want to everride the default colors, set this to a function
 --
---   custom_highlights = {}, -- Overwrite highlights with your own
+-- 	custom_highlights = {}, -- Overwrite highlights with your own
 -- })
 -- vim.g.material_disable_background = 0
 
-require("mini.files").setup({
-	mappings = {
-		close = "q",
-		go_in = "T",
-		go_in_plus = "t",
-		go_out = "r",
-		go_out_plus = "H",
-		reset = "<BS>",
-		show_help = "g?",
-		synchronize = "<cr>",
-		trim_left = "<",
-		trim_right = ">",
-	},
-
-	-- General options
-	options = {
-		-- Whether to use for editing directories
-		use_as_default_explorer = true,
-	},
-
-	-- Customization of explorer windows
-	windows = {
-		-- Maximum number of windows to show side by side
-		max_number = math.huge,
-		-- Whether to show preview of file/directory under cursor
-		preview = true,
-		-- Width of focused window
-		width_focus = 35,
-		-- Width of non-focused window
-		width_nofocus = 20,
-		-- Width of preview window
-		width_preview = 70,
-	},
-})
+-- require("mini.files").setup({
+-- 	config = function(_, opts) end,
+--
+-- 	mappings = {
+-- 		close = "q",
+-- 		go_in = "T",
+-- 		go_in_plus = "t",
+-- 		go_out = "r",
+-- 		go_out_plus = "H",
+-- 		reset = "<BS>",
+-- 		show_help = "g?",
+-- 		synchronize = "<cr>",
+-- 		trim_left = "<",
+-- 		trim_right = ">",
+-- 	},
+-- 	-- General options
+-- 	options = {
+-- 		-- Whether to use for editing directories
+-- 		use_as_default_explorer = true,
+-- 		permanent_delete = false,
+-- 	},
+--
+-- 	-- Customization of explorer windows
+-- 	windows = {
+-- 		-- Maximum number of windows to show side by side
+-- 		max_number = math.huge,
+-- 		-- Whether to show preview of file/directory under cursor
+-- 		preview = true,
+-- 		-- Width of focused window
+-- 		width_focus = 35,
+-- 		-- Width of non-focused window
+-- 		width_nofocus = 20,
+-- 		-- Width of preview window
+-- 		width_preview = 70,
+-- 	},
+-- })
 
 -- to use this, make sure to set `opts.modes.char.enabled = false`
 local Config = require("flash.config")
@@ -1190,9 +1475,9 @@ for _, motion in ipairs({ "f", "t", "F", "T" }) do
 	end)
 end
 
-require("notify").setup({
-	background_colour = "#000000",
-})
+-- require("notify").setup({
+-- 	background_colour = "#000000",
+-- })
 
 vim.cmd([[highlight IndentBlanklineIndent1 guifg=#24283b gui=nocombine]])
 
@@ -1231,39 +1516,126 @@ vim.opt.listchars:append("space:⋅")
 local glance = require("glance")
 local actions = glance.actions
 
+-- glance.setup({
+-- 	height = 30, -- Height of the window
+-- 	zindex = 45,
+--
+-- 	-- By default glance will open preview "embedded" within your active window
+-- 	-- when `detached` is enabled, glance will render above all existing windows
+-- 	-- and won't be restiricted by the width of your active window
+-- 	detached = true,
+--
+-- 	-- Or use a function to enable `detached` only when the active window is too small
+-- 	-- (default behavior)
+-- 	detached = function(winid)
+-- 		return vim.api.nvim_win_get_width(winid) < 100
+-- 	end,
+--
+-- 	preview_win_opts = { -- Configure preview window options
+-- 		cursorline = true,
+-- 		number = true,
+-- 		wrap = true,
+-- 	},
+-- 	border = {
+-- 		enable = true, -- Show window borders. Only horizontal borders allowed
+-- 		top_char = "―",
+-- 		bottom_char = "―",
+-- 	},
+-- 	list = {
+-- 		position = "right", -- Position of the list window 'left'|'right'
+-- 		width = 0.33, -- 33% width relative to the active window, min 0.1, max 0.5
+-- 	},
+-- 	theme = { -- This feature might not work properly in nvim-0.7.2
+-- 		enable = true, -- Will generate colors for the plugin based on your current colorscheme
+-- 		mode = "brighten", -- 'brighten'|'darken'|'auto', 'auto' will set mode based on the brightness of your colorscheme
+-- 	},
+-- 	mappings = {
+-- 		list = {
+-- 			["n"] = actions.next, -- Bring the cursor to the next item in the list
+-- 			["e"] = actions.previous, -- Bring the cursor to the previous item in the list
+-- 			["<Down>"] = actions.next,
+-- 			["<Up>"] = actions.previous,
+-- 			["<Tab>"] = actions.next_location, -- Bring the cursor to the next location skipping groups in the list
+-- 			["<S-Tab>"] = actions.previous_location, -- Bring the cursor to the previous location skipping groups in the list
+-- 			["N"] = actions.preview_scroll_win(5),
+-- 			["E"] = actions.preview_scroll_win(-5),
+-- 			["v"] = actions.jump_vsplit,
+-- 			["s"] = actions.jump_split,
+-- 			["t"] = actions.jump_tab,
+-- 			["<CR>"] = actions.jump,
+-- 			["l"] = actions.open_fold,
+-- 			["h"] = actions.close_fold,
+-- 			["<C-c>"] = actions.close,
+-- 			["<C-h>"] = actions.enter_win("preview"), -- Focus preview window
+-- 			["<i>"] = actions.enter_win("preview"), -- Focus preview window
+-- 			["q"] = actions.close,
+-- 			["Q"] = actions.close,
+-- 			["<Esc>"] = actions.close,
+-- 			["o"] = actions.quickfix,
+-- 			-- ['<Esc>'] = false -- disable a mapping
+-- 		},
+-- 		preview = {
+-- 			["Q"] = actions.close,
+-- 			["<C-c>"] = actions.close,
+-- 			["<Tab>"] = actions.next_location,
+-- 			["<S-Tab>"] = actions.previous_location,
+-- 			["<A-o>"] = actions.jump,
+-- 			["<C-h>"] = actions.enter_win("list"), -- Focus list window
+-- 		},
+-- 	},
+-- 	hooks = {},
+-- 	folds = {
+-- 		fold_closed = "",
+-- 		fold_open = "",
+-- 		folded = true, -- Automatically fold list on startup
+-- 	},
+-- 	indent_lines = {
+-- 		enable = true,
+-- 		icon = "│",
+-- 	},
+-- 	winbar = {
+-- 		enable = true, -- Available starting from nvim-0.8+
+-- 	},
+-- })
+
 glance.setup({
-	height = 30, -- Height of the window
+	height = 18, -- Height of the window
 	zindex = 45,
 
-	-- By default glance will open preview "embedded" within your active window
-	-- when `detached` is enabled, glance will render above all existing windows
-	-- and won't be restiricted by the width of your active window
-	detached = true,
+	-- When enabled, adds virtual lines behind the preview window to maintain context in the parent window
+	-- Requires Neovim >= 0.10.0
+	preserve_win_context = true,
 
-	-- Or use a function to enable `detached` only when the active window is too small
-	-- (default behavior)
+	-- Controls whether the preview window is "embedded" within your parent window or floating
+	-- above all windows.
 	detached = function(winid)
+		-- Automatically detach when parent window width < 100 columns
 		return vim.api.nvim_win_get_width(winid) < 100
 	end,
+	-- Or use a fixed setting: detached = true,
 
 	preview_win_opts = { -- Configure preview window options
 		cursorline = true,
 		number = true,
 		wrap = true,
 	},
+
 	border = {
-		enable = true, -- Show window borders. Only horizontal borders allowed
+		enable = false, -- Show window borders. Only horizontal borders allowed
 		top_char = "―",
 		bottom_char = "―",
 	},
+
 	list = {
 		position = "right", -- Position of the list window 'left'|'right'
-		width = 0.33, -- 33% width relative to the active window, min 0.1, max 0.5
+		width = 0.33, -- Width as percentage (0.1 to 0.5)
 	},
-	theme = { -- This feature might not work properly in nvim-0.7.2
-		enable = true, -- Will generate colors for the plugin based on your current colorscheme
-		mode = "brighten", -- 'brighten'|'darken'|'auto', 'auto' will set mode based on the brightness of your colorscheme
+
+	theme = {
+		enable = true, -- Generate colors based on current colorscheme
+		mode = "auto", -- 'brighten'|'darken'|'auto', 'auto' will set mode based on the brightness of your colorscheme
 	},
+
 	mappings = {
 		list = {
 			["n"] = actions.next, -- Bring the cursor to the next item in the list
@@ -1298,19 +1670,25 @@ glance.setup({
 			["<C-h>"] = actions.enter_win("list"), -- Focus list window
 		},
 	},
-	hooks = {},
+
+	hooks = {}, -- Described in Hooks section
+
 	folds = {
 		fold_closed = "",
 		fold_open = "",
 		folded = true, -- Automatically fold list on startup
 	},
+
 	indent_lines = {
-		enable = true,
+		enable = true, -- Show indent guidelines
 		icon = "│",
 	},
+
 	winbar = {
-		enable = true, -- Available starting from nvim-0.8+
+		enable = true, -- Enable winbar for the preview (requires neovim-0.8+)
 	},
+
+	use_trouble_qf = false, -- Quickfix action will open trouble.nvim instead of built-in quickfix list
 })
 
 require("treesitter-context").setup({
@@ -1416,26 +1794,85 @@ require("telescope").setup({
 --   }),
 -- })
 --
-require("actions-preview").setup({
-	diff = {
-		algorithm = "patience",
-		ignore_whitespace = true,
+require("tiny-code-action").setup({
+	--- The backend to use, currently only "vim", "delta" and "difftastic" are supported
+	backend = "delta",
+	backend_opts = {
+		delta = {
+			-- Header from delta can be quite large.
+			-- You can remove them by setting this to the number of lines to remove
+			header_lines_to_remove = 4,
+
+			-- The arguments to pass to delta
+			-- If you have a custom configuration file, you can set the path to it like so:
+			-- args = {
+			--     "--config" .. os.getenv("HOME") .. "/.config/delta/config.yml",
+			-- }
+			args = {
+				"--line-numbers",
+			},
+		},
+		difftastic = {
+			-- Header from delta can be quite large.
+			-- You can remove them by setting this to the number of lines to remove
+			header_lines_to_remove = 1,
+
+			-- The arguments to pass to difftastic
+			args = {
+				"--color=always",
+				"--display=inline",
+				"--syntax-highlight=on",
+			},
+		},
 	},
-	-- telescope = require("telescope.themes").get_dropdown({ winblend = 10 }),
-	telescope = {
-		sorting_strategy = "ascending",
-		-- layout_strategy = "vertical",
-		-- layout_config = {
-		--   width = 0.6,
-		--   height = 0.7,
-		--   prompt_position = "top",
-		--   preview_cutoff = 20,
-		--   preview_height = function(_, _, max_lines)
-		--     return max_lines - 15
-		--   end,
-		-- },
+	telescope_opts = {
+		layout_strategy = "vertical",
+		layout_config = {
+			width = 0.7,
+			height = 0.9,
+			preview_cutoff = 1,
+			preview_height = function(_, _, max_lines)
+				local h = math.floor(max_lines * 0.5)
+				return math.max(h, 10)
+			end,
+		},
+	},
+	-- The icons to use for the code actions
+	-- You can add your own icons, you just need to set the exact action's kind of the code action
+	-- You can set the highlight like so: { link = "DiagnosticError" } or  like nvim_set_hl ({ fg ..., bg..., bold..., ...})
+	signs = {
+		quickfix = { "󰁨", { link = "DiagnosticInfo" } },
+		others = { "?", { link = "DiagnosticWarning" } },
+		refactor = { "", { link = "DiagnosticWarning" } },
+		["refactor.move"] = { "󰪹", { link = "DiagnosticInfo" } },
+		["refactor.extract"] = { "", { link = "DiagnosticError" } },
+		["source.organizeImports"] = { "", { link = "TelescopeResultVariable" } },
+		["source.fixAll"] = { "", { link = "TelescopeResultVariable" } },
+		["source"] = { "", { link = "DiagnosticError" } },
+		["rename"] = { "󰑕", { link = "DiagnosticWarning" } },
+		["codeAction"] = { "", { link = "DiagnosticError" } },
 	},
 })
+-- require("actions-preview").setup({
+-- 	diff = {
+-- 		algorithm = "patience",
+-- 		ignore_whitespace = true,
+-- 	},
+-- 	-- telescope = require("telescope.themes").get_dropdown({ winblend = 10 }),
+-- 	telescope = {
+-- 		sorting_strategy = "ascending",
+-- 		-- layout_strategy = "vertical",
+-- 		-- layout_config = {
+-- 		--   width = 0.6,
+-- 		--   height = 0.7,
+-- 		--   prompt_position = "top",
+-- 		--   preview_cutoff = 20,
+-- 		--   preview_height = function(_, _, max_lines)
+-- 		--     return max_lines - 15
+-- 		--   end,
+-- 		-- },
+-- 	},
+-- })
 
 -- require("obsidian").setup()
 -- require("lspconfig").tsserver.setup({
@@ -1490,54 +1927,54 @@ require("actions-preview").setup({
 -- }
 -- vim.cmd("colorscheme tokyonight")
 -- vim.cmd.colorscheme("catppuccin")
-require("catppuccin").setup({
-	flavour = "mocha", -- latte, frappe, macchiato, mocha
-	background = { -- :h background
-		light = "latte",
-		dark = "mocha",
-	},
-	transparent_background = true, -- disables setting the background color.
-	show_end_of_buffer = false, -- shows the '~' characters after the end of buffers
-	term_colors = false, -- sets terminal colors (e.g. `g:terminal_color_0`)
-	dim_inactive = {
-		enabled = false, -- dims the background color of inactive window
-		shade = "dark",
-		percentage = 0.15, -- percentage of the shade to apply to the inactive window
-	},
-	no_italic = false, -- Force no italic
-	no_bold = false, -- Force no bold
-	no_underline = false, -- Force no underline
-	styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
-		comments = { "italic" }, -- Change the style of comments
-		conditionals = { "italic" },
-		loops = {},
-		functions = {},
-		keywords = {},
-		strings = {},
-		variables = {},
-		numbers = {},
-		booleans = {},
-		properties = {},
-		types = {},
-		operators = {},
-		-- miscs = {}, -- Uncomment to turn off hard-coded styles
-	},
-	color_overrides = {},
-	custom_highlights = {},
-	default_integrations = true,
-	integrations = {
-		cmp = true,
-		gitsigns = true,
-		nvimtree = true,
-		treesitter = true,
-		notify = false,
-		mini = {
-			enabled = true,
-			indentscope_color = "",
-		},
-		-- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
-	},
-})
+-- require("catppuccin").setup({
+-- 	flavour = "mocha", -- latte, frappe, macchiato, mocha
+-- 	background = { -- :h background
+-- 		light = "latte",
+-- 		dark = "mocha",
+-- 	},
+-- 	transparent_background = true, -- disables setting the background color.
+-- 	show_end_of_buffer = false, -- shows the '~' characters after the end of buffers
+-- 	term_colors = false, -- sets terminal colors (e.g. `g:terminal_color_0`)
+-- 	dim_inactive = {
+-- 		enabled = false, -- dims the background color of inactive window
+-- 		shade = "dark",
+-- 		percentage = 0.15, -- percentage of the shade to apply to the inactive window
+-- 	},
+-- 	no_italic = false, -- Force no italic
+-- 	no_bold = false, -- Force no bold
+-- 	no_underline = false, -- Force no underline
+-- 	styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
+-- 		comments = { "italic" }, -- Change the style of comments
+-- 		conditionals = { "italic" },
+-- 		loops = {},
+-- 		functions = {},
+-- 		keywords = {},
+-- 		strings = {},
+-- 		variables = {},
+-- 		numbers = {},
+-- 		booleans = {},
+-- 		properties = {},
+-- 		types = {},
+-- 		operators = {},
+-- 		-- miscs = {}, -- Uncomment to turn off hard-coded styles
+-- 	},
+-- 	color_overrides = {},
+-- 	custom_highlights = {},
+-- 	default_integrations = true,
+-- 	integrations = {
+-- 		cmp = true,
+-- 		gitsigns = true,
+-- 		nvimtree = true,
+-- 		treesitter = true,
+-- 		notify = false,
+-- 		mini = {
+-- 			enabled = true,
+-- 			indentscope_color = "",
+-- 		},
+-- 		-- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
+-- 	},
+-- })
 
 -- setup must be called before loading
 -- vim.cmd.colorscheme("catppuccin")
@@ -1573,3 +2010,11 @@ require("catppuccin").setup({
 -- 		"typescript.tsx",
 -- 	},
 -- })
+vim.log.level = vim.log.levels.WARN
+-- Unbind Tab key in normal mode
+vim.keymap.set("n", "<Tab>", "<Nop>", { noremap = true, silent = true })
+
+-- Unbind Tab key in insert mode
+vim.keymap.set("i", "<Tab>", "<Nop>", { noremap = true, silent = true })
+
+vim.g.neo_tree_preview_use_term_colors = 1

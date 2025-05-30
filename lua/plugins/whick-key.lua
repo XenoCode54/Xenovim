@@ -45,6 +45,7 @@ return {
 			{ "<leader>acr", group = "ChatGPT Run" },
 			{ "<leader>as", group = "SourceGraph" },
 			{ "<leader>o", group = "Terminals" },
+			{ "<leader>ay", group = "Avante" },
 		},
 	},
 }

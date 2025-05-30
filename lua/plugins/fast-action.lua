@@ -1,5 +1,6 @@
 return {
 	"Chaitanyabsprip/fastaction.nvim",
+	enable = false,
 	opts = {
 		dismiss_keys = { "n", "e", "<c-c>", "q" },
 		override_function = function(params) -- to retain built-in style keymaps
