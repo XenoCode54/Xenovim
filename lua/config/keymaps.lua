@@ -9,6 +9,8 @@
 -- local ui = require("harpoon.ui")
 --
 
+vim.keymap.set("n", "<leader>cx", ":Lspsaga show_buf_diagnostics<cr>", { noremap = true, silent = true }) -- Lua
+vim.keymap.set("n", "<leader>cw", ":Lspsaga show_workspace_diagnostics<cr>", { noremap = true, silent = true }) -- Lua
 vim.keymap.set("n", "<c-i>", ":TmuxNavigateRight<cr>", { noremap = true, silent = true }) -- Lua
 vim.keymap.set("i", "<c-i>", ":TmuxNavigateRight<cr>", { noremap = true, silent = true }) -- Lua
 local harpoon = require("harpoon")
@@ -775,9 +777,9 @@ vim.keymap.set(
 -- vim.keymap.set({ "v", "n" }, "<leader>h", require("actions-preview").code_actions, { desc = "Code Action" })
 -- vim.keymap.set({ "v", "n" }, "<leader>h", ":CodeActionMenu<cr>", { desc = "Code Action", silent = true })
 -- vim.keymap.set({ "v", "n" }, "<leader>i", require("actions-preview").code_actions, { desc = "iAction", noremap = true })
-vim.keymap.set({ "v", "n" }, "<leader>i", function()
-	require("tiny-code-action").code_action()
-end, { noremap = true, silent = true, desc = "iAction" })
+-- vim.keymap.set({ "v", "n" }, "<leader>i", function()
+-- 	require("tiny-code-action").code_action()
+-- end, { noremap = true, silent = true, desc = "iAction" })
 
 vim.keymap.set(
 	"n",
@@ -838,3 +840,5 @@ vim.keymap.set("n", "Y", "y$", { desc = "Yank to end of line" })
 --
 --
 --
+
+vim.keymap.set("n", "gr", ":Lspsaga finder<CR>", { desc = "References L", silent = true })

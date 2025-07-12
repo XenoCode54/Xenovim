@@ -11,7 +11,7 @@ return {
 		-- 	{ "<leader>o", group = "Terminals" },
 		-- },
 		win = {
-			border = "double", -- none, single, double, shadow
+			border = "rounded", -- none, single, double, shadow
 			-- position = "bottom", -- bottom, top
 			-- margin = { 1, 0, 1, 0 }, -- extra window margin [top, right, bottom, left]. When between 0 and 1, will be treated as a percentage of the screen size.
 			-- padding = { 1, 2, 1, 2 }, -- extra window padding [top, right, bottom, left]
@@ -27,7 +27,7 @@ return {
 		icons = {
 			-- breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
 			-- separator = "➜", -- symbol used between a key and it's label
-			group = "|", -- symbol prepended to a group
+			group = "» ", -- symbol prepended to a group
 		},
 		-- },
 		-- key_labels = {
@@ -45,7 +45,7 @@ return {
 			{ "<leader>acr", group = "ChatGPT Run" },
 			{ "<leader>as", group = "SourceGraph" },
 			{ "<leader>o", group = "Terminals" },
-			{ "<leader>ay", group = "Avante" },
+			-- { "<leader>ay", group = "Avante" },
 		},
 	},
 }

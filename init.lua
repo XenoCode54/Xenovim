@@ -46,6 +46,12 @@ local colors = require("material.colors")
 -- Unbind Tab key in normal and insert modes
 vim.api.nvim_set_keymap("n", "<Tab>", "<Nop>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("i", "<Tab>", "<Nop>", { noremap = true, silent = true })
+vim.diagnostic.config({
+	virtual_text = false,
+	virtual_lines = {
+		only_current_line = true,
+	},
+})
 
 wk.add({
 	{ "<leader>ac", group = "ChatGPT" },
@@ -1689,7 +1695,7 @@ glance.setup({
 	},
 
 	winbar = {
-		enable = true, -- Enable winbar for the preview (requires neovim-0.8+)
+		enable = false, -- Enable winbar for the preview (requires neovim-0.8+)
 	},
 
 	use_trouble_qf = false, -- Quickfix action will open trouble.nvim instead of built-in quickfix list

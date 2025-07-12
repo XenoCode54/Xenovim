@@ -570,16 +570,17 @@ return {
 			-- options for vim.diagnostic.config()
 			---@type vim.diagnostic.Opts
 			diagnostics = {
-				underline = true,
+				underline = false,
 				update_in_insert = false,
-				virtual_text = {
-					spacing = 4,
-					source = "if_many",
-					prefix = "●",
-					-- this will set set the prefix to a function that returns the diagnostics icon based on the severity
-					-- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
-					-- prefix = "icons",
-				},
+				-- virtual_text = {
+				-- 	spacing = 4,
+				-- 	source = "if_many",
+				-- 	prefix = "●",
+				-- 	-- this will set set the prefix to a function that returns the diagnostics icon based on the severity
+				-- 	-- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
+				-- 	-- prefix = "icons",
+				-- },
+				virtual_text = false,
 				severity_sort = true,
 				signs = {
 					text = {
@@ -683,13 +684,14 @@ return {
 						-- 	desc = "Goto Source Definition",
 						-- },
 						-- {
-						-- 	"gR",
+						-- 	"gd",
 						-- 	function()
-						-- 		LazyVim.lsp.execute({
-						-- 			command = "typescript.findAllFileReferences",
-						-- 			arguments = { vim.uri_from_bufnr(0) },
-						-- 			open = true,
-						-- 		})
+						-- 		vim.cmd("Lspsaga finder")
+						-- 		-- LazyVim.lsp.execute({
+						-- 		-- 	command = "typescript.findAllFileReferences",
+						-- 		-- 	arguments = { vim.uri_from_bufnr(0) },
+						-- 		-- 	open = true,
+						-- 		-- })
 						-- 	end,
 						-- 	desc = "File References",
 						-- },
@@ -765,6 +767,10 @@ return {
 				-- end,
 				-- Specify * to use this function as a fallback for any server
 				-- ["*"] = function(server, opts) end,
+				function(_, bufnr)
+					vim.keymap.del("n", "gd", { buffer = bufnr })
+					vim.keymap.del("n", "gr", { buffer = bufnr })
+				end,
 			},
 		}
 		return ret
@@ -811,7 +817,7 @@ return {
 			if opts.codelens.enabled and vim.lsp.codelens then
 				LazyVim.lsp.on_supports_method("textDocument/codeLens", function(client, buffer)
 					vim.lsp.codelens.refresh()
-					vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
+					vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave" }, {
 						buffer = buffer,
 						callback = vim.lsp.codelens.refresh,
 					})
