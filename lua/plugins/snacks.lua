@@ -20,9 +20,9 @@ return {
 					supports_live = true,
 					tree = true,
 					watch = true,
-					diagnostics_open = false,
+					diagnostics_open = true,
 					git_status = true,
-					git_status_open = false,
+					git_status_open = true,
 					git_untracked = true,
 					follow_file = true,
 					focus = "list",
@@ -34,10 +34,9 @@ return {
 							reverse = false,
 							border = "rounded",
 							height = 0.9,
-							width = 0.8,
+							width = 0.9,
 						},
 						preview = true,
-						-- width = 0.8,
 					},
 					win = {
 						list = {

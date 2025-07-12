@@ -49,6 +49,7 @@ vim.api.nvim_set_keymap("i", "<Tab>", "<Nop>", { noremap = true, silent = true }
 
 wk.add({
 	{ "<leader>ac", group = "ChatGPT" },
+	{ "<leader>a", group = "intellisence" },
 	{ "<leader>aca", group = "ChatGPT Actions" },
 	{ "<leader>acr", group = "ChatGPT Run" },
 	{ "<leader>as", group = "SourceGraph" },
@@ -147,37 +148,37 @@ vim.g.neovide_background_color = "#090b10"
 -- })
 
 -- Configure Avante plugin
-require("plugins.avante").opts = {
-	provider = "claude",
-	claude = {
-		endpoint = "https://api.anthropic.com",
-		model = "claude-3-5-sonnet-20240620",
-		temperature = 0,
-		max_tokens = 4096,
-	},
-	hints = { enabled = true },
-	windows = {
-		wrap = true,
-		width = 20,
-		sidebar_header = {
-			align = "center",
-			rounded = true,
-		},
-	},
-	highlights = {
-		diff = {
-			current = "DiffText",
-			incoming = "DiffAdd",
-		},
-	},
-	diff = {
-		debug = false,
-		autojump = true,
-		list_opener = "copen",
-	},
-}
+-- require("plugins.avante").opts = {
+-- 	provider = "claude",
+-- 	claude = {
+-- 		endpoint = "https://api.anthropic.com",
+-- 		model = "claude-3-5-sonnet-20240620",
+-- 		temperature = 0,
+-- 		max_tokens = 4096,
+-- 	},
+-- 	hints = { enabled = true },
+-- 	windows = {
+-- 		wrap = true,
+-- 		width = 20,
+-- 		sidebar_header = {
+-- 			align = "center",
+-- 			rounded = true,
+-- 		},
+-- 	},
+-- 	highlights = {
+-- 		diff = {
+-- 			current = "DiffText",
+-- 			incoming = "DiffAdd",
+-- 		},
+-- 	},
+-- 	diff = {
+-- 		debug = false,
+-- 		autojump = true,
+-- 		list_opener = "copen",
+-- 	},
+-- }
 
-require("avante_lib").load()
+-- require("avante_lib").load()
 
 require("material").setup({
 	contrast = {
@@ -270,7 +271,7 @@ require("material").setup({
 	custom_highlights = {}, -- Overwrite highlights with your own
 })
 
-vim.cmd("colorscheme material")
+-- vim.cmd("colorscheme material")
 
 require("nvim-ts-autotag").setup({
 	opts = {
@@ -719,12 +720,12 @@ vim.opt.guicursor = "n-v-c:block-Cursor/1Cursor-blinkon0,i-ci:block-Cursor/1Curs
 -- vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#83FFFF")
 -- vim.cmd("augroup END")
 
--- vim.cmd("augroup custom_cursor")
--- vim.cmd("autocmd!")
--- vim.cmd("highlight Cursor guifg=none guibg=#7aa2f7")
--- vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#9ece6a")
--- vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#7aa2f7")
--- vim.cmd("augroup END")
+vim.cmd("augroup custom_cursor")
+vim.cmd("autocmd!")
+vim.cmd("highlight Cursor guifg=none guibg=#7aa2f7")
+vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#9ece6a")
+vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#7aa2f7")
+vim.cmd("augroup END")
 
 -- vim.cmd("augroup custom_cursor")
 -- vim.cmd("autocmd!")
@@ -741,12 +742,12 @@ vim.opt.guicursor = "n-v-c:block-Cursor/1Cursor-blinkon0,i-ci:block-Cursor/1Curs
 -- vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#a89984")
 -- vim.cmd("augroup END")
 
-vim.cmd("augroup custom_cursor")
-vim.cmd("autocmd!")
-vim.cmd("highlight Cursor guifg=none guibg=#ffcc00")
-vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#83FFFF")
-vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#ffcc00")
-vim.cmd("augroup END")
+-- vim.cmd("augroup custom_cursor")
+-- vim.cmd("autocmd!")
+-- vim.cmd("highlight Cursor guifg=none guibg=#ffcc00")
+-- vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#83FFFF")
+-- vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#ffcc00")
+-- vim.cmd("augroup END")
 
 -- vim.cmd("autocmd InsertEnter * norm zz")
 
@@ -985,19 +986,19 @@ require("gitsigns").setup({
 -- })
 -- vim.cmd("colorscheme tokyonight")
 
-vim.api.nvim_create_autocmd("ColorScheme", {
-	pattern = "tokyonight",
-	-- group = ...,
-	callback = function()
-		vim.api.nvim_set_hl(0, "CopilotSuggestion", {
-			-- fg = "#555555",
-			-- fg = "#555b8a",
-			fg = "#000000",
-			ctermfg = 8,
-			force = true,
-		})
-	end,
-})
+-- vim.api.nvim_create_autocmd("ColorScheme", {
+-- 	pattern = "tokyonight",
+-- 	-- group = ...,
+-- 	callback = function()
+-- 		vim.api.nvim_set_hl(0, "CopilotSuggestion", {
+-- 			-- fg = "#555555",
+-- 			-- fg = "#555b8a",
+-- 			fg = "#000000",
+-- 			ctermfg = 8,
+-- 			force = true,
+-- 		})
+-- 	end,
+-- })
 
 -- vim.cmd("highlight ColorColumn guibg=#3e7478")
 -- vim.cmd("highlight ColorColumn guibg=#000000")
@@ -1071,7 +1072,8 @@ require("scrollbar").setup({
 	handle = {
 		text = " ",
 		blend = 20, -- Integer between 0 and 100. 0 for fully opaque and 100 to full transparent. Defaults to 30.
-		color = "#0A0B10",
+		-- color = "#0A0B10",
+		color = "#1a1b26",
 		color_nr = nil, -- cterm
 		highlight = "CursorColumn",
 		hide_if_all_visible = true, -- Hides handle if all lines are visible
@@ -1353,6 +1355,8 @@ require("nvim-lightbulb").setup({ autocmd = { enabled = true } })
 
 vim.opt.scrolloff = 11
 
+-- -- unbind ctrl-i first
+-- vim.keymap.set("n", "<c-i>", "<nop>", { noremap = true, silent = true }) -- Lua
 -- Material deep ocean
 --Lua:
 -- vim.g.material_style = "deep ocean"

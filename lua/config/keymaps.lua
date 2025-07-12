@@ -8,6 +8,9 @@
 -- local mark = require("harpoon.mark")
 -- local ui = require("harpoon.ui")
 --
+
+vim.keymap.set("n", "<c-i>", ":TmuxNavigateRight<cr>", { noremap = true, silent = true }) -- Lua
+vim.keymap.set("i", "<c-i>", ":TmuxNavigateRight<cr>", { noremap = true, silent = true }) -- Lua
 local harpoon = require("harpoon")
 
 -- REQUIRED
@@ -21,16 +24,16 @@ vim.keymap.set("n", "<leader>h", function()
 	harpoon.ui:toggle_quick_menu(harpoon:list())
 end, { noremap = true, desc = "Harpoon List" })
 
-vim.keymap.set("n", "<C-l>", function()
+vim.keymap.set("n", "<C-u>", function()
 	harpoon:list():select(1)
 end, { noremap = true, desc = "Nav File 1" })
-vim.keymap.set("n", "<C-u>", function()
+vim.keymap.set("n", "<C-y>", function()
 	harpoon:list():select(2)
 end, { noremap = true, desc = "Nav File 2" })
-vim.keymap.set("n", "<C-y>", function()
+vim.keymap.set("n", "<C-;>", function()
 	harpoon:list():select(3)
 end, { noremap = true, desc = "Nav File 3" })
-vim.keymap.set("n", "<C-;>", function()
+vim.keymap.set("n", "<C-0>", function()
 	harpoon:list():select(4)
 end, { noremap = true, desc = "Nav File 4" })
 
@@ -808,7 +811,7 @@ vim.keymap.set(
 	{ noremap = true, silent = true, desc = "Diffview Close" }
 ) -- Lua
 
-vim.keymap.set("n", "gS", "<CMD>Glance definitions<CR>", { noremap = true, silent = true, desc = "Glance Definitions" })
+vim.keymap.set("n", "gl", "<CMD>Glance definitions<CR>", { noremap = true, silent = true, desc = "Glance Definitions" })
 -- vim.keymap.set("n", "gR", "<CMD>Glance references<CR>", { noremap = true, silent = true, desc = "Glance References" })
 vim.keymap.set(
 	"n",

@@ -13,12 +13,12 @@ return {
 		transparent_background = false,
 		background = "",
 	},
-	{
-		"LazyVim/LazyVim",
-		opts = {
-			colorscheme = "material",
-			transparent_background = false,
-			background = "",
-		},
-	},
+	-- {
+	-- 	"LazyVim/LazyVim",
+	-- 	opts = {
+	-- 		colorscheme = "material",
+	-- 		transparent_background = false,
+	-- 		background = "",
+	-- 	},
+	-- },
 }
