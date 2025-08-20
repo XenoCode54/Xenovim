@@ -26,16 +26,16 @@ vim.keymap.set("n", "<leader>h", function()
 	harpoon.ui:toggle_quick_menu(harpoon:list())
 end, { noremap = true, desc = "Harpoon List" })
 
-vim.keymap.set("n", "<C-u>", function()
+vim.keymap.set("n", "<C-l>", function()
 	harpoon:list():select(1)
 end, { noremap = true, desc = "Nav File 1" })
-vim.keymap.set("n", "<C-y>", function()
+vim.keymap.set("n", "<C-u>", function()
 	harpoon:list():select(2)
 end, { noremap = true, desc = "Nav File 2" })
-vim.keymap.set("n", "<C-;>", function()
+vim.keymap.set("n", "<C-y>", function()
 	harpoon:list():select(3)
 end, { noremap = true, desc = "Nav File 3" })
-vim.keymap.set("n", "<C-0>", function()
+vim.keymap.set("n", "<C-;>", function()
 	harpoon:list():select(4)
 end, { noremap = true, desc = "Nav File 4" })
 
@@ -450,6 +450,7 @@ vim.keymap.set(
 -- 	":lua require('refactoring').debug.cleanup({})<CR>",
 -- 	{ noremap = true, desc = "cleanUp logs", silent = true }
 -- )
+vim.keymap.set("n", "<C-m>", "<C-^>", { noremap = true, silent = true, desc = "Edit Previous File" })
 
 -- Move highlighted lines in visual mode
 vim.keymap.set("v", "N", ":m '>+1<CR>gv=gv", { noremap = true, silent = true, desc = "Move highlighted line down" })

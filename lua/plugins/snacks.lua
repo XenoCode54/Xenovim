@@ -28,13 +28,13 @@ return {
 					focus = "list",
 					auto_close = true,
 					layout = {
-						preset = "telescope",
+						preset = "ivy",
 						reverse = false,
 						layout = {
 							reverse = false,
 							border = "rounded",
-							height = 0.9,
-							width = 0.9,
+							height = 0.99,
+							width = 0.99,
 						},
 						preview = true,
 					},
@@ -74,31 +74,40 @@ return {
 					},
 				},
 			},
-			-- theme = "ivy",
-			-- prompt = " ",
-			-- preset = "ivy_split",
-			-- layout = {
-			-- 	preset = "ivy_split",
-			-- 	position = "bottom",
-			-- 	layout = {
-			-- 		-- position = "top",
-			-- 		-- height = 0.5,
-			-- 		-- width = 0.8,
-			-- 		border = "rounded",
-			-- 	},
-			-- },
+			theme = "ivy",
 			prompt = " ",
-			preset = "ivy",
+			preset = "ivy_split",
 			layout = {
-				preset = "ivy",
+				preset = "ivy_split",
 				position = "bottom",
 				layout = {
 					-- position = "top",
-					height = 0.7,
-					width = 0.8,
+					height = 0.3,
+					-- width = 0.8,
 					border = "rounded",
 				},
 			},
+			-- prompt = " ",
+			-- preset = "ivy",
+			-- layout = {
+			-- 	preset = "ivy",
+			-- 	reverse = true,
+			-- 	position = "top",
+			-- 	layout = {
+			-- 		-- position = "top",
+			-- 		height = 0.99,
+			-- 		width = 0.99,
+			-- 		border = "rounded",
+			-- 		-- {
+			-- 		-- 	win = "vertical",
+			-- 		-- 	width = 0.3,
+			-- 		-- },
+			-- 		-- {
+			-- 		-- 	win = "preview",
+			-- 		-- 	width = 0.7,
+			-- 		-- },
+			-- 	},
+			-- },
 			win = {
 				-- input window
 				input = {

@@ -1,6 +1,6 @@
 return {
 	"echasnovski/mini.files",
-	enabled = false,
+	enabled = true,
 	config = function()
 		local opts = {
 			config = function(_, opts) end,

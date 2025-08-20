@@ -26,3 +26,4 @@ vim.g.snacks_animate = false
 -- To prevent this, set `splitkeep` to either `screen` or `topline`.
 -- vim.opt.splitkeep = "screen"
 vim.g.copilot_enabled = false
+

@@ -1,6 +1,11 @@
 return {
 	"nvimdev/lspsaga.nvim",
+	after = "nvim-lspconfig",
 	event = "LspAttach",
+	dependencies = {
+		"nvim-treesitter/nvim-treesitter",
+		"nvim-tree/nvim-web-devicons",
+	},
 	opts = {
 		-- code_action = {
 		-- 	keys = { quit = "<Esc>" },
@@ -44,16 +49,17 @@ return {
 			open_cmd = "!chrome",
 		},
 		diagnostic = {
+			virtual_text = false,
 			show_layout = "float",
-			show_normal_height = 10,
+			show_normal_height = 0,
 			jump_num_shortcut = true,
 			auto_preview = true,
 			max_width = 0.8,
 			max_height = 0.6,
 			max_show_width = 0.9,
 			max_show_height = 0.6,
-			wrap_long_lines = true,
-			extend_relatedInformation = false,
+			wrap_long_lines = false,
+			extend_relatedInformation = true,
 			diagnostic_only_current = false,
 			keys = {
 				exec_action = "o",
@@ -76,10 +82,10 @@ return {
 		},
 		lightbulb = {
 			enable = false,
-			sign = true,
+			sign = false,
 			debounce = 10,
 			sign_priority = 40,
-			virtual_text = true,
+			virtual_text = false,
 			enable_in_insert = true,
 			ignore = {
 				clients = {},
@@ -188,10 +194,10 @@ return {
 			},
 		},
 		implement = {
-			enable = true,
+			enable = false,
 			sign = true,
 			lang = {},
-			virtual_text = true,
+			virtual_text = false,
 			priority = 100,
 		},
 		beacon = {
@@ -205,7 +211,7 @@ return {
 	},
 	keys = {
 		{ "<Leader>ch", ":Lspsaga hover_doc<CR>", silent = true },
-		{ "<Leader>i", ":Lspsaga code_action<CR>", silent = true },
+		-- { "<Leader>i", ":Lspsaga code_action<CR>", silent = true },
 		{ "<Leader>cr", ":Lspsaga rename<CR>", silent = true, desc = "Rename" },
 		{ "gr", ":Lspsaga finder<CR>", silent = true },
 	},

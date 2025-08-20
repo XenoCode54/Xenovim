@@ -1,6 +1,210 @@
 require("config.lazy")
 local wk = require("which-key")
 local colors = require("material.colors")
+
+-- opts = {
+-- 	-- code_action = {
+-- 	-- 	keys = { quit = "<Esc>" },
+-- 	-- 	extensions = {
+-- 	-- 		extend_gitsigns = true,
+-- 	-- 	},
+-- 	-- },
+-- 	-- finder = {
+-- 	-- 	keys = {
+-- 	-- 		quit = "<Esc>",
+-- 	-- 		toggle_or_open = "<CR>",
+-- 	-- 	},
+-- 	-- },
+-- 	-- lightbulb = { enable = false },
+-- 	-- -- winbar = {
+-- 	-- -- 	enabled = false,
+-- 	-- -- },
+-- 	-- rename = {
+-- 	-- 	keys = { quit = "<Esc>" },
+-- 	-- },
+--
+-- 	ui = {
+-- 		winbar_prefix = "",
+-- 		border = "rounded",
+-- 		devicon = true,
+-- 		foldericon = true,
+-- 		title = true,
+-- 		expand = "⊞",
+-- 		collapse = "⊟",
+-- 		code_action = "💡",
+-- 		lines = { "┗", "┣", "┃", "━", "┏" },
+-- 		kind = nil,
+-- 		button = { "", "" },
+-- 		imp_sign = "󰳛 ",
+-- 		use_nerd = true,
+-- 	},
+-- 	hover = {
+-- 		max_width = 0.9,
+-- 		max_height = 0.8,
+-- 		open_link = "gx",
+-- 		open_cmd = "!chrome",
+-- 	},
+-- 	diagnostic = {
+-- 		virtual_text = false,
+-- 		show_layout = "float",
+-- 		show_normal_height = 0,
+-- 		jump_num_shortcut = true,
+-- 		auto_preview = true,
+-- 		max_width = 0.8,
+-- 		max_height = 0.6,
+-- 		max_show_width = 0.9,
+-- 		max_show_height = 0.6,
+-- 		wrap_long_lines = false,
+-- 		extend_relatedInformation = true,
+-- 		diagnostic_only_current = true,
+-- 		keys = {
+-- 			exec_action = "o",
+-- 			quit = "q",
+-- 			toggle_or_jump = "<CR>",
+-- 			quit_in_show = { "q", "<ESC>" },
+-- 		},
+-- 	},
+-- 	code_action = {
+-- 		num_shortcut = true,
+-- 		show_server_name = false,
+-- 		extend_gitsigns = true,
+-- 		only_in_cursor = true,
+-- 		max_height = 0.3,
+-- 		cursorline = true,
+-- 		keys = {
+-- 			quit = "q",
+-- 			exec = "<CR>",
+-- 		},
+-- 	},
+-- 	lightbulb = {
+-- 		enable = false,
+-- 		sign = true,
+-- 		debounce = 10,
+-- 		sign_priority = 40,
+-- 		virtual_text = false,
+-- 		enable_in_insert = true,
+-- 		ignore = {
+-- 			clients = {},
+-- 			ft = {},
+-- 		},
+-- 	},
+-- 	scroll_preview = {
+-- 		scroll_down = "<Down>",
+-- 		scroll_up = "<Up>",
+-- 	},
+-- 	request_timeout = 2000,
+-- 	finder = {
+-- 		max_height = 0.5,
+-- 		left_width = 0.4,
+-- 		methods = {},
+-- 		default = "ref+imp+tyd",
+-- 		layout = "float",
+-- 		silent = false,
+-- 		filter = {},
+-- 		fname_sub = nil,
+-- 		sp_inexist = false,
+-- 		sp_global = false,
+-- 		ly_botright = false,
+-- 		number = vim.o.number,
+-- 		relativenumber = vim.o.relativenumber,
+-- 		keys = {
+-- 			shuttle = "[w",
+-- 			toggle_or_open = "o",
+-- 			vsplit = "s",
+-- 			split = "i",
+-- 			tabe = "t",
+-- 			tabnew = "r",
+-- 			quit = "q",
+-- 			close = "<C-c>k",
+-- 		},
+-- 	},
+-- 	definition = {
+-- 		width = 0.6,
+-- 		height = 0.5,
+-- 		save_pos = false,
+-- 		number = vim.o.number,
+-- 		relativenumber = vim.o.relativenumber,
+-- 		keys = {
+-- 			edit = "<C-o>",
+-- 			vsplit = "<C-v>",
+-- 			split = "<C-x>",
+-- 			tabe = "<C-t>",
+-- 			tabnew = "<C-c>n",
+-- 			quit = "q",
+-- 			close = "<ESC>",
+-- 		},
+-- 	},
+-- 	rename = {
+-- 		in_select = true,
+-- 		auto_save = false,
+-- 		project_max_width = 0.5,
+-- 		project_max_height = 0.5,
+-- 		keys = {
+-- 			quit = "<Esc>",
+-- 			exec = "<CR>",
+-- 			select = "x",
+-- 		},
+-- 	},
+-- 	outline = {
+-- 		win_position = "right",
+-- 		win_width = 30,
+-- 		auto_preview = true,
+-- 		detail = true,
+-- 		auto_close = true,
+-- 		close_after_jump = false,
+-- 		layout = "normal",
+-- 		max_height = 0.5,
+-- 		left_width = 0.3,
+-- 		keys = {
+-- 			toggle_or_jump = "o",
+-- 			quit = "q",
+-- 			jump = "e",
+-- 		},
+-- 	},
+-- 	callhierarchy = {
+-- 		layout = "float",
+-- 		left_width = 0.2,
+-- 		keys = {
+-- 			edit = "e",
+-- 			vsplit = "s",
+-- 			split = "i",
+-- 			tabe = "t",
+-- 			close = "<C-c>k",
+-- 			quit = "q",
+-- 			shuttle = "[w",
+-- 			toggle_or_req = "u",
+-- 		},
+-- 	},
+-- 	typehierarchy = {
+-- 		layout = "float",
+-- 		left_width = 0.2,
+-- 		keys = {
+-- 			edit = "e",
+-- 			vsplit = "s",
+-- 			split = "i",
+-- 			tabe = "t",
+-- 			close = "<C-c>k",
+-- 			quit = "q",
+-- 			shuttle = "[w",
+-- 			toggle_or_req = "u",
+-- 		},
+-- 	},
+-- 	implement = {
+-- 		enable = false,
+-- 		sign = true,
+-- 		lang = {},
+-- 		virtual_text = false,
+-- 		priority = 100,
+-- 	},
+-- 	beacon = {
+-- 		enable = true,
+-- 		frequency = 7,
+-- 	},
+-- 	floaterm = {
+-- 		height = 0.7,
+-- 		width = 0.7,
+-- 	},
+-- },
 -- setup must be called before loading the colorscheme
 -- Default options:
 -- t
@@ -46,12 +250,6 @@ local colors = require("material.colors")
 -- Unbind Tab key in normal and insert modes
 vim.api.nvim_set_keymap("n", "<Tab>", "<Nop>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("i", "<Tab>", "<Nop>", { noremap = true, silent = true })
-vim.diagnostic.config({
-	virtual_text = false,
-	virtual_lines = {
-		only_current_line = true,
-	},
-})
 
 wk.add({
 	{ "<leader>ac", group = "ChatGPT" },
@@ -192,7 +390,7 @@ require("material").setup({
 		sidebars = true, -- Enable contrast for sidebar-like windows ( for example Nvim-Tree )
 		floating_windows = true, -- Enable contrast for floating windows
 		cursor_line = true, -- Enable darker background for the cursor line
-		lsp_virtual_text = true, -- Enable contrasted background for lsp virtual text
+		lsp_virtual_text = false, -- Enable contrasted background for lsp virtual text
 		non_current_windows = true, -- Enable contrasted background for non-current windows
 		filetypes = {}, -- Specify which filetypes get the contrasted (darker) background
 	},
@@ -211,39 +409,39 @@ require("material").setup({
 		types = {},
 	},
 
-	plugins = { -- Uncomment the plugins that you use to highlight them
-		-- Available plugins:
-		-- "coc",
-		-- "colorful-winsep",
-		-- "dap",
-		-- "dashboard",
-		-- "eyeliner",
-		-- "fidget",
-		-- "flash",
-		-- "gitsigns",
-		-- "harpoon",
-		-- "hop",
-		-- "illuminate",
-		-- "indent-blankline",
-		-- "lspsaga",
-		-- "mini",
-		-- "neogit",
-		-- "neotest",
-		-- "neo-tree",
-		-- "neorg",
-		-- "noice",
-		-- "nvim-cmp",
-		-- "nvim-navic",
-		-- "nvim-tree",
-		-- "neo-tree",
-		-- "nvim-web-devicons",
-		-- "rainbow-delimiters",
-		-- "sneak",
-		-- "telescope",
-		-- "trouble",
-		-- "which-key",
-		-- "nvim-notify",
-	},
+	-- plugins = { -- Uncomment the plugins that you use to highlight them
+	-- Available plugins:
+	-- "coc",
+	-- "colorful-winsep",
+	-- "dap",
+	-- "dashboard",
+	-- "eyeliner",
+	-- "fidget",
+	-- "flash",
+	-- "gitsigns",
+	-- "harpoon",
+	-- "hop",
+	-- "illuminate",
+	-- "indent-blankline",
+	-- "lspsaga",
+	-- "mini",
+	-- "neogit",
+	-- "neotest",
+	-- "neo-tree",
+	-- "neorg",
+	-- "noice",
+	-- "nvim-cmp",
+	-- "nvim-navic",
+	-- "nvim-tree",
+	-- "neo-tree",
+	-- "nvim-web-devicons",
+	-- "rainbow-delimiters",
+	-- "sneak",
+	-- "telescope",
+	-- "trouble",
+	-- "which-key",
+	-- "nvim-notify",
+	-- },
 
 	disable = {
 		colored_cursor = false, -- Disable the colored cursor
@@ -277,7 +475,7 @@ require("material").setup({
 	custom_highlights = {}, -- Overwrite highlights with your own
 })
 
--- vim.cmd("colorscheme material")
+vim.cmd("colorscheme material")
 
 require("nvim-ts-autotag").setup({
 	opts = {
@@ -528,7 +726,6 @@ vim.opt.termguicolors = true
 --
 --
 --
-
 -- Set the GUI font
 -- vim.opt.guifont = "JetBrainsMonoNerdFont-Medium"
 -- vim.opt.guifont = "JetBrainsMono Nerd Font"
@@ -726,12 +923,12 @@ vim.opt.guicursor = "n-v-c:block-Cursor/1Cursor-blinkon0,i-ci:block-Cursor/1Curs
 -- vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#83FFFF")
 -- vim.cmd("augroup END")
 
-vim.cmd("augroup custom_cursor")
-vim.cmd("autocmd!")
-vim.cmd("highlight Cursor guifg=none guibg=#7aa2f7")
-vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#9ece6a")
-vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#7aa2f7")
-vim.cmd("augroup END")
+-- vim.cmd("augroup custom_cursor")
+-- vim.cmd("autocmd!")
+-- vim.cmd("highlight Cursor guifg=none guibg=#7aa2f7")
+-- vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#9ece6a")
+-- vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#7aa2f7")
+-- vim.cmd("augroup END")
 
 -- vim.cmd("augroup custom_cursor")
 -- vim.cmd("autocmd!")
@@ -747,6 +944,13 @@ vim.cmd("augroup END")
 -- vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#59a598")
 -- vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#a89984")
 -- vim.cmd("augroup END")
+
+vim.cmd("augroup custom_cursor")
+vim.cmd("autocmd!")
+vim.cmd("highlight Cursor guifg=none guibg=#ffcc00")
+vim.cmd("autocmd InsertEnter * highlight Cursor guibg=#C792EA")
+vim.cmd("autocmd InsertLeave * highlight Cursor guibg=#ffcc00")
+vim.cmd("augroup END")
 
 -- vim.cmd("augroup custom_cursor")
 -- vim.cmd("autocmd!")
@@ -1726,8 +1930,6 @@ require("treesitter-context").setup({
 --     -- whatever other lsp config you want
 --   end,
 -- })
-
-vim.diagnostic.config({ virtual_text = true })
 
 require("rainbow-delimiters.setup").setup({})
 
