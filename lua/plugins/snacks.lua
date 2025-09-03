@@ -33,8 +33,8 @@ return {
 						layout = {
 							reverse = false,
 							border = "rounded",
-							height = 0.99,
-							width = 0.99,
+							height = 0.9,
+							width = 0.9,
 						},
 						preview = true,
 					},
