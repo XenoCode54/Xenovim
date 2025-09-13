@@ -1639,7 +1639,6 @@ vim.opt.scrolloff = 11
 
 -- require("mini.files").setup({
 -- 	config = function(_, opts) end,
---
 -- 	mappings = {
 -- 		close = "q",
 -- 		go_in = "T",
