@@ -13,6 +13,21 @@ return {
 		-- 	fps = 60,
 		-- },
 		picker = {
+			-- use the file formatter (default for files/grep)
+			format = "file",
+
+			-- stop truncation by making truncate large (or adapt to terminal width)
+			formatters = {
+				file = {
+					-- choose a big number that won't be hit on your screen
+					-- truncate = 1000,
+					truncate = math.max(200, vim.o.columns), -- use current columns (or fallback)
+
+					-- optional extras you might like:
+					filename_first = true, -- keep the usual path then filename order
+					filename_only = false, -- show path + filename (not only filename)
+				},
+			},
 			sources = {
 				explorer = {
 					finder = "explorer",
