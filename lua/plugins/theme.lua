@@ -1,0 +1,1 @@
+/home/xenon54/.config/omarchy/current/theme/neovim.lua
